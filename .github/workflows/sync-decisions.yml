@@ -13,6 +13,13 @@ on:
         required: true
       CONFLUENCE_API_TOKEN:
         required: true
+  workflow_dispatch:
+    inputs:
+      role:
+        description: 'AI role to extract (matches "## AI Summary — <role>" heading in Confluence)'
+        required: false
+        default: 'Developer'
+        type: string
 
 jobs:
   sync:
