@@ -17,8 +17,8 @@
  *     npx tsx scripts/sync-decisions.ts --role Developer
  */
 
-import { writeFileSync, appendFileSync } from "fs";
-import { resolve } from "path";
+import { writeFileSync, appendFileSync, mkdirSync } from "fs";
+import { resolve, dirname } from "path";
 
 // ---------------------------------------------------------------------------
 // Config
@@ -480,6 +480,7 @@ async function main(): Promise<void> {
   }
 
   const markdown = buildMarkdown(decisions, ROLE);
+  mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
   writeFileSync(OUTPUT_PATH, markdown, "utf-8");
   console.log(`\nWrote ${OUTPUT_PATH} (${decisions.length} decisions)`);
 
