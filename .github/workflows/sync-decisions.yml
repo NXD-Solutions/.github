@@ -61,6 +61,7 @@ jobs:
           branch: automated/sync-decisions-${{ inputs.role }}
           base: main
           delete-branch: true
+          add-paths: .claude/rules/
           commit-message: "Sync ${{ inputs.role }} decisions from Confluence"
           title: "automated: sync ${{ inputs.role }} decisions from 'Decision Log' in Confluence"
           body: |
