@@ -31,32 +31,21 @@ jobs:
       - name: Checkout calling repository
         uses: actions/checkout@v4
 
-      - name: Checkout shared scripts
-        uses: actions/checkout@v4
-        with:
-          repository: NXD-Solutions/.github
-          path: .nxd-scripts
-          persist-credentials: false
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: .nxd-scripts/package-lock.json
 
-      - name: Install script dependencies
-        working-directory: .nxd-scripts
-        run: npm ci
-
-      - name: Remove .nxd-scripts git directory
-        run: rm -rf .nxd-scripts/.git
+      - name: Clone and install shared scripts
+        run: |
+          git clone --depth 1 https://github.com/NXD-Solutions/.github.git /tmp/nxd-scripts
+          cd /tmp/nxd-scripts && npm ci
 
       - name: Run sync script
         env:
           CONFLUENCE_EMAIL: ${{ secrets.CONFLUENCE_EMAIL }}
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
-        run: .nxd-scripts/node_modules/.bin/tsx .nxd-scripts/scripts/sync-decisions.ts --role ${{ inputs.role }}
+        run: /tmp/nxd-scripts/node_modules/.bin/tsx /tmp/nxd-scripts/scripts/sync-decisions.ts --role ${{ inputs.role }}
 
       - name: Check for changes
         id: changes
