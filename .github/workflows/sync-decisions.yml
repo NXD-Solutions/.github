@@ -49,6 +49,9 @@ jobs:
         working-directory: .nxd-scripts
         run: npm ci
 
+      - name: Remove .nxd-scripts git directory
+        run: rm -rf .nxd-scripts/.git
+
       - name: Run sync script
         env:
           CONFLUENCE_EMAIL: ${{ secrets.CONFLUENCE_EMAIL }}
