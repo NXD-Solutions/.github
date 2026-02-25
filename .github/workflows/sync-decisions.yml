@@ -54,7 +54,18 @@ jobs:
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
         run: .nxd-scripts/node_modules/.bin/tsx .nxd-scripts/scripts/sync-decisions.ts --role ${{ inputs.role }}
 
+      - name: Check for changes
+        id: changes
+        run: |
+          if [ -z "$(git status --porcelain -- .claude/rules/)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "## ✅ Nothing new to sync — \`.claude/rules/decisions-${{ inputs.role }}.md\` is already up to date." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Open PR if file changed
+        if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
