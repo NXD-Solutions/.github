@@ -1,0 +1,9 @@
+{
+  "name": "nxd-solutions-github",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
