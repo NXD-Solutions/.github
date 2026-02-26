@@ -62,4 +62,3 @@ jobs:
 ## Further reading
 
 - [Reusing workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) — GitHub Docs
-- [About organisations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) — GitHub Docs
