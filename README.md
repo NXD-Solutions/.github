@@ -61,6 +61,5 @@ jobs:
 
 ## Further reading
 
-- [Creating a default community health file](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) — GitHub Docs
 - [Reusing workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) — GitHub Docs
 - [About organisations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) — GitHub Docs
