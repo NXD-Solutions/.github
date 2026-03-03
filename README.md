@@ -13,52 +13,68 @@ workflows stored here can be called from any repository in the organisation.
 
 ```
 .github/
+  decisions-subscribers.yml          # Central registry of repos that receive decision sync PRs
   workflows/
-    sync-decisions.yml   # Reusable workflow — syncs the NXD Decision Log from Confluence
+    sync-decisions.yml     # Standalone workflow — syncs the NXD Decision Log to all subscribers
 scripts/
-  sync-decisions.ts      # Script invoked by the workflow above
-package.json             # Node dependencies for the scripts
+  sync-decisions.ts        # Script invoked by the workflow above
+package.json               # Node dependencies for the scripts
 ```
 
 ---
 
-## Reusable workflows
+## How decision syncing works
+
+The [NXD Decision Log](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/17104898/Decision+Log)
+in Confluence is the source of truth for binding platform decisions.
+
+Each decision page contains an **AI Summary** section with bullet-point constraints for a
+given audience (e.g. `Developer`). The sync script extracts these and writes them to
+`.claude/rules/decisions-developer.md` in each subscriber repo, so AI coding assistants
+pick up the latest constraints automatically.
+
+---
+
+## Registering a subscriber
+
+Subscribers are defined in `.github/decisions-subscribers.yml`, organised by role. Each role key
+matches an `## AI Summary — <role>` heading in Confluence.
+
+```yaml
+subscriptions:
+  Developer:
+    - NXD-Solutions/prototype
+    - NXD-Solutions/landing-page
+```
+
+To add a repo, append it under the appropriate role. The next workflow run will open a PR
+in that repository with an updated `.claude/rules/decisions-<role>.md`.
+
+---
+
+## Workflows
 
 ### `sync-decisions.yml`
 
-Fetches binding decision constraints from the
-[NXD Decision Log](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/17104898/Decision+Log)
-in Confluence and opens a pull request in the calling repository with an updated
-`.claude/rules/decisions-developer.md` file.
+The centralised dispatch workflow. Runs weekly (Monday 06:00 UTC) and on manual trigger.
 
-**Inputs**
+For each subscriber in `.github/decisions-subscribers.yml` it:
 
-| Name   | Required | Description                                                   |
-|--------|----------|---------------------------------------------------------------|
-| `role` | Yes      | Target audience for extracted constraints (e.g. `Developer`)  |
+1. Checks out the subscriber repository
+2. Runs `scripts/sync-decisions.ts` to fetch the latest decision constraints from Confluence
+3. Opens a pull request in the subscriber repository if `.claude/rules/decisions-<role>.md` changed
 
-**Secrets required** (passed by the caller)
+**Secrets required in `NXD-Solutions/.github`**
 
-| Name                   | Description             |
-|------------------------|-------------------------|
-| `CONFLUENCE_EMAIL`     | Atlassian account email |
-| `CONFLUENCE_API_TOKEN` | Atlassian API token     |
-
-**Usage**
-
-```yaml
-jobs:
-  sync:
-    uses: NXD-Solutions/.github/.github/workflows/sync-decisions.yml@main
-    with:
-      role: Developer
-    secrets:
-      CONFLUENCE_EMAIL: ${{ secrets.CONFLUENCE_EMAIL }}
-      CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
-```
+| Name                   | Description                                                                   |
+|------------------------|-------------------------------------------------------------------------------|
+| `CONFLUENCE_EMAIL`     | Atlassian account email used to authenticate with the Confluence API          |
+| `CONFLUENCE_API_TOKEN` | Atlassian API token                                                           |
+| `REPOS_PAT`            | GitHub PAT with `contents: write` and `pull-requests: write` on all subscriber repos |
 
 ---
 
 ## Further reading
 
 - [Reusing workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) — GitHub Docs
+- [About organisations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) — GitHub Docs
