@@ -3,7 +3,7 @@
  *
  * Discovers all NXD platform decision pages by querying the Confluence
  * Decision Log space, extracts the "## AI Summary — <role>" section
- * from each, and writes .claude/rules/decisions-<role>.md grouped by
+ * from each, and writes .claude/rules/decision-log-extract.md grouped by
  * classification.
  *
  * A page is treated as a decision page if its At a Glance table has a
@@ -53,7 +53,7 @@ const ROLE = getRole();
 // Output path is relative to the working directory (the calling repository root).
 const OUTPUT_PATH = resolve(
   process.cwd(),
-  `.claude/rules/decisions-${ROLE.toLowerCase()}.md`
+  `.claude/rules/decision-log-extract.md`
 );
 
 // ---------------------------------------------------------------------------
@@ -362,7 +362,7 @@ function writeStepSummary(stats: RunStats): void {
   );
 
   if (stats.outputWritten) {
-    lines.push(`**Output:** \`.claude/rules/decisions-${stats.role.toLowerCase()}.md\` updated`, "");
+    lines.push(`**Output:** \`.claude/rules/decision-log-extract.md\` updated`, "");
   }
 
   if (stats.errors.length > 0) {

@@ -1,0 +1,15 @@
+# Opt-out and role overrides for Claude rules distribution.
+#
+# By default, ALL repos in the NXD-Solutions org receive:
+#   - All static Claude rules from static-claude-rules/
+#   - decision-log-extract.md generated from the Developer role AI summaries
+#
+# Use this file to override or exclude specific repos:
+#
+# overrides:
+#   NXD-Solutions/some-design-repo:
+#     role: Designer          # use a different role for decision-log-extract.md
+#   NXD-Solutions/config-repo:
+#     exclude: true           # skip this repo entirely
+
+overrides: {}
