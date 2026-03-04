@@ -1,4 +1,4 @@
-name: Distribute decisions from Confluence
+name: Distribute Claude Rules
 
 on:
   schedule:
