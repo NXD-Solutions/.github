@@ -2,7 +2,7 @@ name: Distribute decisions from Confluence
 
 on:
   schedule:
-    - cron: '0 6 * * 1'  # Every Monday at 06:00 UTC
+    - cron: '0 6 * * 1' # Every Monday at 06:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -19,13 +19,13 @@ jobs:
           matrix=$(python3 -c "
           import yaml, json
           with open('.github/decisions-subscribers.yml') as f:
-              data = yaml.safe_load(f)
-          include = [
+            data = yaml.safe_load(f)
+            include = [
               {'role': role, 'repo': repo}
               for role, repos in data.get('subscriptions', {}).items()
               for repo in repos
-          ]
-          print(json.dumps({'include': include}))
+            ]
+            print(json.dumps({'include': include}))
           ")
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
@@ -61,12 +61,15 @@ jobs:
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
         run: $GITHUB_WORKSPACE/node_modules/.bin/tsx $GITHUB_WORKSPACE/scripts/sync-decisions.ts --role ${{ matrix.role }}
 
+      - name: Copy static Claude rules
+        run: cp $GITHUB_WORKSPACE/static-claude-rules/* subscriber/.claude/rules/
+
       - name: Check for changes
         id: changes
         run: |
           if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "## ✅ Nothing new to sync — \`.claude/rules/decisions-${{ matrix.role }}.md\` is already up to date in \`${{ matrix.repo }}\`." >> "$GITHUB_STEP_SUMMARY"
+            echo "## ✅ Nothing new to sync — \`.claude/rules/\` is already up to date in \`${{ matrix.repo }}\`." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
@@ -89,6 +92,8 @@ jobs:
 
             Regenerates `.claude/rules/decisions-${{ matrix.role }}.md` from the `## AI Summary — ${{ matrix.role }}`
             sections on each NXD decision page in Confluence.
+
+            Also syncs static Claude rules from `static-claude-rules/` in `NXD-Solutions/.github`.
 
             Review the diff to confirm all constraints look correct, then merge.
           labels: chore
