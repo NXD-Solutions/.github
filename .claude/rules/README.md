@@ -10,3 +10,8 @@ Rules files loaded by Claude Code at every session start. Kept minimal for token
 | `git-workflow.md` | [git-workflow.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/30081025) | |
 | `testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
 | `claude-rules-system.md` | | |
+| `ai-human-conventions.md` | | |
+| `confluence.md` | | |
+| `code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
+| `framework-standards.md` | | |
+| `promote-to-static-rules.md` | | |
