@@ -78,12 +78,19 @@ jobs:
       - name: Copy static Claude rules
         run: cp $GITHUB_WORKSPACE/static-claude-rules/* subscriber/.claude/rules/
 
+      - name: Copy static Claude commands
+        run: |
+          mkdir -p subscriber/.claude/commands/
+          if compgen -G "$GITHUB_WORKSPACE/static-claude-commands/*" > /dev/null 2>&1; then
+            cp $GITHUB_WORKSPACE/static-claude-commands/* subscriber/.claude/commands/
+          fi
+
       - name: Check for changes
         id: changes
         run: |
-          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/)" ]; then
+          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "## ✅ Nothing new to sync — \`.claude/rules/\` is already up to date in \`${{ matrix.repo }}\`." >> "$GITHUB_STEP_SUMMARY"
+            echo "## ✅ Nothing new to sync — \`.claude/rules/\` and \`.claude/commands/\` are already up to date in \`${{ matrix.repo }}\`." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
@@ -98,7 +105,9 @@ jobs:
           branch: automated/update-ai-coding-rules
           base: main
           delete-branch: true
-          add-paths: .claude/rules/
+          add-paths: |
+            .claude/rules/
+            .claude/commands/
           commit-message: "Update AI coding rules from NXD Decision Log"
           title: "automated: Update AI coding rules from NXD Decision Log"
           body: |
@@ -107,7 +116,7 @@ jobs:
             Updates `.claude/rules/decision-log-extract.md` from the `## AI Summary — ${{ matrix.role }}`
             sections on each NXD decision page in Confluence.
 
-            Also syncs static Claude rules from `static-claude-rules/` in `NXD-Solutions/.github`.
+            Also syncs static Claude rules from `static-claude-rules/` and static Claude commands from `static-claude-commands/` in `NXD-Solutions/.github`.
 
             Review the diff to confirm all constraints look correct, then merge.
           labels: chore
