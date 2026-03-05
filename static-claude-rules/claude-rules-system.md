@@ -14,6 +14,7 @@ When Claude identifies a missing or needed rule, it notifies the local user: "I 
 - **What** the rule is
 - **Why** it is needed
 - **Value** it adds
+- **Risks** any concerns or potential side effects
 
 ## Blast radius
 
