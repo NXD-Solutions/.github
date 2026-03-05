@@ -37,7 +37,7 @@ Prefer named exports over default exports in all packages and shared modules.
 
 ## Naming conventions
 
-**TypeScript code is always camelCase.** This applies to variables, function parameters, and type/interface fields. Exception: environment variable names follow the conventional `SCREAMING_SNAKE_CASE` (e.g. `GROQ_API_KEY`).
+**TypeScript code is always camelCase.** This applies to variables, function parameters, and type/interface fields. Exceptions: environment variable names and module-level constants that are semantically immutable (fixed configuration, lookup tables, magic values — the TypeScript equivalent of C's `#define`) use `SCREAMING_SNAKE_CASE` (e.g. `GROQ_API_KEY`, `MAX_ITERATIONS`, `SYSTEM_PROMPT`).
 
 **DB row types are camelCase.** Database column names are an implementation detail and must not appear in TypeScript types. `packages/db` is responsible for transforming snake_case column names to camelCase before returning data. Consumers of `packages/db` never handle snake_case.
 
