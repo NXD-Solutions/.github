@@ -362,7 +362,7 @@ function writeStepSummary(stats: RunStats): void {
   );
 
   if (stats.outputWritten) {
-    lines.push(`**Output:** \`.claude/rules/decision-log-extract.gen.md\` updated`, "");
+    lines.push(`**Output:** \`${OUTPUT_PATH}\` updated`, "");
   }
 
   if (stats.errors.length > 0) {
