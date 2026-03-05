@@ -1,8 +1,8 @@
-# AI-Human Conventions
+Would# AI-Human Conventions
 
 ## Proposals and options
 
-When presenting multiple proposals or options, use numbered lists instead of bullet points. Numbers allow the user to reference items by `Ad <number>` in replies.
+When presenting multiple proposals or options, use numbered lists instead of bullet points. Numbers allow the user to reference items by `Ad <number>` in replies. Groups may be introduced with a bold header — numbering continues across groups without restarting.
 
 ## Approximate intent (`~`)
 
