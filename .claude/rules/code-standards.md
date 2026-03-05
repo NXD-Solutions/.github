@@ -45,6 +45,18 @@ Prefer named exports over default exports in all packages and shared modules.
 
 **Translation happens at the service boundary.** Each service translates between its external snake_case contract and the camelCase types from `packages/db`. This translation must not leak into shared packages.
 
+## PostgreSQL client
+
+All postgres.js clients must configure the `toCamel` column transform:
+
+```ts
+const sql = postgres(url, {
+  transform: { column: { from: postgres.toCamel } },
+});
+```
+
+This ensures DB column names (snake_case) are converted to camelCase before data reaches TypeScript — consistently across all repos. Omitting this transform violates the naming conventions rule.
+
 ## Audit skill responsibilities
 A `/audit` skill must:
 1. Flag violations of the rules above (tier placement, structure, extraction threshold, export style, naming conventions).
