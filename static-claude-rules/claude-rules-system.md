@@ -14,7 +14,7 @@ Before committing any new or changed rules file, ask: does this rule apply to al
 
 ## Proposing new rules
 
-When Claude identifies a missing or needed rule, it notifies the local user: "I have identified a Claude rules gap: `<finding>`. Shall we request a change?" On approval, Claude opens a PR to `.github`. The PR description must cover:
+When Claude identifies a missing or needed rule, it notifies the local user: "I have identified a Claude rules gap: `<finding>`. Shall we request a change?" On approval, use the `/promote-to-static-rules` skill to open a PR to `.github`. The PR description must cover:
 - **What** the rule is
 - **Why** it is needed
 - **Value** it adds
