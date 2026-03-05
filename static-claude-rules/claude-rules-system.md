@@ -14,6 +14,11 @@ When Claude identifies a missing or needed rule, it notifies the local user: "I 
 - **What** the rule is
 - **Why** it is needed
 - **Value** it adds
+- **Risks** any concerns or potential side effects
+
+## Blast radius
+
+Changes to `static-claude-rules/` are distributed to all repos in the NXD-Solutions org. Review with extra care before merging.
 
 ## Blast radius
 
