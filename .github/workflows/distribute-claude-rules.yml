@@ -15,9 +15,13 @@ jobs:
         run: |
           files=$(find .claude-static -name "*.local.md")
           if [ -n "$files" ]; then
-            echo "## .local.md violation" >> "$GITHUB_STEP_SUMMARY"
-            echo ".local.md files must not be committed to .claude-static/:" >> "$GITHUB_STEP_SUMMARY"
-            echo "$files" | while read f; do echo "- $f" >> "$GITHUB_STEP_SUMMARY"; done
+            echo "## :x: .local.md violation" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "The following files must not be committed to \`.claude-static/\`:" >> "$GITHUB_STEP_SUMMARY"
+            echo "$files" | while read f; do echo "- \`$f\`" >> "$GITHUB_STEP_SUMMARY"; done
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**How to fix:** \`.local.md\` files are repo-specific and must never be distributed." >> "$GITHUB_STEP_SUMMARY"
+            echo "Remove the file from \`.claude-static/\` and keep it only in the target repo's \`.claude/rules/\`." >> "$GITHUB_STEP_SUMMARY"
             echo "$files"
             exit 1
           fi
