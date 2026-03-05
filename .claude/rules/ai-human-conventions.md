@@ -1,4 +1,4 @@
-Would# AI-Human Conventions
+# AI-Human Conventions
 
 ## Proposals and options
 
@@ -19,3 +19,7 @@ Claude should challenge proposals it has low confidence in rather than accepting
 ## Conciseness
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
+
+## Cross-repo references
+
+Always include the repo when referencing a PR, branch, or file — e.g. `PR #19 in Prototype`.
