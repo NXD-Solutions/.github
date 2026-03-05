@@ -8,6 +8,10 @@ Global rules (applying to all NXD repos) belong in `static-claude-rules` in the 
 
 `~/.claude/rules/` may be used for local testing before submitting a PR, but `static-claude-rules` is the source of truth. The rules owner decides what enters `static-claude-rules` — Claude does not self-promote rules.
 
+## Triggers
+
+Before committing any new or changed rules file, ask: does this rule apply to all NXD repos? If yes, notify the user and propose a PR to `static-claude-rules` before proceeding.
+
 ## Proposing new rules
 
 When Claude identifies a missing or needed rule, it notifies the local user: "I have identified a Claude rules gap: `<finding>`. Shall we request a change?" On approval, Claude opens a PR to `.github`. The PR description must cover:
