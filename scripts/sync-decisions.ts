@@ -53,7 +53,7 @@ const ROLE = getRole();
 // Output path is relative to the working directory (the calling repository root).
 const OUTPUT_PATH = resolve(
   process.cwd(),
-  `.claude/rules/decision-log-extract.md`
+  `.claude/rules/decision-log-extract.gen.md`
 );
 
 // ---------------------------------------------------------------------------
@@ -362,7 +362,7 @@ function writeStepSummary(stats: RunStats): void {
   );
 
   if (stats.outputWritten) {
-    lines.push(`**Output:** \`.claude/rules/decision-log-extract.md\` updated`, "");
+    lines.push(`**Output:** \`${OUTPUT_PATH}\` updated`, "");
   }
 
   if (stats.errors.length > 0) {
