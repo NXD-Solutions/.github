@@ -75,6 +75,14 @@ jobs:
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
         run: $GITHUB_WORKSPACE/node_modules/.bin/tsx $GITHUB_WORKSPACE/scripts/sync-decisions.ts --role ${{ matrix.role }}
 
+
+      - name: Reject .local.md files in .claude-static
+        run: |
+          if find .claude-static -name "*.local.md" | grep -q .; then
+            echo "ERROR: .local.md files must not be committed to .claude-static/"
+            find .claude-static -name "*.local.md"
+            exit 1
+          fi
       - name: Copy static Claude rules
         run: cp $GITHUB_WORKSPACE/.claude-static/rules/* subscriber/.claude/rules/
 
