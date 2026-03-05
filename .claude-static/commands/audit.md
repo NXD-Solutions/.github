@@ -1,6 +1,6 @@
 ---
 allowed-tools: Glob, Grep, Read
-description: Full codebase audit against code-standards.md
+description: Full codebase audit against code-standards.md (NXD)
 ---
 
 ## Context
@@ -38,8 +38,16 @@ Scan all files in `packages/` and `components/ui/` for default exports. Flag any
 ### 7. PostgreSQL client
 Find all `postgres(` instantiation calls. Verify each includes `transform: { column: { from: postgres.toCamel } }`. Flag any that do not.
 
-### 8. Shared code duplication
+### 8. Redundancy
+#### 8a. Structural duplication
 Identify any logic, constants, or types defined in 2+ locations within the repo that could be unified in `packages/`. Propose the correct location for each.
+
+#### 8b. Semantic redundancy
+Identify cases where the same domain concern is expressed multiple times in different formats or styles — for example, the same set of operations described once as validation schemas and again as API contracts, the same business rules encoded in multiple places, or the same domain types reconstructed independently in different services.
+
+For each finding, assess reducibility:
+- **Reducible** — the representations can be unified. Propose a `packages/` location and approach.
+- **Irreducible** — the representations must remain separate (e.g. different protocols require different formats). Flag as a **consistency obligation**: state explicitly what "same" means (same operation names, same required fields, same validation constraints). Add an entry to `.claude/rules/consistency-obligations.local.md` so the obligation is known to every future session and drift is caught at PR time rather than after the fact. Do not add duplicates — check if an entry already exists before writing.
 
 ### 9. Framework candidates
 Identify any code that: (a) is used across 2+ repos (security, auth, logging, config), or (b) is security-related by nature regardless of reuse count. Flag these as framework candidates — do not auto-promote, surface as proposals only.
