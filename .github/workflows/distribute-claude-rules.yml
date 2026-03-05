@@ -6,7 +6,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject .local.md files in .claude-static
+        run: |
+          files=$(find .claude-static -name "*.local.md")
+          if [ -n "$files" ]; then
+            echo "## .local.md violation" >> "$GITHUB_STEP_SUMMARY"
+            echo ".local.md files must not be committed to .claude-static/:" >> "$GITHUB_STEP_SUMMARY"
+            echo "$files" | while read f; do echo "- $f" >> "$GITHUB_STEP_SUMMARY"; done
+            echo "$files"
+            exit 1
+          fi
+
   load-subscribers:
+    needs: preflight
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.build.outputs.matrix }}
@@ -75,14 +92,6 @@ jobs:
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
         run: $GITHUB_WORKSPACE/node_modules/.bin/tsx $GITHUB_WORKSPACE/scripts/sync-decisions.ts --role ${{ matrix.role }}
 
-
-      - name: Reject .local.md files in .claude-static
-        run: |
-          if find .claude-static -name "*.local.md" | grep -q .; then
-            echo "ERROR: .local.md files must not be committed to .claude-static/"
-            find .claude-static -name "*.local.md"
-            exit 1
-          fi
       - name: Copy static Claude rules
         run: cp $GITHUB_WORKSPACE/.claude-static/rules/* subscriber/.claude/rules/
 
