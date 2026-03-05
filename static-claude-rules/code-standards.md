@@ -35,19 +35,21 @@ Cross-app or cross-service shared logic lives in `packages/<name>/`.
 ## Exports
 Prefer named exports over default exports in all packages and shared modules.
 
-## Naming conventions
+## PostgreSQL client
 
-**TypeScript code is always camelCase.** This applies to variables, function parameters, and type/interface fields. Exception: environment variable names follow the conventional `SCREAMING_SNAKE_CASE` (e.g. `GROQ_API_KEY`).
+All postgres.js clients must configure the `toCamel` column transform:
 
-**DB row types are camelCase.** Database column names are an implementation detail and must not appear in TypeScript types. `packages/db` is responsible for transforming snake_case column names to camelCase before returning data. Consumers of `packages/db` never handle snake_case.
+```ts
+const sql = postgres(url, {
+  transform: { column: { from: postgres.toCamel } },
+});
+```
 
-**External contracts are snake_case.** REST request/response bodies, MCP tool parameters, and OpenAI tool definitions use snake_case — this matches the conventions of those protocols.
-
-**Translation happens at the service boundary.** Each service translates between its external snake_case contract and the camelCase types from `packages/db`. This translation must not leak into shared packages.
+This ensures DB column names (snake_case) are converted to camelCase before data reaches TypeScript — consistently across all repos. Omitting this transform violates the naming conventions rule.
 
 ## Audit skill responsibilities
 A `/audit` skill must:
-1. Flag violations of the rules above (tier placement, structure, extraction threshold, export style, naming conventions).
+1. Flag violations of the rules above (tier placement, structure, extraction threshold, export style).
 2. Identify shared code that is duplicated instead of shared — and propose the correct `packages/` location.
 3. Identify shared code that is used across multiple repos — and propose promoting it to a framework package. Do not auto-promote; surface as a proposal only.
 4. Flag any code that is framework by nature (e.g. security) but implemented locally — treat as a violation regardless of reuse count.
