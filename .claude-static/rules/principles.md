@@ -21,6 +21,17 @@ Applied to:
 - Integrations — stable identifiers (IDs, not names), not fragile references
 - Completion criteria — automated checks, not snapshot sign-offs
 
+## Write for the widest audience first
+
+Structure written content so any reader can drop out when it gets too deep and still have gotten
+value. Start with what anyone in the organisation can understand; narrow progressively toward
+the technical detail that only implementers need.
+
+Applied to: rules files, Confluence pages, README files, PR descriptions, meeting agendas —
+any written artefact with a mixed audience.
+
+A reader who stops halfway through should leave informed, not confused.
+
 ## Prefer enforcement over documentation
 
 A rule that can be silently violated is not a rule. If something matters, make it impossible
