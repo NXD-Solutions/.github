@@ -26,6 +26,33 @@ Do not rename a form component just because it was renamed in Figma. Before sett
 
 ---
 
+## Definition of Ready — pre-acceptance gate
+
+Before a form component enters implementation, all hard gates must pass. Soft gates must be
+checked and flagged if applicable — they do not block implementation but must be noted.
+
+**Identity**
+- [ ] **[hard]** Canonical name chosen — spelling verified, naming convention compliant *(naming convention: TBD — define before first form)*
+- [ ] **[hard]** Figma component is a proper component, not a frame or group — only components have stable node IDs
+- [ ] **[hard]** All form-factor variants identified — full list of node IDs confirmed before any code is written
+
+**Design completeness**
+- [ ] **[hard]** All field states present in the design: default, focus, error, disabled, loading — missing states block full implementation
+- [ ] **[hard]** Component marked ready for development in Figma — not draft or WIP
+
+**Structure preview**
+- [ ] **[hard]** Proposed file structure presented to and approved by the developer before any code is written: component path(s), Code Connect entries, `@be-contract` value
+
+**Integration readiness**
+- [ ] **[hard]** BE interface confirmed to exist — route or MCP tools are implemented before the form, not in parallel
+- [ ] **[hard]** No existing form covers the same use case — a form that should be extended must not be duplicated
+
+**Dependencies (flag if applicable)**
+- [ ] **[soft]** Does the form imply a DB schema change? If yes, track as a blocking dependency.
+- [ ] **[soft]** Is there a named designer owner in Figma who has signed off the component as final?
+
+---
+
 ## Code Connect entry
 
 Each form must have a Code Connect JSON entry mapping the Figma node ID to the component path.
