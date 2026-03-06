@@ -18,4 +18,4 @@ Every workflow must include a process explanation in its earliest job's first st
 } >> "$GITHUB_STEP_SUMMARY"
 ```
 
-Job names in the process list must match the labels visible in the GitHub Actions UI.
+`<Job N name>` must be copied verbatim from the `name:` field of the corresponding job in the YAML — this is what appears as the label in the GitHub Actions UI.
