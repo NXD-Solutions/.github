@@ -11,7 +11,7 @@ Values are the qualities NXD optimises for. Principles are how values are operat
 
 ## Transparency
 
-Intent, state, and decisions must be visible to any observer — not just the author. A system, rule, or action that cannot be understood without insider knowledge has failed this value.
+Intent, state, decisions, and output must be visible and understandable to any observer — not just the author. A system, rule, or action that cannot be understood without insider knowledge has failed this value.
 
 ---
 
