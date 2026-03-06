@@ -1,5 +1,5 @@
 ---
-description: Review a Jira issue against NXD principles and flag gaps (NXD)
+description: Review a Jira issue against NXD rules and flag gaps — usage: /review-issue <KEY> [full] (NXD)
 ---
 
 Parse $ARGUMENTS as `<issueKey> [mode]` where mode is `full` or omitted (default: light).
