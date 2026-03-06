@@ -12,36 +12,49 @@ Every form has exactly three linked artefacts. All three must exist before a for
 
 | Layer | Artefact | Location |
 |---|---|---|
-| Figma → UI | Code Connect entry | `.figma/<FormName>.figma.json` |
-| UI | Form component | `apps/*/src/components/forms/<FormName>.tsx` |
-| UI → BE | JSDoc block in the component | top of `<FormName>.tsx` |
+| Figma → UI | Code Connect entry | `.figma/<CanonicalName>.figma.json` |
+| UI | Form component | `apps/*/src/components/forms/<CanonicalName>.tsx` |
+| UI → BE | JSDoc block in the component | top of `<CanonicalName>.tsx` |
 
 ---
 
 ## Naming convention
 
-The form name must be identical across all three layers:
-- Figma component name: `<FormName>` (PascalCase)
-- Code Connect file: `.figma/<FormName>.figma.json`
-- Component file: `apps/*/src/components/forms/<FormName>.tsx`
+The developer chooses a canonical PascalCase name for the form at creation time. This name drives the filename and Code Connect filename. It should match the Figma component name for readability, but a Figma rename does not require a code rename — the Code Connect mapping uses the node ID (stable), not the component name.
 
-Do not abbreviate or vary the name between layers.
+Do not rename a form component just because it was renamed in Figma. Perform a sanity check on the component before first implementation.
 
 ---
 
 ## Code Connect entry
 
 Each form must have a Code Connect JSON entry mapping the Figma node ID to the component path.
-Use the node ID (not the component name) as the identifier — node IDs are stable across renames.
+The node ID is the stable identifier — it does not change when a Figma component is renamed.
 
 ```json
 {
   "figmaNode": "<nodeId>",
-  "component": "apps/<app-name>/src/components/forms/<FormName>.tsx"
+  "component": "apps/<app-name>/src/components/forms/<CanonicalName>.tsx"
 }
 ```
 
 Obtain the node ID from the Figma URL (`node-id` query parameter, convert `-` to `:`).
+
+If Figma defines separate nodes per form factor (mobile, tablet, desktop), each node gets its own
+Code Connect entry, all pointing to the same component file.
+
+---
+
+## Form factors
+
+Use one responsive component (Tailwind breakpoints) as the default. All form-factor node IDs are
+listed in `@figma-node` and each gets its own Code Connect entry pointing to the same file.
+
+Split into separate files (`<CanonicalName>.mobile.tsx`, `<CanonicalName>.desktop.tsx`) only when
+the layouts share no logic. In that case:
+- Each file carries its own `@figma-node` for the relevant node ID
+- All files carry the same `@be-contract`
+- Each file gets its own Code Connect entry
 
 ---
 
@@ -51,12 +64,12 @@ Every form component must carry this block as the first JSDoc comment:
 
 ```ts
 /**
- * @figma-node   <nodeId>
+ * @figma-node   <nodeId> [<nodeId2> ...]  (one per form-factor node if multiple)
  * @be-contract  <description of the BE interface this form talks to>
  */
 ```
 
-- `@figma-node` — the Figma node ID (must match the Code Connect entry)
+- `@figma-node` — the Figma node ID(s) (must match the Code Connect entries)
 - `@be-contract` — free-form description of the BE interface: endpoint, operations, or service
 
 Each repo defines its own convention for `@be-contract`. Example formats:
@@ -79,9 +92,11 @@ Each repo defines its own convention for `@be-contract`. Example formats:
 When renaming or moving a form component:
 
 1. Update the component filename
-2. Update the Code Connect JSON entry
+2. Update the Code Connect JSON entry (filename and `component` path)
 3. Update `@figma-node` and `@be-contract` in the JSDoc
 4. All three changes must appear in the same commit
+
+A Figma component rename does **not** require a code rename — node IDs are stable.
 
 When the BE interface changes (new route, new operation), update `@be-contract` in the same commit.
 
@@ -90,22 +105,19 @@ When the BE interface changes (new route, new operation), update `@be-contract` 
 ## CI enforcement
 
 A CI check must fail the build if any file matching `apps/*/src/components/forms/*.tsx` is missing
-the `@figma-node` tag in its JSDoc. This is the minimum gate — the check does not validate
-that the node ID resolves to a live Figma component.
+the `@figma-node` tag in its JSDoc. This is the minimum gate — the check does not validate that
+the node ID resolves to a live Figma component.
 
-Implementation: add a step to the relevant GitHub Actions workflow that runs:
-
-```bash
-grep -rL '@figma-node' apps/*/src/components/forms/*.tsx && exit 1 || exit 0
-```
+See `.github/workflows/figma-link-check.yml`.
 
 ---
 
 ## Adding a new form
 
 Checklist:
-- [ ] Figma component exists with a stable PascalCase name
-- [ ] `.figma/<FormName>.figma.json` created with node ID
-- [ ] `apps/*/src/components/forms/<FormName>.tsx` created
+- [ ] Canonical PascalCase name chosen
+- [ ] Figma component node ID(s) obtained from the Figma URL
+- [ ] `.figma/<CanonicalName>.figma.json` created — one entry per form-factor node if multiple
+- [ ] `apps/*/src/components/forms/<CanonicalName>.tsx` created (responsive) or split files if layouts share no logic
 - [ ] JSDoc block at top with `@figma-node` and `@be-contract`
 - [ ] CI check passes
