@@ -5,6 +5,16 @@ H1 groups are natural split points if this file grows large enough to warrant it
 
 ---
 
+# Values
+
+Values are the qualities NXD optimises for. Principles are how values are operationalised — each principle should be traceable to at least one value.
+
+## Transparency
+
+Intent, state, and decisions must be visible to any observer — not just the author. A system, rule, or action that cannot be understood without insider knowledge has failed this value.
+
+---
+
 # Culture
 
 ## Design for durability
