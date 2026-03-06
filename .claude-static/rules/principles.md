@@ -28,6 +28,15 @@ and still leave informed.
 
 Templates enforce this — every written artefact template must be structured widest-to-narrowest.
 
+## Transparency reduces fog of war
+
+Prefer systems, processes, and decisions that are self-describing. A GitHub Action should state
+what it will do before it does it. A decision should be recorded where it can be found. A failure
+should name itself.
+
+Transparency is not a rule — it is the quality test that drives rule creation. When something is
+opaque, ask: what rule would make this visible?
+
 ## Prefer enforcement over documentation
 
 A rule that can be silently violated is not a rule. If something matters, make it impossible
