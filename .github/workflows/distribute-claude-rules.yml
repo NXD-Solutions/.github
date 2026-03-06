@@ -39,6 +39,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPOS_PAT }}
         run: |
+          {
+            echo "## Distribute Claude Rules"
+            echo ""
+            echo "**Purpose**: Distribute \`.claude/**/*.md\` files to all subscribing repos."
+            echo ""
+            echo "**Process**:"
+            echo "- *Preflight* — GitHub validates the workflow and prepares runners"
+            echo "- *Load subscribers* — discovers all org repos, applies overrides, builds the sync matrix"
+            echo "- *Sync* — runs in parallel per repo: updates decision-log extract and static rules, opens a PR if \`.claude/rules/\` changed"
+          } >> "$GITHUB_STEP_SUMMARY"
           matrix=$(python3 -c "
           import yaml, json, subprocess
 
