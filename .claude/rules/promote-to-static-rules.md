@@ -1,6 +1,6 @@
-# Promote to Static Rules
+# Promote to Static
 
-Procedure for promoting a rules file to `.claude-static/rules` in `NXD-Solutions/.github`. Execute autonomously on user approval.
+Procedure for promoting a file to `.claude-static/` in `NXD-Solutions/.github`. The destination mirrors the source path — `.claude/<subdir>/<file>.md` promotes to `.claude-static/<subdir>/<file>.md`. Execute autonomously on user approval.
 
 ## 1. Prepare the branch
 ```
@@ -16,14 +16,14 @@ gh api repos/NXD-Solutions/.github/git/refs -X POST \
 ## 2. For each file to promote
 ```
 # Check if file already exists (get SHA if so, 404 if not)
-gh api "repos/NXD-Solutions/.github/contents/.claude-static/rules/<file>.md?ref=feature/promote-<name>" \
+gh api "repos/NXD-Solutions/.github/contents/.claude-static/<subdir>/<file>.md?ref=feature/promote-<name>" \
   | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha','NEW'))"
 
 # Base64-encode the file
-cat .claude/rules/<file>.md | base64 -w 0
+cat .claude/<subdir>/<file>.md | base64 -w 0
 
 # Create (no sha field) or update (sha field required)
-gh api repos/NXD-Solutions/.github/contents/.claude-static/rules/<file>.md \
+gh api repos/NXD-Solutions/.github/contents/.claude-static/<subdir>/<file>.md \
   -X PUT --input - <<EOF
 {"message":"<Add|Update> <file>","content":"<base64>","branch":"feature/promote-<name>"}
 EOF
