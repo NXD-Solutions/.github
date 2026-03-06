@@ -5,6 +5,16 @@ H1 groups are natural split points if this file grows large enough to warrant it
 
 ---
 
+# Values
+
+Values are the qualities NXD optimises for. Principles are how values are operationalised — each principle should be traceable to at least one value.
+
+## Transparency
+
+Intent, state, decisions, and output must be visible and understandable to any observer — not just the author. A system, rule, or action that cannot be understood without insider knowledge has failed this value.
+
+---
+
 # Culture
 
 ## Design for durability
@@ -20,6 +30,10 @@ Applied to:
 - Rules — CI gates, not just documentation
 - Integrations — stable identifiers (IDs, not names), not fragile references
 - Completion criteria — automated checks, not snapshot sign-offs
+
+## Names for all artefacts
+
+Names of files, workflows, and artefacts must communicate purpose to any reader — not reflect technical internals. A reader unfamiliar with the system should understand what something does from its name alone.
 
 ## Write for the widest audience first
 
