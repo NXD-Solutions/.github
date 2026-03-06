@@ -22,7 +22,7 @@ Every form has exactly three linked artefacts. All three must exist before a for
 
 The developer chooses a canonical PascalCase name for the form at creation time. This name drives the filename and Code Connect filename. It should match the Figma component name for readability, but a Figma rename does not require a code rename — the Code Connect mapping uses the node ID (stable), not the component name.
 
-Do not rename a form component just because it was renamed in Figma. Perform a sanity check on the component before first implementation.
+Do not rename a form component just because it was renamed in Figma. Before setting the canonical name, verify spelling and compliance with the form naming convention. *(Form naming convention: TBD — define before the first form is implemented.)*
 
 ---
 
