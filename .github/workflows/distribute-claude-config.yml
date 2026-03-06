@@ -35,6 +35,7 @@ jobs:
             echo "$files"
             exit 1
           fi
+          echo "✅ Preflight passed — no \`.local.md\` files found in \`.claude-static/\`." >> "$GITHUB_STEP_SUMMARY"
 
   load-subscribers:
     needs: preflight
@@ -49,7 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPOS_PAT }}
         run: |
-          matrix=$(python3 -c "
+          output=$(python3 -c "
           import yaml, json, subprocess
 
           with open('.github/claude-rules-overrides.yml') as f:
@@ -63,16 +64,25 @@ jobs:
           repos = [r.strip() for r in result.stdout.strip().splitlines() if r.strip()]
 
           include = []
+          excluded = 0
           for repo in repos:
             override = overrides.get(repo, {})
             if override.get('exclude'):
+              excluded += 1
               continue
             role = override.get('role', 'Developer')
             include.append({'repo': repo, 'role': role})
 
-          print(json.dumps({'include': include}))
+          print(json.dumps({'matrix': {'include': include}, 'total': len(repos), 'excluded': excluded}))
           ")
+          matrix=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(d['matrix']))")
+          total=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['total'])")
+          excluded=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['excluded'])")
+          subscribers=$((total - excluded))
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          {
+            echo "**Subscribers:** $subscribers repos queued for sync ($excluded excluded by overrides — see \`.github/claude-rules-overrides.yml\`)"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   sync:
     needs: load-subscribers
@@ -121,7 +131,7 @@ jobs:
         run: |
           if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Nothing new to sync" >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ \`${{ matrix.repo }}\` — already up to date." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
