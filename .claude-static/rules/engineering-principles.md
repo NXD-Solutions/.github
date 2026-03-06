@@ -23,6 +23,8 @@ Applied to:
 
 ## Prefer enforcement over documentation
 
+*"Discipline is good, but we do not have enough — so enforcement is better."*
+
 A rule that can be silently violated is not a rule. If something matters, make it impossible
 (or at minimum, loudly visible) to break. Documentation describes intent; enforcement guarantees it.
 
