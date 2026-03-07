@@ -4,7 +4,7 @@ DNA is who we are. It is the identity behind every decision and action we make.
 
 ---
 
-## Transparency
+## Transparent by Nature
 
 We are transparent by nature. Intent, state, decisions, and output are visible and understandable to any observer — not just the author. When something is opaque, we ask: what would make this visible?
 
