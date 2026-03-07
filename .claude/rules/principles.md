@@ -6,7 +6,7 @@ H1 groups are natural split points if this file grows large enough to warrant it
 ---
 
 ## Communicate consequences of change
-*Transparency*
+*Transparent by Nature*
 
 Any change that has consequences beyond its immediate scope must communicate those consequences to all affected parties before things break. The author of the change owns this responsibility — the consequences must never be left for others to discover on their own.
 
@@ -30,12 +30,12 @@ Applied to:
 - Completion criteria — automated checks, not snapshot sign-offs
 
 ## Names for all artefacts
-*Transparency*
+*Transparent by Nature*
 
 Names of files, workflows, and artefacts must communicate purpose to any reader — not reflect technical internals. A reader unfamiliar with the system should understand what something does from its name alone.
 
 ## Write for the widest audience first
-*Transparency*
+*Transparent by Nature*
 
 Start broad, narrow progressively. Any reader should be able to stop when it gets too deep
 and still leave informed.
