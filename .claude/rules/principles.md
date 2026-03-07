@@ -13,6 +13,10 @@ Values are the qualities NXD optimises for. Principles are how values are operat
 
 Intent, state, decisions, and output must be visible and understandable to any observer — not just the author. A system, rule, or action that cannot be understood without insider knowledge has failed this value.
 
+## Communicate consequences of change
+
+Any change that has consequences beyond its immediate scope must communicate those consequences to all affected parties before things break. The author of the change owns this responsibility — the consequences must never be left for others to discover on their own.
+
 ---
 
 # Culture
