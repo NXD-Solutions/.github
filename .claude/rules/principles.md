@@ -5,10 +5,13 @@ H1 groups are natural split points if this file grows large enough to warrant it
 
 ---
 
-## Communicate consequences of change
-*Transparency*
+# Values
 
-Any change that has consequences beyond its immediate scope must communicate those consequences to all affected parties before things break. The author of the change owns this responsibility — the consequences must never be left for others to discover on their own.
+Values are the qualities NXD optimises for. Principles are how values are operationalised — each principle should be traceable to at least one value.
+
+## Transparency
+
+Intent, state, decisions, and output must be visible and understandable to any observer — not just the author. A system, rule, or action that cannot be understood without insider knowledge has failed this value.
 
 ## Communicate consequences of change
 
@@ -19,7 +22,6 @@ Any change that has consequences beyond its immediate scope must communicate tho
 # Culture
 
 ## Design for durability
-*Resilient by Design*
 
 Build things that remain correct after they are finished, without requiring re-verification.
 Prefer automated enforcement over human spot-checks. A check that fails when something breaks
@@ -34,20 +36,26 @@ Applied to:
 - Completion criteria — automated checks, not snapshot sign-offs
 
 ## Names for all artefacts
-*Transparency*
 
 Names of files, workflows, and artefacts must communicate purpose to any reader — not reflect technical internals. A reader unfamiliar with the system should understand what something does from its name alone.
 
 ## Write for the widest audience first
-*Transparency*
 
 Start broad, narrow progressively. Any reader should be able to stop when it gets too deep
 and still leave informed.
 
 Templates enforce this — every written artefact template must be structured widest-to-narrowest.
 
+## Transparency reduces fog of war
+
+Prefer systems, processes, and decisions that are self-describing. A GitHub Action should state
+what it will do before it does it. A decision should be recorded where it can be found. A failure
+should name itself.
+
+Transparency is not a rule — it is the quality test that drives rule creation. When something is
+opaque, ask: what rule would make this visible?
+
 ## Prefer enforcement over documentation
-*Lean by Design*
 
 A rule that can be silently violated is not a rule. If something matters, make it impossible
 (or at minimum, loudly visible) to break. Documentation describes intent; enforcement guarantees it.
@@ -69,14 +77,12 @@ Always apply the highest feasible level. Challenge any proposal that doesn't.
 # Architecture
 
 ## No vendor lock-in
-*Sovereign by Design*
 
 Every proprietary dependency must have a feasible open-source substitute. Never reach a state
 where replacing a vendor requires rewriting the system. Evaluate lock-in risk before adopting
 any new service or tool.
 
 ## Security is baseline
-*Secure by Design*
 
 Authentication, authorisation, encryption at rest, and mTLS are non-negotiable baselines —
 not features to be added later. They are never implemented per-repo; they belong in framework
@@ -88,7 +94,6 @@ how complete the functional implementation is.
 # Engineering
 
 ## Stateless by default
-*Resilient by Design*
 
 Services own no local state. All persistent state lives in an external, scalable store.
 A service instance that restarts or is replaced must behave identically to the one it replaced.
