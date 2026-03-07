@@ -30,6 +30,8 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - Replace implementation detail with the human truth behind it. "Authentication, authorisation, encryption" becomes "we do not leave the door open." The metaphor carries the intent; the technology is a derived principle.
 - "Across disciplines" is the test: real DNA drives decisions in Architecture, Engineering, and Culture alike
 - Token cost matters: rationale belongs in Confluence, not in rules files
+- "by Nature" vs "by Design" is meaningful — intrinsic identity earns "by Nature"; qualities built in intentionally earn "by Design". Not all strands qualify for "by Nature".
+- When two strands feel close, name what each one *does to the system*: Lean removes what costs without return; Uniform builds consistency as a stable foundation. Same application, different core value — that difference justifies two strands.
 
 ## Self-improvement
 
