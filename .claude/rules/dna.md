@@ -18,7 +18,7 @@ We are lean by design. We eliminate waste — every process, decision, and syste
 
 ## Sovereign by Design
 
-We are sovereign and adaptable by design. We own our choices and preserve our ability to change — we survive even when our partners don't. No dependency may grow so deep that removing it requires rewriting what we are.
+We are sovereign and adaptable by design. We own our choices and preserve our ability to change — we survive even when our partners don't.
 
 ---
 
@@ -36,6 +36,6 @@ We are resilient by design. What we build keeps working without intervention —
 
 ## Secure by Design
 
-Everything we build is secure by nature. Security is not a feature — we do not leave the door open.
+We are secure by design. Security is not a feature — we do not leave the door open.
 
 ---
