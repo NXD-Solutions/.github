@@ -4,6 +4,13 @@ description: Work on NXD DNA strands — identity statements that drive everythi
 
 Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding.
 
+## Services
+
+This skill offers two modes — state which you want, or ask and Claude will clarify:
+
+- **Author** — identify, challenge, draft, and lock in a new DNA strand or derived principle
+- **Audit** — review the existing rule network; trace each principle back to its DNA strand and flag drift
+
 ## Attitude
 
 DNA is identity, not rules. Every strand describes what NXD *is*, not what it does. If a statement could be a rule, it is not DNA — it is a principle derived from DNA.
@@ -34,6 +41,12 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - When two strands feel close, name what each one *does to the system*: Lean removes what costs without return; Uniform builds consistency as a stable foundation. Same application, different core value — that difference justifies two strands.
 - Conviction has a time dimension — short and long term. A proposal can feel right now but wrong over time. Conviction holds only when both are settled.
 - When a principle could be misconstrued as license to over-engineer or gold-plate, make the boundary explicit — name what the principle stops as well as what it starts.
+
+## Review mode
+
+When asked to audit the rule network, trace each principle back to its DNA strand and ask: does this still serve the strand it was derived from? Flag any that feel disconnected or where conviction would not be high today. Present findings to the user — do not revise without confirmation.
+
+Goal: no known errors in the network.
 
 ## Self-improvement
 
