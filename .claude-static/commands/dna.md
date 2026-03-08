@@ -35,6 +35,12 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - Conviction has a time dimension — short and long term. A proposal can feel right now but wrong over time. Conviction holds only when both are settled.
 - When a principle could be misconstrued as license to over-engineer or gold-plate, make the boundary explicit — name what the principle stops as well as what it starts.
 
+## Review mode
+
+When asked to audit the rule network, trace each principle back to its DNA strand and ask: does this still serve the strand it was derived from? Flag any that feel disconnected or where conviction would not be high today. Present findings to the user — do not revise without confirmation.
+
+Goal: no known errors in the network.
+
 ## Self-improvement
 
 When a session produces a new authoring insight — a pattern, a test, a mistake corrected — propose updating the **Patterns learned** section before closing. Do not wait for the user to ask.
