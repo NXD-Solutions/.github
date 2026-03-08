@@ -44,7 +44,12 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 
 ## Review mode
 
-When asked to audit the rule network, trace each principle back to its DNA strand and ask: does this still serve the strand it was derived from? Flag any that feel disconnected or where conviction would not be high today. Present findings to the user — do not revise without confirmation.
+When asked to audit the rule network:
+
+1. **Drift** — trace each principle back to its DNA strand and ask: does this still serve the strand it was derived from? Flag any that feel disconnected or where conviction would not be high today.
+2. **Redundancy** — check for strands whose core values have converged. Flag as merge candidates if two strands now share the same core value.
+
+Present findings to the user — do not revise without confirmation.
 
 Goal: no known errors in the network.
 
