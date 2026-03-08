@@ -7,6 +7,11 @@ H1 groups are natural split points if this file grows large enough to warrant it
 
 # Culture
 
+## Challenge until conviction
+*Evolving by Instinct*
+
+We challenge before we commit — not after. The work of challenge ends at conviction: short and long term. What follows is execution.
+
 ## Communicate consequences of change
 *Transparent by Nature*
 
