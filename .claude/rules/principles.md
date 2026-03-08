@@ -7,6 +7,16 @@ H1 groups are natural split points if this file grows large enough to warrant it
 
 # Culture
 
+## Challenge until conviction
+*Evolving by Instinct*
+
+We challenge before we commit — not after. The work of challenge ends at conviction: short and long term. What follows is execution.
+
+## Record decisions, not just outcomes
+*Transparent by Nature*
+
+A change without its reasoning is opaque. Important changes to the rule network must record what triggered them, what was decided and why, and with what conviction. A decision that cannot be explained has not been completed.
+
 ## Communicate consequences of change
 *Transparent by Nature*
 
