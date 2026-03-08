@@ -4,6 +4,13 @@ description: Work on NXD DNA strands — identity statements that drive everythi
 
 Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding.
 
+## Services
+
+This skill offers two modes — state which you want, or ask and Claude will clarify:
+
+- **Author** — identify, challenge, draft, and lock in a new DNA strand or derived principle
+- **Audit** — review the existing rule network; trace each principle back to its DNA strand and flag drift
+
 ## Attitude
 
 DNA is identity, not rules. Every strand describes what NXD *is*, not what it does. If a statement could be a rule, it is not DNA — it is a principle derived from DNA.
