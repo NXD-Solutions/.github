@@ -1,5 +1,5 @@
 ---
-description: Work on NXD DNA strands — identity statements that drive everything we build (NXD)
+description: DNA workbench — author, maintain, and audit NXD identity strands and the rule network (NXD)
 ---
 
 Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding.
