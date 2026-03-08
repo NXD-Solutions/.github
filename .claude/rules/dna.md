@@ -34,6 +34,12 @@ We are resilient by design. What we build keeps working without intervention —
 
 ---
 
+## Evolving by Instinct
+
+We are evolving by instinct. We treat every solution as a starting point — what we build today is the foundation for building better tomorrow. What is lean today can be improved tomorrow.
+
+---
+
 ## Secure by Design
 
 We are secure by design. Security is not a feature — we do not leave the door open.
