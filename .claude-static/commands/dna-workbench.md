@@ -2,7 +2,7 @@
 description: DNA workbench — author, maintain, and audit NXD identity strands and the rule network (NXD)
 ---
 
-Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding. Records explaining why rules were written as they were live in `.claude/records/` — consult them before flagging drift or authoring a strand that may already have been decided.
+Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift or authoring a strand that may already have been decided.
 
 ## Services
 
