@@ -19,6 +19,16 @@ cannot. Never implement per-repo.
 **The test:** would independent implementations produce waste, inconsistency, or risk
 that a single implementation eliminates? If yes, flag before code is written.
 
+## Before and after you build
+
+**Before:** Does a local or framework component already cover this?
+- Check `packages/` and any published `@nxd-solutions/*` packages
+- If yes — use it. If it doesn't fully fit, propose an extension rather than a parallel implementation.
+
+**After (if nothing existed):** Is there a structural reason this problem will recur for others?
+- If yes — flag it as a framework candidate now. The person who felt the gap is best placed to define the solution.
+- This is a signal, not a promotion. Promotion follows the standard path below.
+
 ## When code is framework by reuse
 
 Used across 2+ repos — promote out of the monorepo into a shared framework package.

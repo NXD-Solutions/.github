@@ -79,6 +79,11 @@ Every proprietary dependency must have a feasible open-source substitute. Never 
 where replacing a vendor requires rewriting the system. Evaluate lock-in risk before adopting
 any new service or tool.
 
+## Build once for many
+*Evolving by Instinct*
+
+When you encounter a problem, ask whether others will face it too. The ideal is to see structural recurrence at first encounter — before others feel the same pain. When that foresight isn't there, experience is the teacher: pain felt is a signal to act so others don't feel it again.
+
 ## Domain ownership means building the shared component
 *Uniform by Design*
 
