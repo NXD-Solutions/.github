@@ -79,6 +79,11 @@ Every proprietary dependency must have a feasible open-source substitute. Never 
 where replacing a vendor requires rewriting the system. Evaluate lock-in risk before adopting
 any new service or tool.
 
+## Prefer reversible decisions
+*Sovereign by Design*
+
+When making architectural or design decisions, prefer the reversible option unless the irreversible one is clearly justified. The cost of reversibility is paid once upfront; the cost of irreversibility compounds silently until it becomes a rewrite.
+
 ## Build once for many
 *Evolving by Instinct*
 

@@ -36,7 +36,7 @@ We are resilient by design. What we build keeps working without intervention —
 
 ## Evolving by Instinct
 
-We are evolving by instinct. We treat every solution as a starting point — what we build today is the foundation for building better tomorrow. What is lean today can be improved tomorrow.
+We are evolving by instinct. We treat every solution as a starting point — what we build today is the foundation for building better tomorrow. Today's lean state is tomorrow's starting point.
 
 ---
 
