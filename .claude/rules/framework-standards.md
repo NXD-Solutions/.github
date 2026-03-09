@@ -26,8 +26,9 @@ that a single implementation eliminates? If yes, flag before code is written.
 - If yes — use it. If it doesn't fully fit, propose an extension rather than a parallel implementation.
 
 **After (if nothing existed):** Is there a structural reason this problem will recur for others?
-- If yes — flag it as a framework candidate now. The person who felt the gap is best placed to define the solution.
-- This is a signal, not a promotion. Promotion follows the standard path below.
+- If yes — draft a candidate: a title and one-line description of the problem and why it recurs.
+  Surface the draft and ask whether to log it. The draft is the flag; logging starts the discussion.
+- This is a signal, not a commitment to build. Promotion follows the standard path below.
 
 ## When code is framework by reuse
 
