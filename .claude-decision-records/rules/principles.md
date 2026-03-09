@@ -52,6 +52,37 @@ Trivial changes (spelling, single word additions) do not require a record.
 
 ---
 
+## Trace the flow before building
+
+**Date:** 2026-03-09
+**Authors:** Peter Sixhøj & claude-sonnet-4-6
+
+**Concern:** No principle existed that named the design discipline of seeking the overarching structure before implementing. Teams and individuals defaulted to building at the specifics level, producing solutions that couldn't survive change because their structure was never separated from their implementation.
+
+**Decision:** Principle added under *Lean by Design* and *Uniform by Design* — the first principle tagged with two strands. The discipline: trace the expected data flow before building. The flow reveals sub-components and their boundaries, and once validated becomes the processing strategy. Each step is a replaceable component. The recursive dimension is explicit: once the strategy is visible, apply the same question to the strategy itself. Each level of abstraction reached is another level of freedom gained.
+
+**Related:** Lean by Design (parent — building at the wrong abstraction level is waste), Uniform by Design (parent — the flow is the consistent foundation), Build once for many (enables — the structure reveals what is reusable), No vendor lock-in (complementary — replaceability at the structure level extends beyond vendors)
+
+**Trigger:** A real-world story: Peter was asked to build a news distribution system for mobile units. The boss could not answer any question about content, source, device type, or operator. Rather than waiting for specifics, the data flow was derived from the problem statement alone — receive → normalise → format for device → format for operator — and implemented as a strategy pattern with stubbed components. Later, making the strategy itself replaceable revealed a second meta level. The principle captures both the discipline and the recursive instinct the story demonstrated.
+
+**Alternatives considered:** Single parent strand — rejected, the principle genuinely serves Lean (avoids waste from wrong abstraction) and Uniform (creates consistent foundation) equally; forcing one parent misrepresents it. Splitting into two principles (mindset vs. outcome) — rejected, the discipline and the recursive outcome belong together; splitting produces two thin principles that only make sense in combination. Deriving from *Sovereign by Design* — considered but rejected; sovereignty links too tightly to external dependencies, and the principle applies equally in fully internal systems with no vendor involvement.
+
+**Conviction:** high | high
+
+**Value:**
+- *Correctness* — solutions designed from the flow are correct at the structural level before any implementation decision is made; specifics cannot break the structure
+- *Waste eliminated* — building at the wrong abstraction level is the most expensive form of rework; the flow prevents it before a line of code is written
+- *Consumer benefit* — each step is a replaceable component; consumers can substitute any step without rewriting the whole
+- *Cognitive focus* — the flow is a shared artefact that makes the design legible to any reader before implementation begins
+- *Speed* — validated flow means implementation decisions are made in the right order; no backtracking from hardwired specifics
+
+**Examples:**
+> Receive news → normalise → format for device → format for operator
+>
+> Four steps, four replaceable components, derived with zero specifics known. Making the strategy itself replaceable revealed a second meta level — the same pipeline pattern applicable to any transformation sequence.
+
+---
+
 ## Build once for many
 
 **Date:** 2026-03-09
