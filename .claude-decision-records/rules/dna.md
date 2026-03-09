@@ -114,4 +114,19 @@ Decision records for `.claude/rules/dna.md`. One entry per important change — 
 
 **Conviction:** high | high
 
-**Tests:** Is it DNA? Yes — drives decisions acrlesoss Engineering, Culture, Architecture. Is it distinct? Yes — Lean removes, Evolving improves across cycles. Is it meta? Yes — no technology names.
+**Tests:** Is it DNA? Yes — drives decisions across Engineering, Culture, Architecture. Is it distinct? Yes — Lean removes, Evolving improves across cycles. Is it meta? Yes — no technology names.
+
+---
+
+## Evolving by Instinct — bridge sentence to Lean
+
+**Date:** 2026-03-09
+**Authors:** Peter Sixhøj & claude-sonnet-4-6
+
+**Concern:** The strand wording "What is lean today can be improved tomorrow" described the relationship between Evolving and Lean but was ambiguous — "improved" implied the lean state was deficient, and the sentence could be read as Lean being a step in Evolving rather than a parallel identity. An audit flagged it as potentially blurring the distinction between the two strands.
+
+**Decision:** Rephrased to "Today's lean state is tomorrow's starting point." The word "state" is the key — it names Lean as a condition reached (a genuine achievement), not a process. Evolving then acts on that state as a foundation for the next improvement cycle. The relationship is Evolving operates on the Lean state, not through it. The sentence was originally added to make the bridge between the two strands explicit; the rephrasing preserves that intent while making the direction unambiguous.
+
+**Related:** Lean by Design (resolved tension), Evolving by Instinct (parent record above)
+
+**Conviction:** high | high

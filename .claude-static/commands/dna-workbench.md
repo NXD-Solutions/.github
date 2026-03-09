@@ -45,14 +45,26 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 
 ## Review mode
 
-When asked to audit the rule network:
+When asked to audit the rule network, test against these goals. A network that achieves all goals passes; any failure is a finding.
 
-1. **Drift** — trace each principle back to its DNA strand and ask: does this still serve the strand it was derived from? Flag any that feel disconnected or where conviction would not be high today.
-2. **Redundancy** — check for strands whose core values have converged. Flag as merge candidates if two strands now share the same core value.
+**Goals:**
+1. **Traceable** — every principle derives from its strand(s)
+2. **Non-redundant** — no two principles govern the same ground
+3. **Non-contradictory** — no two principles pull in opposite directions in the same scenario
+4. **Minimal** — no principle contains more than it needs to
+5. **Complete** — no known gap is unaddressed
+6. **AI-efficient** — every rule changes AI behaviour; rationale belongs elsewhere
+7. **Human-consideration** — remove AI-irrelevant content. Before discarding, ask whether it earns a place in a decision record or Confluence.
+
+**Checks:**
+1. **Drift** — trace each principle back to its strand. Flag disconnected or low-conviction ones.
+2. **Strand redundancy** — do any two strands share the same core value? Flag as merge candidates.
+3. **Principle overlap** — do any two principles govern the same ground, regardless of strand? Flag as merge or cut candidates.
+4. **Conflict** — do any two principles pull in opposite directions in the same scenario? Flag as contradictions.
+5. **Complexity** — could any principle be shorter, merged, or removed without loss?
+6. **AI relevance** — does each rule change AI behaviour? Flag any that don't.
 
 Present findings to the user — do not revise without confirmation.
-
-Goal: no known errors in the network.
 
 ## Self-improvement
 
