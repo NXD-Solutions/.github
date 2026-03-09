@@ -79,6 +79,15 @@ Every proprietary dependency must have a feasible open-source substitute. Never 
 where replacing a vendor requires rewriting the system. Evaluate lock-in risk before adopting
 any new service or tool.
 
+## Domain ownership means building the shared component
+*Uniform by Design*
+
+Every concern has one owner. That owner is responsible for ensuring the framework component
+that implements their concern exists and is used across all projects — defining what correct
+looks like, driving it into existence, and remaining accountable when it fails. They may
+delegate the build; they may not delegate the outcome. The security team owns authentication;
+operators own the log contract.
+
 ## Security is baseline
 *Secure by Design*
 
