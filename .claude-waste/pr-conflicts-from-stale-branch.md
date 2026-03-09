@@ -6,6 +6,8 @@
 **Consequences:** PR cannot merge; requires rebase and force push; interrupts delivery flow; risks losing uncommitted work if not handled carefully
 **Status:** open
 
+**Related:** [promotion-state-not-tracked.md](promotion-state-not-tracked.md) — both stem from the same workflow gap: no single source of truth for delivery state
+
 ## Description
 
 A branch is created from main, work is committed, and a PR is opened. Meanwhile another PR merges to main. The open PR now conflicts. Requires rebasing onto main and force pushing before the PR can merge.
