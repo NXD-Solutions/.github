@@ -15,11 +15,11 @@ Either party (human or AI) may create a new record or add an evidence entry to a
 ```md
 # <Title>
 
-**Occurrences:** N
-**First seen:** YYYY-MM-DD
-**Last seen:** YYYY-MM-DD
-**Consequences:** what happens when this recurs — cost, risk, friction
-**Status:** open | resolved
+- **Occurrences:** N
+- **First seen:** YYYY-MM-DD
+- **Last seen:** YYYY-MM-DD
+- **Consequences:** what happens when this recurs — cost, risk, friction
+- **Status:** open | resolved
 
 ## Description
 

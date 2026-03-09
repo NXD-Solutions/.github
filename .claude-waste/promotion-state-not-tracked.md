@@ -1,12 +1,11 @@
 # Promotion state not tracked
 
-**Occurrences:** 1
-**First seen:** 2026-03-09
-**Last seen:** 2026-03-09
-**Consequences:** uncertainty about whether .claude-static/ mirrors .claude/; unnecessary verification steps; risk of distributing stale content or failing to distribute at all
-**Status:** open
-
-**Related:** [pr-conflicts-from-stale-branch.md](pr-conflicts-from-stale-branch.md) — both stem from the same workflow gap: no single source of truth for delivery state
+- **Occurrences:** 1
+- **First seen:** 2026-03-09
+- **Last seen:** 2026-03-09
+- **Consequences:** uncertainty about whether .claude-static/ mirrors .claude/; unnecessary verification steps; risk of distributing stale content or failing to distribute at all
+- **Status:** open
+- **Related:** [pr-conflicts-from-stale-branch.md](pr-conflicts-from-stale-branch.md) — both stem from the same workflow gap: no single source of truth for delivery state
 
 ## Description
 
