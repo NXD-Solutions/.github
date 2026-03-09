@@ -3,7 +3,7 @@
 ## Monorepo tier placement
 - `apps/<name>/` — FE applications (React/Vite). One app per directory.
 - `services/<name>/` — BE services (Node.js/TypeScript). One service per directory.
-- `packages/<name>/` — Shared code within this repo. Framework-agnostic. No FE/BE-specific dependencies.
+- `packages/<product>/<package>/` — Shared code within this repo, grouped by product. Framework-agnostic. No FE/BE-specific dependencies. Each product folder groups related packages under one owned concern — ownership declared via CODEOWNERS. Product folders are the natural extraction point if a product later needs its own repo.
 - `infra/` — Root-level dev infra (Docker Compose etc.) only. Service-specific infra lives inside the service directory.
 
 ## FE app structure (`apps/<name>/src/`)
