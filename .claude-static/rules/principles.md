@@ -15,7 +15,7 @@ We challenge before we commit — not after. The work of challenge ends at convi
 ## Record decisions, not just outcomes
 *Transparent by Nature*
 
-A change without its reasoning is opaque. Important changes to the rule network must record what triggered them, what was decided and why, and with what conviction. A decision that cannot be explained has not been completed.
+A change without its reasoning is opaque. Important changes to the rule network must record what triggered them, what was decided and why, and with what conviction. A decision that cannot be explained has not been completed. A decision that is recorded is context that survives the session.
 
 ## Communicate consequences of change
 *Transparent by Nature*
