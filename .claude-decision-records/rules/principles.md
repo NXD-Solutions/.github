@@ -69,6 +69,11 @@ Trivial changes (spelling, single word additions) do not require a record.
 
 **Conviction:** high | high
 
+**Value:**
+- *Transparency* — a change without its reasoning is opaque; the record makes it legible to any observer
+- *Context preservation* — the record survives the session; a future human or AI can resume without starting over. The why, the alternatives rejected, and the conviction at the time are all recoverable
+- *Cognitive focus* — auditors and authors consult records before challenging existing decisions; this prevents relitigating settled questions
+
 **Tests:** Does this principle pass "Record decisions, not just outcomes" applied to itself? Yes — this record is the proof.
 
 **Examples:** This record.
