@@ -25,52 +25,13 @@ When Claude identifies a missing or needed rule, it notifies the local user: "I 
 
 ## Promoting files to .claude-static/
 
-On user approval, follow these steps exactly. The destination path mirrors the source path — `.claude/<subdir>/<file>.md` promotes to `.claude-static/<subdir>/<file>.md`.
+On user approval, copy the file locally and commit it in the same branch as the `.claude/` change. Promotion and the rule change ship in one PR — never in a separate PR.
 
-### 1. Prepare the branch
-```
-# Get main SHA
-gh api repos/NXD-Solutions/.github/git/refs/heads/main | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['object']['sha'])"
-
-# Create feature branch
-gh api repos/NXD-Solutions/.github/git/refs -X POST \
-  -f ref="refs/heads/feature/promote-<name>" \
-  -f sha="<main-sha>"
+```bash
+cp .claude/<subdir>/<file>.md .claude-static/<subdir>/<file>.md
 ```
 
-### 2. For each file to promote
-```
-# Check if file already exists (get SHA if so, 404 if not)
-gh api "repos/NXD-Solutions/.github/contents/.claude-static/<subdir>/<file>.md?ref=feature/promote-<name>" \
-  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha','NEW'))"
-
-# Base64-encode the file
-cat .claude/<subdir>/<file>.md | base64 -w 0
-
-# Create (no sha field) or update (sha field required)
-gh api repos/NXD-Solutions/.github/contents/.claude-static/<subdir>/<file>.md \
-  -X PUT --input - <<EOF
-{"message":"<Add|Update> <file>","content":"<base64>","branch":"feature/promote-<name>"}
-EOF
-# For update, add: ,"sha":"<existing-sha>"
-```
-
-### 3. Create the PR
-```
-gh pr create \
-  --repo NXD-Solutions/.github \
-  --base main \
-  --head feature/promote-<name> \
-  --title "<concise title>" \
-  --body "..."
-```
-
-PR body must cover **What**, **Why**, **Value**, **Risks** — reason from the actual file content, not generic placeholders. Blast radius assessment must identify which repos are affected and whether any may not match the rule's assumptions.
-
-### Notes
-- If `claude-rules-system.md` itself was modified locally, include it in the same PR
-- `jq` is not available — use `python3` to parse JSON responses
-- Output the PR URL when done
+The destination path mirrors the source path exactly. Stage alongside the `.claude/` change and commit together.
 
 ## Blast radius
 
