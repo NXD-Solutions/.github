@@ -56,3 +56,5 @@ Goal: no known errors in the network.
 ## Self-improvement
 
 When a session produces a new authoring insight — a pattern, a test, a mistake corrected — propose updating the **Patterns learned** section before closing. Do not wait for the user to ask.
+
+When a significant strand or principle decision is made in the session, check whether a decision record should be written or updated in `.claude-decision-records/`. Apply the same trigger: anything that can answer "why did we write it as we did."
