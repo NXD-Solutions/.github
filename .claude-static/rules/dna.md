@@ -1,4 +1,4 @@
-EGive # NXD DNA
+# NXD DNA
 
 DNA is who we are. It is the identity behind every decision and action we make.
 
