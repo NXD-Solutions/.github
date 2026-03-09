@@ -42,6 +42,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - Conviction has a time dimension — short and long term. A proposal can feel right now but wrong over time. Conviction holds only when both are settled.
 - When a principle could be misconstrued as license to over-engineer or gold-plate, make the boundary explicit — name what the principle stops as well as what it starts.
 - Before asking whether a decision record should be written, write the draft first and assess its value. Value cannot be assessed from a description of the record — only from reading it. The draft may need improvement before it earns its place; surface the draft, the value assessment, and any proposed improvements together before asking for approval.
+- Decision records should name the value they deliver — not just what was decided, but why it matters. A thin record states the decision; a complete record names the value angles: correctness, waste eliminated, consumer benefit, cognitive focus, speed. An existing thin record is a candidate for enrichment even after the fact.
 
 ## Review mode
 
@@ -65,4 +66,6 @@ When a significant strand or principle decision is made in the session, check wh
 decision record should be written or updated in `.claude-decision-records/`. Getting wiser
 about the same decision means updating the existing record — not adding a new one. Surface
 the proposed change with its rationale. Write only on approval. Apply the same trigger:
-anything that can answer "why did we write it as we did."
+anything that can answer "why did we write it as we did." When surfacing a record, check
+whether value angles are explicit — if the record states the decision but not the value
+it delivers, propose enrichment. This applies to new records and existing thin ones.
