@@ -84,6 +84,13 @@ any new service or tool.
 
 When you encounter a problem, ask whether others will face it too. The ideal is to see structural recurrence at first encounter — before others feel the same pain. When that foresight isn't there, experience is the teacher: pain felt is a signal to act so others don't feel it again.
 
+## Trace the flow before building
+*Lean by Design, Uniform by Design*
+
+Before implementing, trace the expected data flow. The flow identifies the sub-components, establishes their boundaries, and — once validated by thought or test — becomes the processing strategy. Each step in the flow is a candidate for a replaceable component. Specifics fill the steps; the flow is the framework.
+
+Apply the same question recursively: once the strategy is visible, ask whether the strategy itself can be made replaceable. Each level of abstraction reached is another level of freedom gained.
+
 ## Domain ownership means building the shared component
 *Uniform by Design*
 
