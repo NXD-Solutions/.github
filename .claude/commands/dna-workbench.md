@@ -55,4 +55,13 @@ Goal: no known errors in the network.
 
 ## Self-improvement
 
-When a session produces a new authoring insight — a pattern, a test, a mistake corrected — propose updating the **Patterns learned** section before closing. Do not wait for the user to ask.
+When a session produces a new authoring insight — a pattern, a test, a mistake corrected —
+surface the proposed addition or update to **Patterns learned** before closing, with the
+value it adds. Update existing entries in place where the insight refines rather than
+extends. Do not wait for the user to ask. Write only on approval.
+
+When a significant strand or principle decision is made in the session, check whether a
+decision record should be written or updated in `.claude-decision-records/`. Getting wiser
+about the same decision means updating the existing record — not adding a new one. Surface
+the proposed change with its rationale. Write only on approval. Apply the same trigger:
+anything that can answer "why did we write it as we did."

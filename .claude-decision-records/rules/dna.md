@@ -114,4 +114,4 @@ Decision records for `.claude/rules/dna.md`. One entry per important change — 
 
 **Conviction:** high | high
 
-**Tests:** Is it DNA? Yes — drives decisions across Engineering, Culture, Architecture. Is it distinct? Yes — Lean removes, Evolving improves across cycles. Is it meta? Yes — no technology names.
+**Tests:** Is it DNA? Yes — drives decisions acrlesoss Engineering, Culture, Architecture. Is it distinct? Yes — Lean removes, Evolving improves across cycles. Is it meta? Yes — no technology names.
