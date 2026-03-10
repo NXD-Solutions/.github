@@ -26,6 +26,8 @@ Conviction has two dimensions — both must be high:
 - **Short-term:** meets the immediate need without over-engineering
 - **Long-term:** remains sound when expected circumstances arise — won't require reversal for foreseeable change
 
+State conviction as: `Conviction (S|L): high | high`
+
 ## Conciseness
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
