@@ -28,9 +28,9 @@ State conviction as: `Conviction (S|L): high | high`
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
 
-## Task list for multi-step operations
+## Task list for all work
 
-For any operation with 3 or more distinct steps, agree on the task list before starting. Add tasks to the session task list so both parties can see what will happen before it happens. This is a transparency tool — scope is visible before work begins, not discovered mid-session.
+For any work — single step or many — create tasks before starting. The task list is the contract: both parties see what will happen before it happens, and the current state is always visible to a returning participant.
 
 ## Task references
 
@@ -44,6 +44,12 @@ If a user references a task by number, flag the ambiguity and confirm which task
 
 - **MAD** — PR merged and branch deleted
 - **~** — approximate intent; the user is expressing an idea loosely, not dictating exact wording. Interpret and phrase it appropriately.
+
+## Task crash recovery
+
+Whenever tasks are created or updated, write the open task list to `memory/tasks.md`. Each entry must include: subject, what was agreed, and the next step — enough context to resume after a crash. Clear the file when all tasks are completed.
+
+`tasks.md` is session state — it does not follow the stable-knowledge rules of `MEMORY.md`.
 
 ## Repo references
 

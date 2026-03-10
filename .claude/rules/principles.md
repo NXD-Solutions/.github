@@ -24,6 +24,13 @@ The boundary: document what is non-obvious or consequential. Obvious decisions a
 
 A change without its reasoning is opaque. Important changes to the rule network must record what triggered them, what was decided and why, and with what conviction. A decision that cannot be explained has not been completed. A decision that is recorded is context that survives the session.
 
+## The task list is a contract
+*Transparent by Nature*
+
+Externalise all work as tasks before starting. The task list is a contract — both parties see what will happen before it happens, and the current state is always visible to a returning participant. Whether the work is a single step or many, the mechanism is the same: structured task state, not prose.
+
+A contract that exists only in the AI's context is not a contract — it cannot be observed, challenged, or recovered.
+
 ## Communicate consequences of change
 *Transparent by Nature*
 
