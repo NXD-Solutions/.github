@@ -12,6 +12,13 @@ H1 groups are natural split points if this file grows large enough to warrant it
 
 We challenge before we commit — not after. The work of challenge ends at conviction: short and long term. What follows is execution.
 
+## Build context that lasts
+*Transparent by Nature*
+
+Document why, not just what. Leave context that survives the session — decisions, patterns, and reasoning that a future reader can act on without reconstructing what you knew.
+
+The boundary: document what is non-obvious or consequential. Obvious decisions and routine actions need no record — adding them creates noise that buries what matters.
+
 ## Record decisions, not just outcomes
 *Transparent by Nature*
 
