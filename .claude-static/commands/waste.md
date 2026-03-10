@@ -44,7 +44,7 @@ A well-managed waste archive achieves all of these. Fix mode tests against them;
 3. Present open records with occurrences and consequences; ask the user which to fix
 4. On selection: read the record(s), consult **Solution Ideas** if present, propose a fix
 5. Agree on the specific tasks required to close the record. Add them to the session task list before any work begins — this keeps both parties aligned on scope.
-6. Confirm conviction before implementing — short and long term
+6. **Conviction gate — do not proceed without it.** Both parties state conviction per `ai-human-conventions.md`. This step cannot be skipped.
 7. On approval: implement the fix, mark `**Status:** resolved`, move to `resolved/`, update any `**Related:**` links pointing to the moved file
 8. Before closing: check whether any **Solution Ideas** remain unaddressed. Surface each one and ask the fixer to choose an action. Annotate the idea inline with its outcome:
    - **Fix now** → `*Fixed*` — address in the same PR if small enough

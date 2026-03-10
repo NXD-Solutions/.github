@@ -21,6 +21,11 @@ Challenge is not limited to low confidence — name tensions, missing distinctio
 
 Before locking in a significant decision, both parties state conviction. Any conviction below high must be challenged — the gap between current and high is the work still to be done. High conviction can still be challenged; expect minor refinements, not reversals. Neither party proceeds without both expressing conviction.
 
+Conviction has two dimensions — both must be high:
+
+- **Short-term:** meets the immediate need without over-engineering
+- **Long-term:** remains sound when expected circumstances arise — won't require reversal for foreseeable change
+
 ## Conciseness
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
