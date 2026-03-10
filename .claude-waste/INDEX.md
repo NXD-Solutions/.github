@@ -6,5 +6,6 @@
 - `commits-pushed-after-pr-merged.md` — commits land on branch after PR already merged
 
 - `distributed-rules-require-manual-pull.md` — active sessions run stale rules after distribution until user manually pulls and restarts
+- `orphaned-branch-no-pr.md` — branch with commits exists on remote with no PR; invisible until discovered manually
 
 *Update when adding or resolving records.*
