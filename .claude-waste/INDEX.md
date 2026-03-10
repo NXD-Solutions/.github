@@ -4,6 +4,5 @@
 - `promotion-state-not-tracked.md` — unclear which .claude/ files promoted to .claude-static/
 - `decision-record-created-instead-of-updated.md` — new record written instead of updating existing
 - `commits-pushed-after-pr-merged.md` — commits land on branch after PR already merged
-- `session-death-loses-context.md` — session dies mid-work, tasks and decisions unrecoverable
 
 *Update when adding or resolving records.*
