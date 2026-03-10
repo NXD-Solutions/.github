@@ -2,7 +2,7 @@
 description: Log and fix recurring waste patterns in .claude-waste/ (NXD)
 ---
 
-Read `.claude-waste/README.md` before proceeding — it is the process contract.
+Read `.claude-waste/README.md` (process contract) and `.claude-waste/INDEX.md` (open records) before proceeding.
 
 ## Modes
 

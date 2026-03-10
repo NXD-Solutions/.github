@@ -2,7 +2,7 @@
 
 An evidence archive for recurring waste across all NXD work. Each file tracks one waste pattern — its history, consequences, and accumulated evidence. Not loaded into the AI system prompt.
 
-**Open records live at the root — if it's here, it needs attention. Resolved records move to `resolved/`.**
+**Open records live at the root — if it's here, it needs attention. Resolved records move to `resolved/`.** See `INDEX.md` for a token-efficient list of open records.
 
 ## Triggering the waste process
 
