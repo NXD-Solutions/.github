@@ -1,7 +1,7 @@
 # Principles
 
 Cross-cutting principles that apply to all code, rules, integrations, and decisions.
-H1 groups are natural split points if this file grows large enough to warrant it.
+Hierarchy: strand → principle → rule. Domains (# headings) are navigation groupings — not a level in the hierarchy.
 
 ---
 

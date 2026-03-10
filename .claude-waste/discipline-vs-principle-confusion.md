@@ -4,7 +4,7 @@
 - **First seen:** 2026-03-10
 - **Last seen:** 2026-03-10
 - **Consequences:** concept named "discipline" is ambiguous — reader cannot tell whether it means a test variable in DNA authoring or a navigation grouping in `principles.md`; both human and AI lose confidence in whether a concept belongs in DNA, as a principle, or as a grouping
-- **Status:** open
+- **Status:** resolved
 
 ## Description
 
