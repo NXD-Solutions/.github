@@ -29,11 +29,19 @@ Either party (human or AI) may create a new record or add an evidence entry to a
 
 What the waste is and why it recurs.
 
+## Solution Ideas
+
+Ideas captured during diagnosis. Not a task list — input for whoever fixes this.
+
+- ...
+
 ## Evidence
 
 ### YYYY-MM-DD
 What happened, context, impact.
 ```
+
+`## Solution Ideas` is optional — omit when no ideas have been captured yet.
 
 ## Governance
 
