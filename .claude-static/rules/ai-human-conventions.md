@@ -44,6 +44,11 @@ If a user references a task by number, flag the ambiguity and confirm which task
 
 *Remove when Claude Code exposes a shared task view to both parties.*
 
+## Shorthand
+
+- **MAD** — PR merged and branch deleted
+- **~** — approximate intent; paraphrase this loosely expressed idea (see *Approximate intent* above)
+
 ## Repo references
 
 Always include the repo when referencing a PR, branch, or file — e.g. `PR #19 in Prototype`.
