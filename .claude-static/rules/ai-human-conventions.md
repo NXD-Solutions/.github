@@ -47,7 +47,7 @@ If a user references a task by number, flag the ambiguity and confirm which task
 
 ## Task crash recovery
 
-Whenever tasks are created or updated, write the open task list to `memory/tasks.md`. Each entry must include: subject, what was agreed, and the next step — enough context to resume after a crash. Clear the file when all tasks are completed.
+Whenever tasks are created or updated, write the open task list to `memory/tasks.md`. Each entry must include: subject, why the task exists, what was agreed, and the next step — enough context to resume after a crash. Clear the file when all tasks are completed.
 
 `tasks.md` is session state — it does not follow the stable-knowledge rules of `MEMORY.md`.
 
