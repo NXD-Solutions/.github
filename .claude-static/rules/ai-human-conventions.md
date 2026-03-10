@@ -32,6 +32,12 @@ State conviction as: `Conviction (S|L): high | high`
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
 
+## Task references
+
+Reference tasks by subject, not number — task IDs are internal to Claude's tooling and not visible to the user in the same way. Use the subject as the shared identifier.
+
+*Remove when Claude Code exposes a shared task view to both parties.*
+
 ## Repo references
 
 Always include the repo when referencing a PR, branch, or file — e.g. `PR #19 in Prototype`.
