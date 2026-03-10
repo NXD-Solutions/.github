@@ -59,4 +59,4 @@ Records are mutable — updated in place when we get wiser. Git is the history l
 *Getting wiser about the same decision* → update the record.
 *A new concern triggering a new decision* → new record.
 
-Update the **Date** field when the record is updated.
+Update the **Date** field to `<original>, updated <new date>` when the record is updated. Add an `**Update (YYYY-MM-DD):**` block after **Decision** to make the evolution legible without losing the original.
