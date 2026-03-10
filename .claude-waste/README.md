@@ -2,6 +2,8 @@
 
 An evidence archive for recurring waste across all NXD work. Each file tracks one waste pattern — its history, consequences, and accumulated evidence. Not loaded into the AI system prompt.
 
+**Open records live at the root — if it's here, it needs attention. Resolved records move to `resolved/`.**
+
 ## Triggering the waste process
 
 Prefix a message with `Waste:` to signal that something should be recorded. Either party may use the trigger. The AI will search existing records before writing a new one — an existing record may only need a new evidence entry.
@@ -52,4 +54,4 @@ When adding a new record, search existing records first.
 
 Links are always bidirectional — both files must reference each other. A one-sided link is incomplete. The PR checklist enforces this.
 
-When resolving a record, check its related links — the resolution window may cover them too. Mark resolved records with `**Status:** resolved` — they remain in the archive.
+When resolving a record, check its related links — the resolution window may cover them too. Mark the record `**Status:** resolved` and move it to `resolved/`. Update any `**Related:**` links in other records to point to the new path.
