@@ -4,10 +4,6 @@
 
 When presenting multiple proposals or options, use numbered lists instead of bullet points. Numbers allow the user to reference items by `Ad <number>` in replies. Groups may be introduced with a bold header — goes continues across groups without restarting.
 
-## Approximate intent (`~`)
-
-The `~` prefix in a user prompt means "paraphrase this intent" — the user is expressing an idea loosely, not dictating exact wording. Claude should interpret and phrase it appropriately.
-
 ## Scope confirmation
 When a request could apply to a single file or across the entire codebase, confirm the intended scope before proceeding.
 
@@ -43,6 +39,11 @@ Reference tasks by subject, not number — task IDs are internal to Claude's too
 If a user references a task by number, flag the ambiguity and confirm which task is meant before proceeding.
 
 *Remove when Claude Code exposes a shared task view to both parties.*
+
+## Shorthand
+
+- **MAD** — PR merged and branch deleted
+- **~** — approximate intent; the user is expressing an idea loosely, not dictating exact wording. Interpret and phrase it appropriately.
 
 ## Repo references
 
