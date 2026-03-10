@@ -34,6 +34,8 @@ A well-managed waste archive achieves all of these. Fix mode tests against them;
 2. If found — add a dated evidence entry, increment **Occurrences**, update **Last seen**
 3. If not found — create a new record at the root following the format in `README.md`
 4. Check for related records. Add bidirectional `**Related:**` links if applicable — both files must reference each other
+5. Update `INDEX.md` — add the new record or update the existing entry
+6. Count open records at the root (excluding README.md and INDEX.md). If 5 or more: "You now have N open waste records. Consider a fix session."
 
 ---
 

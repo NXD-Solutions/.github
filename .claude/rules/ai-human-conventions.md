@@ -32,6 +32,18 @@ State conviction as: `Conviction (S|L): high | high`
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
 
+## Task list for multi-step operations
+
+For any operation with 3 or more distinct steps, agree on the task list before starting. Add tasks to the session task list so both parties can see what will happen before it happens. This is a transparency tool — scope is visible before work begins, not discovered mid-session.
+
+## Task references
+
+Reference tasks by subject, not number — task IDs are internal to Claude's tooling and not visible to the user in the same way. Use the subject as the shared identifier.
+
+If a user references a task by number, flag the ambiguity and confirm which task is meant before proceeding.
+
+*Remove when Claude Code exposes a shared task view to both parties.*
+
 ## Repo references
 
 Always include the repo when referencing a PR, branch, or file — e.g. `PR #19 in Prototype`.
