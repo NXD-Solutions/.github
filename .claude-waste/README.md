@@ -34,6 +34,12 @@ What the waste is and why it recurs.
 ## Solution Ideas
 
 Ideas captured during diagnosis. Not a task list — input for whoever fixes this.
+When an idea is acted on, annotate it inline with its outcome:
+
+- `*Fixed*` — addressed in the same PR
+- `*Deferred: <ticket>*` — Jira issue created
+- `*Recorded: <filename>*` — spawned a new waste record
+- `*Ignored: <reason>*` — explicitly out of scope
 
 - ...
 
