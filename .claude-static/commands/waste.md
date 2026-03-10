@@ -51,6 +51,7 @@ A well-managed waste archive achieves all of these. Fix mode tests against them;
    - **Create Jira issue** → `*Deferred: <ticket>*` — idea is not lost
    - **New waste record** → `*Recorded: <filename>*` — idea reveals a new recurring pattern
    - **Ignore** → `*Ignored: <reason>*` — explicitly out of scope
+9. Before closing: ask whether any new waste was observed during the session that has not been recorded. The fixer may log it, defer it, or explicitly ignore it — but the question must be asked.
 
 ---
 
