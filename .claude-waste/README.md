@@ -2,6 +2,10 @@
 
 An evidence archive for recurring waste across all NXD work. Each file tracks one waste pattern — its history, consequences, and accumulated evidence. Not loaded into the AI system prompt.
 
+## Triggering the waste process
+
+Prefix a message with `Waste:` to signal that something should be recorded. Either party may use the trigger. The AI will search existing records before writing a new one — an existing record may only need a new evidence entry.
+
 ## When to add a record
 
 Either party (human or AI) may create a new record or add an evidence entry to an existing one, by agreement. Before creating a new record, search for an existing one that covers the same pattern.
