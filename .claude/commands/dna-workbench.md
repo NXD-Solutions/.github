@@ -23,6 +23,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 3. **Draft** — lead with what it is, sharpen with what it isn't
 4. **Convict** — both parties must have conviction before writing
 5. **Link** — tag derived principles in `principles.md` with the strand name
+6. **Test** — write a test file in `.claude-test/rules/<filename>/` asserting the observable behaviour the principle requires
 
 ## Tests
 
@@ -45,6 +46,8 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - Before asking whether a decision record should be written, write the draft first and assess its value. Value cannot be assessed from a description of the record — only from reading it. The draft may need improvement before it earns its place; surface the draft, the value assessment, and any proposed improvements together before asking for approval.
 - Define what the network should achieve before defining how to test it. Goals are the specification; checks are the tests against it. A check that doesn't serve a goal is noise; a goal without a check is unverifiable.
 - Challenge audit findings before presenting them as errors. A finding that doesn't survive challenge was not an error — it was a misread. Reversed findings erode trust in the audit; only surface findings with conviction.
+- When a solution is proposed without a stated goal, surface the goal first. Without it, intent is invisible and the solution cannot be evaluated or challenged.
+- A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
 
 ## Rework mode
 
