@@ -20,5 +20,5 @@ License: Apache 2.0 applies to all skills in this repo — copy and modify freel
 - **License:** Apache 2.0
 - **Status:** deferred
 - **Reason:** Eval loop requires subagents and API key — neither available yet. Core loop (draft → test → review → iterate) aligns with our `.claude-test/` approach and would replace or complement it.
-- **Recheck when:** Anthropic API key in place (KAN-83). Evaluate whether to adopt the full eval loop or integrate selectively.
+- **Recheck when:** Anthropic API key in place (KAN-83). Evaluate whether to adopt the full eval loop or integrate selectively. Note: our `.claude-test/` suite serves the same dual purpose (rule regression + model acceptance) — skill-creator's eval loop is the execution layer that would run it.
 - **Using:** no

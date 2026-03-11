@@ -4,7 +4,10 @@ Test cases for Claude Code rules and commands. One file per test case.
 
 ## Purpose
 
-When a rule or command is rewritten (e.g. for token efficiency), these tests verify the rewrite preserved the intended behaviour. Test cases and decision records are first-class information for reworking rules.
+These tests serve two purposes:
+
+1. **Rule regression guard** — when a rule or command is rewritten (e.g. for token efficiency), tests verify the rewrite preserved the intended behaviour. Test cases and decision records are first-class information for reworking rules.
+2. **Model acceptance** — when the underlying LLM changes, running the suite verifies the new model still honours the rules before it is adopted. The rule didn't change; the model did.
 
 ## Format
 
