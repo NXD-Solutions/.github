@@ -4,7 +4,7 @@
 - **First seen:** 2026-03-09
 - **Last seen:** 2026-03-09
 - **Consequences:** uncertainty about whether .claude-static/ mirrors .claude/; unnecessary verification steps; risk of distributing stale content or failing to distribute at all
-- **Status:** open
+- **Status:** resolved — 2026-03-11
 - **Related:** [pr-conflicts-from-stale-branch.md](pr-conflicts-from-stale-branch.md) — both stem from the same workflow gap: no single source of truth for delivery state
 
 ## Description
@@ -17,3 +17,7 @@ Root cause: promotion is a manual step embedded in commits with no dedicated tra
 
 ### 2026-03-09
 `dna-workbench.md` was updated with audit goals during the session. After multiple PRs and branch operations, it was unclear whether the promotion had been included. A manual diff was required to confirm the files were in sync.
+
+### 2026-03-11 — resolved
+
+Workflow direction inverted: `.claude-static/` is now the primary edit target; `.claude/` is derived from it. The promotion step no longer exists — there is nothing to track. The trigger in `claude-rules-system.md` guards against direct `.claude/` edits that bypass `.claude-static/`. Root cause eliminated.
