@@ -4,7 +4,7 @@ description: DNA workbench — author, maintain, and audit NXD identity strands 
 
 Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift, authoring a strand that may already have been decided, or accepting a challenge against an existing strand or principle. The concern may already have been deliberated and resolved.
 
-Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna-workbench-memory.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
+Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna-workbench-memory.local.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
 
 ## Services
 
