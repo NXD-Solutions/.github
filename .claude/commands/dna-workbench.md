@@ -23,6 +23,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 3. **Draft** — lead with what it is, sharpen with what it isn't
 4. **Convict** — both parties must have conviction before writing
 5. **Link** — tag derived principles in `principles.md` with the strand name
+6. **Test** — write a test file in `.claude-test/rules/<filename>/` asserting the observable behaviour the principle requires
 
 ## Tests
 
