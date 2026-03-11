@@ -1,6 +1,13 @@
-## Description
+## Goal
+<!-- One sentence: what problem does this solve or what outcome does it achieve? -->
 
-<!-- What does this PR do and why? -->
+## What
+
+## Why
+
+## Value
+
+## Risks
 
 ## Checklist
 

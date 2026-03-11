@@ -21,4 +21,4 @@ Every `.md` file in `.claude-static/` must have a corresponding copy in `.claude
 
 ## PR body
 
-Cover **What**, **Why**, **Value**, **Risks**. Blast radius assessment must identify which repos are affected and whether any may not match the rule's assumptions.
+Cover **Goal**, **What**, **Why**, **Value**, **Risks**. Blast radius assessment must identify which repos are affected and whether any may not match the rule's assumptions.

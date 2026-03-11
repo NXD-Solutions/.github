@@ -32,6 +32,7 @@ For rule files (`.md` under `.claude-static/rules/`, excluding `.gen.md` and `RE
 ## Proposing new rules
 
 When Claude identifies a missing or needed rule, it notifies the local user: "I have identified a Claude rules gap: `<finding>`. Shall we request a change?" On approval, Claude opens a PR to `.github`. The PR description must cover:
+- **Goal** — one sentence: what problem does this solve or what outcome does it achieve?
 - **What** the rule is
 - **Why** it is needed
 - **Value** it adds
