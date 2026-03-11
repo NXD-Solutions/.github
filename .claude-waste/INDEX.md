@@ -5,6 +5,7 @@
 - `decision-record-created-instead-of-updated.md` — new record written instead of updating existing
 - `commits-pushed-after-pr-merged.md` — commits land on branch after PR already merged
 
+- `conviction-gate-not-triggered.md` — significant decisions locked in without conviction check; "significant" undefined and discovery decisions not covered
 - `distributed-rules-require-manual-pull.md` — active sessions run stale rules after distribution until user manually pulls and restarts
 - `orphaned-branch-no-pr.md` — branch with commits exists on remote with no PR; invisible until discovered manually
 
