@@ -12,6 +12,13 @@ Hierarchy: strand → principle → rule. Domains (# headings) are navigation gr
 
 We challenge before we commit — not after. The work of challenge ends at conviction: short and long term. What follows is execution.
 
+## Goal before solution
+*Transparent by Nature*
+
+Name the goal before proposing a solution. Without a stated goal, intent is invisible — solutions cannot be evaluated, challenged, or steered when circumstances change. The goal is the fixed point that makes navigation possible.
+
+The boundary: a self-evident action needs no goal statement. The trigger is consequence or alternatives — when the choice matters or others need to evaluate it, the goal must be named.
+
 ## Build context that lasts
 *Transparent by Nature*
 
