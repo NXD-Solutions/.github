@@ -51,7 +51,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 When asked to rework a specific rule, before any changes are proposed:
 
 1. Read the relevant record in `.claude-decision-records/` — this is why the rule was written as it was. A rework that ignores prior deliberation may re-open closed decisions.
-2. Read `.claude-test/rules/<filename>.test.md` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test file exists, flag the gap and proceed with caution.
+2. Read `.claude-test/rules/<filename>/` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test directory exists, flag the gap and proceed with caution.
 
 Only after both are read: propose changes.
 
@@ -59,7 +59,7 @@ Only after both are read: propose changes.
 
 If the audit will include token efficiency (goals 4 and 6), ask the user to run `/context` and share the output first. The token breakdown across rules and memory files shows which rules are consuming the most budget — a rule that costs tokens without changing AI behaviour is a candidate for removal or relocation.
 
-Before proposing any rule rewrite, confirm whether `.claude-test/rules/<filename>.test.md` exists. If it does, it is the regression guard — the rewrite must not change the behaviours asserted there. If it does not, flag the missing coverage as part of the finding.
+Before proposing any rule rewrite, confirm whether `.claude-test/rules/<filename>/` exists. If it does, it is the regression guard — the rewrite must not change the behaviours asserted there. If it does not, flag the missing coverage as part of the finding.
 
 When asked to audit the rule network, test against these goals. A network that achieves all goals passes; any failure is a finding.
 
@@ -72,7 +72,7 @@ When asked to audit the rule network, test against these goals. A network that a
 6. **AI-efficient** — every rule changes AI behaviour; rationale belongs elsewhere
 7. **Human-consideration** — remove AI-irrelevant content. Before discarding, ask whether it earns a place in a decision record or Confluence.
 8. **Tested** — every rule in `.claude/rules/` has a corresponding test file in `.claude-test/rules/` (excluding `.gen.md` and `README.md`)
-9. **Linked** — decision records are bidirectionally linked; no record references another without being referenced back
+9. **Linked** — decision records are bidirectionally linked; no record references another in a lateral relationship without being referenced back
 
 **Checks:**
 1. **Drift** — trace each principle back to its strand. Flag disconnected or low-conviction ones.
@@ -82,7 +82,7 @@ When asked to audit the rule network, test against these goals. A network that a
 5. **Complexity** — could any principle be shorter, merged, or removed without loss?
 6. **AI relevance** — does each rule change AI behaviour? Flag any that don't.
 7. **Coverage** — for each `.md` file in `.claude/rules/` (excluding `.gen.md` and `README.md`), check whether `.claude-test/rules/<filename>/` directory exists. Flag missing test files as coverage gaps.
-8. **Link integrity** — for each record in `.claude-decision-records/`, verify every file named in **Related** references the record back. Flag one-way links and surface candidate links between records whose concerns overlap.
+8. **Link integrity** — for each record in `.claude-decision-records/`, verify every file named in **Related** with a lateral relationship type (implements, enables, complementary, extends) references the record back. Flag one-way lateral links and surface candidate links between records whose concerns overlap. Parent/child relationships are intentionally asymmetric — do not flag.
 
 Present findings to the user — do not revise without confirmation.
 
