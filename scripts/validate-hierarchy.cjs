@@ -27,10 +27,15 @@ while ((match = linkRegex.exec(content)) !== null) {
 
   if (anchor) {
     const fileContent = fs.readFileSync(fullPath, 'utf8');
-    // Convert anchor back to heading text: hyphens to spaces, then match loosely
-    const headingText = anchor.replace(/-+/g, '[\\s\\-]+');
-    const headingRegex = new RegExp(`^#{1,6}\\s+${headingText}`, 'im');
-    if (!headingRegex.test(fileContent)) {
+    // Forward-generate anchors from headings and compare — handles em dashes, parens, dots, etc.
+    const headings = fileContent.match(/^#{1,6}\s+(.+)$/gm) || [];
+    const anchors = headings.map(h =>
+      h.replace(/^#{1,6}\s+/, '')
+       .toLowerCase()
+       .replace(/[^\w\s-]/g, '')  // remove special chars, preserve spaces and hyphens
+       .replace(/ /g, '-')         // each space → hyphen (preserves runs → double hyphens)
+    );
+    if (!anchors.includes(anchor)) {
       failures.push(`Heading \`#${anchor}\` not found in \`${fullPath}\``);
     }
   }
