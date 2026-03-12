@@ -70,7 +70,7 @@ Invoked as `/dna-workbench sync` or triggered automatically after any Author, Re
 1. Read `.claude/hierarchy.md`
 2. Fetch Confluence page 46661643 (markdown format) — apply Page Format principle from page 24313857
 3. Rewrite the page body to reflect the current hierarchy tree: strands, principles, sub-principles, and rules in the same structure as `hierarchy.md`. Include the unmapped rules section.
-4. Expand all relative file links to absolute GitHub URLs: `rules/<file>.md#<anchor>` → `https://github.com/NXD-Solutions/.github/blob/main/.claude/rules/<file>.md#<anchor>`. Entries without a link stay as plain text.
+4. Expand all relative file links to absolute GitHub URLs using the filename as link text: `Title — Role ([filename.md](https://github.com/NXD-Solutions/.github/blob/main/.claude/rules/<file>.md#<anchor>))`. Titles stay as plain text. Entries without a link stay as plain text with no link.
 5. Preserve the AI-managed marker as the first line
 6. Write the updated page using `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
 
