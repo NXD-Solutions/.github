@@ -42,8 +42,15 @@ If a user references a task by number, flag the ambiguity and confirm which task
 
 ## Shorthand
 
-- **MAD** — PR merged and branch deleted
 - **~** — approximate intent; the user is expressing an idea loosely, not dictating exact wording. Interpret and phrase it appropriately.
+
+## Labels
+
+A prompt starting with `Label: text` declares its type — Claude recognises it and acts accordingly. Must be first in the prompt. Distinguished from `/command`: a slash loads a command file; a label declares intent inline.
+
+- **Idea:** — log to `memory/ideas.md`
+- **MAD:** — PR `<number>` merged and branch deleted → `git checkout main && git pull`
+- **Error:** — assess whether recurring; if so, propose a `/waste` record
 
 ## Task crash recovery
 
