@@ -4,6 +4,12 @@ description: Log and fix recurring waste patterns in .claude-waste/ (NXD)
 
 Read `.claude-waste/README.md` (process contract) and `.claude-waste/INDEX.md` (open records) before proceeding.
 
+## Responsibilities
+
+- Maintains `.claude-waste/` — the waste archive
+- Maintains `.claude-waste/INDEX.md` — index of open records
+- Owns the lifecycle of each waste record: created → evidenced → resolved → archived
+
 ## Modes
 
 This command offers two modes — state which you want, or ask and Claude will clarify:

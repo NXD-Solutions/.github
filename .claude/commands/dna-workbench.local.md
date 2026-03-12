@@ -2,17 +2,26 @@
 description: DNA workbench — author, maintain, and audit NXD identity strands and the rule network (NXD)
 ---
 
-Read `.claude/rules/dna.md` and `.claude/rules/principles.md` before proceeding. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift, authoring a strand that may already have been decided, or accepting a challenge against an existing strand or principle. The concern may already have been deliberated and resolved.
+Read `.claude/rules/dna.md`, `.claude/rules/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift, authoring a strand that may already have been decided, or accepting a challenge against an existing strand or principle. The concern may already have been deliberated and resolved.
 
 Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna-workbench-memory.local.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
 
+## Responsibilities
+
+- Maintains `.claude/rules/dna.md` — DNA strands
+- Maintains `.claude/rules/principles.md` — principles and their strand tags
+- Maintains `.claude/hierarchy.md` — the strand → principle → rule tree (source of truth)
+- Writes `.claude-decision-records/` entries for any strand or principle change
+- Maintains `.claude/commands/dna-workbench-memory.local.md` — cross-session workbench state
+
 ## Services
 
-This skill offers three modes — state which you want, or ask and Claude will clarify:
+This skill offers four modes — state which you want, or ask and Claude will clarify:
 
 - **Author** — identify, challenge, draft, and lock in a new DNA strand or derived principle
 - **Audit** — review the existing rule network; trace each principle back to its DNA strand and flag drift
 - **Rework** — revise a specific existing rule; reads decision record and test file as constraints before any changes are proposed
+- **Fix** — repair a failing PR; resolves broken hierarchy references and commits the fix to the PR branch
 
 ## Attitude
 
@@ -50,6 +59,28 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - Challenge audit findings before presenting them as errors. A finding that doesn't survive challenge was not an error — it was a misread. Reversed findings erode trust in the audit; only surface findings with conviction.
 - When a solution is proposed without a stated goal, surface the goal first. Without it, intent is invisible and the solution cannot be evaluated or challenged.
 - A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
+
+## Unmapped rules
+
+The **Unmapped rules** section at the bottom of `.claude/hierarchy.md` is a queue — rules that exist but have not yet been assigned a parent principle. Unmapped is a valid state: a rule author without the authority or context to map it leaves it here for a workbench session to process.
+
+During any Author or Audit session, check the unmapped section and attempt to map each entry. For each entry: propose the correct parent principle and confirm with the user. Conviction gate applies — do not map without high conviction from both parties.
+
+If conviction cannot be reached on any proposed parent — and the user cannot supply an alternative — place or leave the rule in the unmapped section. Do not force a low-conviction mapping. Unmapped with an honest reason is better than mapped with the wrong parent.
+
+## Fix mode
+
+Invoked as `/dna-workbench fix PR-<number>`.
+
+1. Fetch the PR to understand what changed
+2. Read `.claude/hierarchy.md`
+3. Run `node scripts/validate-hierarchy.cjs` to identify broken references — or reason through the hierarchy manually if the script is unavailable
+4. For each broken reference: locate the correct file and heading, update the link in `.claude/hierarchy.md`
+5. If a node is missing entirely (new rule with no hierarchy entry): propose the correct parent and add the node — confirm with user before writing
+6. Present all proposed changes to the user
+7. On confirmation: commit the updated hierarchy to the PR branch and push
+
+**Confirmation is required before any commit.** Do not push without explicit user approval.
 
 ## Rework mode
 

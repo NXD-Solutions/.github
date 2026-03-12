@@ -3,6 +3,12 @@ allowed-tools: Glob, Grep, Read
 description: Full codebase audit against code-standards.md (NXD)
 ---
 
+## Responsibilities
+
+- Read-only — does not own or maintain any files
+- Reports violations against `.claude/rules/code-standards.md`
+- Proposes fixes only — writes nothing without user approval
+
 ## Context
 
 Monorepo structure:
