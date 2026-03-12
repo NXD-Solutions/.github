@@ -9,6 +9,14 @@ Hierarchy: domain → strand → principle → rule.
 
 ## Transparent by Nature
 
+### Principles are processes
+
+A principle names a process, or a required part of one — something that must be present whenever relevant decisions are made, work is performed, or outcomes are reviewed. Every principle must be traceable to that presence.
+
+If it cannot name its process or its place in one, ask: is this who we are, or how we act against a tool? The first is DNA. The second is a rule. If neither, cut it.
+
+What implements a principle against a specific tool is a rule: change the tool, and the rule changes with it. Change the tool, and the principle holds.
+
 ### Goal before solution
 
 Name the goal before proposing a solution. Without a stated goal, intent is invisible — solutions cannot be evaluated, challenged, or steered when circumstances change. The goal is the fixed point that makes navigation possible.
