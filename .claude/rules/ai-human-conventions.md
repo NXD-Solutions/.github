@@ -51,7 +51,7 @@ A prompt starting with `Label: text` declares its type — Claude recognises it 
 - **Idea:** — log to `memory/ideas.md`
 - **MAD:** — PR `<number>` merged and branch deleted → `git checkout main && git pull`
 - **Error:** — assess whether recurring; if so, propose a `/waste` record
-- **Task:** — create a task with the given title
+- **Task:** — create a Claude Code task (session tracking) with the given title
 - **Testament:** — log a recurring problem or workaround to `.claude/rules/testament.local.md`
 - **Decision:** — create a task: "Write decision record for `<title>`"
 
