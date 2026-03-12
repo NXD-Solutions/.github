@@ -7,6 +7,7 @@
 # Culture
 
 - **[Transparent by Nature](rules/dna.md#transparent-by-nature)** — Strand
+  - **[Principles are processes](rules/principles.md#principles-are-processes)** — Principle
   - **[Goal before solution](rules/principles.md#goal-before-solution)** — Principle
     - [Scope confirmation](rules/ai-human-conventions.md#scope-confirmation) — Rule
     - [Repo references](rules/ai-human-conventions.md#repo-references) — Rule
