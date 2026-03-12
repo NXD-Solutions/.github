@@ -35,12 +35,13 @@ This skill offers three modes — state which you want, or ask and Claude will c
 
 Invoked as `/claude-librarian publish <topic>`.
 
-1. Identify the source rule(s) in `.claude/rules/` for the topic
-2. Read the source — extract what a newcomer needs to understand it
-3. Draft the chapter using the chapter structure above
-4. Present the draft to the user before writing
-5. On approval: create or update the child page under 46661650 using `mcp__atlassian__createConfluencePage` or `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
-6. Update the root page index (Index mode)
+1. Fetch all existing child pages under 46661650 — flag any with a title similar to the requested topic and confirm with the user before proceeding
+2. Identify the source rule(s) in `.claude/rules/` for the topic
+3. Read the source — extract what a newcomer needs to understand it
+4. Draft the chapter using the chapter structure above
+5. Present the draft to the user before writing
+6. On approval: create or update the child page under 46661650 using `mcp__atlassian__createConfluencePage` or `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
+7. Update the root page index (Index mode)
 
 ## Sync mode
 
