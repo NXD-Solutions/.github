@@ -75,6 +75,7 @@ Invoked as `/dna-workbench sync` or triggered automatically after any Author, Re
 
 Can be run at any time — does not require a GitHub change to trigger.
 
+
 ## Unmapped rules
 
 The **Unmapped rules** section at the bottom of `.claude/hierarchy.md` is a queue — rules that exist but have not yet been assigned a parent principle. Unmapped is a valid state: a rule author without the authority or context to map it leaves it here for a workbench session to process.
