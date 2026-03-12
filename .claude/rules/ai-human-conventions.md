@@ -55,6 +55,8 @@ A prompt starting with `Label: text` declares its type — Claude recognises it 
 - **Testament:** — log a recurring problem or workaround to `.claude/rules/testament.local.md`
 - **Decision:** — create a task: "Write decision record for `<title>`"
 
+`Label: help` — explain what the label does, how to use it, and the value it offers.
+
 ## Task crash recovery
 
 Whenever tasks are created or updated, write the open task list to `memory/tasks.md`. Each entry must include: subject, why the task exists, what was agreed, and the next step — enough context to resume after a crash. Clear the file when all tasks are completed.
