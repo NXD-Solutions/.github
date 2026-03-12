@@ -64,7 +64,7 @@
 - **[Evolving by Instinct](rules/dna.md#evolving-by-instinct)** — Strand
   - **[Build once for many](rules/principles.md#build-once-for-many)** — Principle
     - [Proposing new rules](rules/claude-rules-system.md#proposing-new-rules) — Rule
-
+---
 - **[Secure by Design](rules/dna.md#secure-by-design)** — Strand
   - **[Security is baseline](rules/principles.md#security-is-baseline)** — Principle
 
