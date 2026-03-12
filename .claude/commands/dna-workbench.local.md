@@ -13,15 +13,17 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - Maintains `.claude/hierarchy.md` — the strand → principle → rule tree (source of truth)
 - Writes `.claude-decision-records/` entries for any strand or principle change
 - Maintains `.claude/commands/dna-workbench-memory.local.md` — cross-session workbench state
+- Maintains Confluence page 46661643 — mirrors the hierarchy tree; update after any change to `hierarchy.md`
 
 ## Services
 
-This skill offers four modes — state which you want, or ask and Claude will clarify:
+This skill offers five modes — state which you want, or ask and Claude will clarify:
 
 - **Author** — identify, challenge, draft, and lock in a new DNA strand or derived principle
 - **Audit** — review the existing rule network; trace each principle back to its DNA strand and flag drift
 - **Rework** — revise a specific existing rule; reads decision record and test file as constraints before any changes are proposed
 - **Fix** — repair a failing PR; resolves broken hierarchy references and commits the fix to the PR branch
+- **Sync** — update Confluence page 46661643 to reflect the current state of `hierarchy.md`; can be run at any time regardless of whether GitHub changes exist
 
 ## Attitude
 
@@ -35,6 +37,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 4. **Convict** — both parties must have conviction before writing
 5. **Link** — tag derived principles in `principles.md` with the strand name
 6. **Test** — write a test file in `.claude-test/rules/<filename>/` asserting the observable behaviour the principle requires
+7. **Sync** — run Sync mode to update Confluence page 46661643
 
 ## Tests
 
@@ -60,6 +63,19 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - When a solution is proposed without a stated goal, surface the goal first. Without it, intent is invisible and the solution cannot be evaluated or challenged.
 - A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
 
+## Sync mode
+
+Invoked as `/dna-workbench sync` or triggered automatically after any Author, Rework, or Fix operation that changes `hierarchy.md`.
+
+1. Read `.claude/hierarchy.md`
+2. Fetch Confluence page 46661643 (markdown format) — apply Page Format principle from page 24313857
+3. Rewrite the page body to reflect the current hierarchy tree: strands, principles, sub-principles, and rules in the same structure as `hierarchy.md`. Include the unmapped rules section.
+4. Preserve the AI-managed marker as the first line
+5. Write the updated page using `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
+
+Can be run at any time — does not require a GitHub change to trigger.
+
+
 ## Unmapped rules
 
 The **Unmapped rules** section at the bottom of `.claude/hierarchy.md` is a queue — rules that exist but have not yet been assigned a parent principle. Unmapped is a valid state: a rule author without the authority or context to map it leaves it here for a workbench session to process.
@@ -79,6 +95,7 @@ Invoked as `/dna-workbench fix PR-<number>`.
 5. If a node is missing entirely (new rule with no hierarchy entry): propose the correct parent and add the node — confirm with user before writing
 6. Present all proposed changes to the user
 7. On confirmation: commit the updated hierarchy to the PR branch and push
+8. After committing: run Sync mode to update Confluence page 46661643
 
 **Confirmation is required before any commit.** Do not push without explicit user approval.
 
@@ -89,7 +106,7 @@ When asked to rework a specific rule, before any changes are proposed:
 1. Read the relevant record in `.claude-decision-records/` — this is why the rule was written as it was. A rework that ignores prior deliberation may re-open closed decisions.
 2. Read `.claude-test/rules/<filename>/` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test directory exists, flag the gap and proceed with caution.
 
-Only after both are read: propose changes.
+Only after both are read: propose changes. After changes are approved and written, run Sync mode to update Confluence page 46661643.
 
 ## Review mode
 
