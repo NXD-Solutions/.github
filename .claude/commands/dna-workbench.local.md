@@ -2,7 +2,9 @@
 description: DNA workbench — author, maintain, and audit NXD identity strands and the rule network (NXD)
 ---
 
-Read `.claude/rules/dna.md`, `.claude/rules/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift, authoring a strand that may already have been decided, or accepting a challenge against an existing strand or principle. The concern may already have been deliberated and resolved.
+Read `.claude/rules/dna.md`, `.claude/rules/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
+
+**Hierarchy update trigger:** When any heading is added to a DNA rules file during any mode, add it to `.claude/hierarchy.md` in the same commit — mapped under the correct parent if conviction is high, unmapped if not. Never leave a new heading without a hierarchy entry. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift, authoring a strand that may already have been decided, or accepting a challenge against an existing strand or principle. The concern may already have been deliberated and resolved.
 
 Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna-workbench-memory.local.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
 
@@ -62,6 +64,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - Challenge audit findings before presenting them as errors. A finding that doesn't survive challenge was not an error — it was a misread. Reversed findings erode trust in the audit; only surface findings with conviction.
 - When a solution is proposed without a stated goal, surface the goal first. Without it, intent is invisible and the solution cannot be evaluated or challenged.
 - A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
+- Conviction on structure is not conviction on a specific file — confirm scope explicitly before touching files. Show the proposed change before writing it.
 
 ## Sync mode
 
