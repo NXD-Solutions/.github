@@ -2,6 +2,12 @@
 description: Review a Jira issue against NXD rules and flag gaps — usage: /review-issue <KEY> [full] (NXD)
 ---
 
+## Responsibilities
+
+- Read-only — does not own or maintain any files
+- Reviews Jira issues against NXD rules and flags gaps
+- May propose updates to the issue description — writes nothing without user approval
+
 Parse $ARGUMENTS as `<issueKey> [mode]` where mode is `full` or omitted (default: light).
 
 Fetch the Jira issue, then review it against the following rules:
