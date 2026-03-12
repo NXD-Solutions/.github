@@ -48,19 +48,19 @@
 
 - **[Lean by Design](rules/dna.md#lean-by-design)** — Strand
   - **[Trace the flow before building](rules/principles.md#trace-the-flow-before-building)** — Principle *(also: Uniform by Design)*
-
+---
 - **[Sovereign by Design](rules/dna.md#sovereign-by-design)** — Strand
   - **[No vendor lock-in](rules/principles.md#no-vendor-lock-in)** — Principle
   - **[Prefer reversible decisions](rules/principles.md#prefer-reversible-decisions)** — Principle
     - [Local testing](rules/claude-rules-system.md#local-testing) — Rule
-
+---
 - **[Uniform by Design](rules/dna.md#uniform-by-design)** — Strand
   - **[Domain ownership means building the shared component](rules/principles.md#domain-ownership-means-building-the-shared-component)** — Principle
     - [Where rules and commands live](rules/claude-rules-system.md#where-rules-and-commands-live) — Rule
     - [Workflow](rules/claude-rules-system.md#workflow) — Rule
     - [Deriving local copy](rules/claude-rules-system.md#deriving-local-copy-from-claude-static) — Rule
     - [Commands](rules/claude-rules-system.md#commands) — Rule
-
+---
 - **[Evolving by Instinct](rules/dna.md#evolving-by-instinct)** — Strand
   - **[Build once for many](rules/principles.md#build-once-for-many)** — Principle
     - [Proposing new rules](rules/claude-rules-system.md#proposing-new-rules) — Rule
