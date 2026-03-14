@@ -26,9 +26,13 @@ Full intake process for a new spec.
 3. **Confidence scan** — identify everything buildable with >95% confidence
    regardless of pending designer or architecture responses. List as tasks.
 
-4. **Create component folder** — if `component-path` is not given, derive it
-   from the spec content and confirm before creating. Use the structure:
-   `<product>/<package>/` within the target repo.
+4. **Create component folder** — if `component-path` is not given, identify
+   the component type from the spec (UI form, service, package, framework)
+   and derive the correct repo and path per `code-standards.md` (tier
+   placement) and `framework-standards.md` (framework package structure).
+   Confirm the derived path before creating anything.
+   If the target repo does not exist, state that and ask for confirmation
+   before creating it.
 
 5. **Write spec file** — commit as `spec-functional.md`, `spec-architecture.md`,
    or `spec-technical.md` at the component root. Remove any Status line —
