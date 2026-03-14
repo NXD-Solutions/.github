@@ -41,6 +41,21 @@ criteria to be considered complete, not for work to start.
 
 ---
 
+## State
+
+Every component folder contains a `README.md` that carries the current
+lifecycle state and a comment explaining why the component is in that state.
+The state is not stored in the spec file.
+
+| State | Meaning |
+|---|---|
+| `Pre-DoR` | Accepted as realistic; challenge in progress; DoR not yet passed |
+| `DoR passed` | Spec has passed Definition of Ready; implementation may proceed |
+| `Implemented` | Component delivered against this spec |
+| `Superseded` | Replaced by a later version |
+
+---
+
 ## Versioning
 
 Specs carry an explicit version header for readers outside
