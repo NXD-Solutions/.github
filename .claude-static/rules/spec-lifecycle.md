@@ -32,9 +32,9 @@ Delete the folder and nothing is orphaned.
 
 ## Challenge process
 
-On initial receipt of any spec: challenge against DNA, roles,
-and relevant technical standards. Challenges continue until
-the spec passes its first Definition of Ready (DoR).
+Run `/spec-workbench receive` to perform intake — challenge,
+confidence scan, folder creation, and task generation are
+handled by the skill.
 
 Work may begin before DoR. DoR is the gate for acceptance
 criteria to be considered complete, not for work to start.
