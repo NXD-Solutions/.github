@@ -14,6 +14,20 @@ Each spec is named by the expertise that owns it.
 
 ---
 
+## Source of truth — functional specs
+
+`spec-functional.md` is authored and maintained in Confluence.
+The git copy is the last explicitly synced version — what implementers are
+working against. The Confluence page ID is stored in `README.md`
+(`**Confluence:** <pageId>`).
+
+Run `/spec-workbench sync` to pull a new version and assess the impact of
+changes. The process this workbench implements is defined in Confluence page
+50987010 (Spec Delivery Process). Run `/spec-workbench adapt` to detect and
+propose alignment when the page and the skill drift.
+
+---
+
 ## Location
 
 Every spec lives at the root of its component folder.
