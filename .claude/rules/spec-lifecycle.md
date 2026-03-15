@@ -14,6 +14,20 @@ Each spec is named by the expertise that owns it.
 
 ---
 
+## Source of truth — functional specs
+
+`spec-functional.md` is authored and maintained in Confluence.
+The git copy is the last explicitly synced version — what implementers are
+working against. The Confluence page ID is stored in `README.md`
+(`**Confluence:** <pageId>`).
+
+Run `/spec-workbench sync` to pull a new version and assess the impact of
+changes. The process this workbench implements is defined in Confluence page
+50987010 (Spec Delivery Process). Run `/spec-workbench adapt` to detect and
+propose alignment when the page and the skill drift.
+
+---
+
 ## Location
 
 Every spec lives at the root of its component folder.
@@ -32,9 +46,9 @@ Delete the folder and nothing is orphaned.
 
 ## Challenge process
 
-On initial receipt of any spec: challenge against DNA, roles,
-and relevant technical standards. Challenges continue until
-the spec passes its first Definition of Ready (DoR).
+Run `/spec-workbench receive` to perform intake — challenge,
+confidence scan, folder creation, and task generation are
+handled by the skill.
 
 Work may begin before DoR. DoR is the gate for acceptance
 criteria to be considered complete, not for work to start.
