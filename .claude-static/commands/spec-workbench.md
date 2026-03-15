@@ -38,26 +38,43 @@ Intake process for a new functional spec from Confluence.
    with `contentFormat: "markdown"`. Present the title and a one-line summary
    before proceeding.
 
-2. **Question** — evaluate the spec against:
+2. **Ownership gate** — read the root `README.md`.
+   - If the page ID appears in the Confluence mappings table: state the
+     confirmed link ("Page ID `<id>` maps to `<path>` per root README") and
+     proceed.
+   - If not found: confirm the spec's subject matter is within the repo's
+     declared scope, state explicitly which part of the README establishes
+     ownership, derive and propose the component path (`<product>/<package>/`),
+     and stop — wait for agreement before proceeding. Once agreed, add the
+     mapping to the root README mappings table before continuing.
+   - If ownership cannot be established from the README alone: stop — either
+     the spec does not belong in this repo, or the README must be updated
+     first.
+
+3. **Question** — evaluate the spec against:
    - NXD DNA (`dna.md`) — does any part violate a DNA strand?
    - Roles (`roles.md`) — are ownership boundaries respected? Are any gaps
      attributed to the wrong role?
    - Technical standards — naming, structure, propagation, security baselines
+   - Formatting — Functionalities and Acceptance Criteria must use numbered
+     lists. Numbered items enable unambiguous reference during challenge and
+     implementation. If either uses bullet lists, stop: ask the spec writer to
+     update in Confluence and resubmit.
    Present gaps as a table: Gap | Owner (Designer / Architect / Technician) | Severity
    If any blocker-severity gaps exist, explain why the spec will not be received
    yet and stop. The spec writer must address these in Confluence and resubmit.
 
-3. **Confidence scan** — identify everything buildable with >95% confidence
+4. **Confidence scan** — identify everything buildable with >95% confidence
    regardless of pending designer or architecture responses. List as tasks.
 
-4. **Create component folder** — if `component-path` is not given, derive it
-   from the spec content and confirm before creating. Use the structure:
-   `<product>/<package>/` within the target repo.
+5. **Create component folder** — if the component path already exists, stop:
+   "Component already exists — use `sync` to update the spec." Otherwise,
+   create the folder using the agreed path.
 
-5. **Write spec file** — commit the fetched content as `spec-functional.md`
+6. **Write spec file** — commit the fetched content as `spec-functional.md`
    at the component root. Remove any Status line — state lives in README.md.
 
-6. **Write README.md** — at the component root with:
+7. **Write README.md** — at the component root with:
    - `**State: Pre-DoR**`
    - `**Confluence:** <confluencePageId>`
    - Gaps returning to Designer (bulleted)
@@ -65,7 +82,7 @@ Intake process for a new functional spec from Confluence.
    - Open ambiguities bounded for work to proceed (bulleted)
    - Footer: "Work may begin. DoR gates acceptance criteria — not delivery start."
 
-7. **Create tasks** — one Claude Code task per confidence-scan item.
+8. **Create tasks** — one Claude Code task per confidence-scan item.
 
 ---
 
@@ -74,7 +91,9 @@ Intake process for a new functional spec from Confluence.
 Sync a functional spec from Confluence and assess the impact of changes.
 
 1. **Read README.md** — extract the Confluence page ID from the `**Confluence:**`
-   line. If not present, stop: this component has no Confluence source.
+   line. If not present, check the root README mappings table. If found there,
+   proceed using that ID. If neither has it, stop: this component has no
+   Confluence source.
 
 2. **Fetch** — retrieve the current page using
    `mcp__claude_ai_Atlassian__getConfluencePage` with `contentFormat: "markdown"`.
@@ -83,25 +102,33 @@ Sync a functional spec from Confluence and assess the impact of changes.
    Present a summary of what changed: additions, removals, and modifications by
    section. If there are no changes, stop and report "Spec is already up to date."
 
-4. **Code impact assessment** — scan the component folder and any code that
+4. **Direction check** — determine which side is ahead:
+   - **Confluence ahead** — proceed to step 5 (standard path)
+   - **Git ahead** — present the git-only changes and confirm with the user
+     before pushing them to Confluence. Do not overwrite git. Once confirmed,
+     update Confluence and stop.
+   - **Both ahead** — present the conflict section by section and resolve with
+     the user before writing anywhere.
+
+5. **Code impact assessment** — scan the component folder and any code that
    implements this spec. For each spec change, identify:
    - Code that must change (contract broken or behaviour changed)
    - Code that may need revisiting (implementation assumption affected)
    - Code unaffected (change is additive or clarifying only)
 
-5. **Blocker check** — if any spec change is ambiguous enough that consequences
+6. **Blocker check** — if any spec change is ambiguous enough that consequences
    cannot be assessed, present the ambiguity and stop. Do not update git until
    resolved. Hard changes are not blockers — only unassessable ones are.
 
-6. **Plan** — group all identified work into two buckets:
+7. **Plan** — group all identified work into two buckets:
    - **Now** — clear scope, no unknowns
    - **Later** — complex, risky, or dependent on unresolved decisions
    Present as a table: Task | Bucket | Affected code | Notes
 
-7. **Create tasks** — one Claude Code task per **Now** item. Later items are
+8. **Create tasks** — one Claude Code task per **Now** item. Later items are
    listed in the plan but not tasked.
 
-8. **Update git** — overwrite `spec-functional.md` with the fetched content.
+9. **Update git** — overwrite `spec-functional.md` with the fetched content.
    Commit: `Sync spec-functional.md for <component> from Confluence`.
 
 ---
