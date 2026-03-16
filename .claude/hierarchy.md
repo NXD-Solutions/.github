@@ -42,6 +42,7 @@
   - **[Challenge until conviction](rules/principles.md#challenge-until-conviction)** — Principle
     - [Honesty and challenge](rules/ai-human-conventions.md#honesty-and-challenge) — Rule
     - [Conviction gate](rules/ai-human-conventions.md#conviction-gate) — Rule
+    - [Conviction at task transitions](rules/task-management.md#conviction-at-task-transitions) — Rule
 
 ---
 
