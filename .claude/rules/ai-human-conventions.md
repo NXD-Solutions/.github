@@ -34,6 +34,3 @@ Proposals and explanations should be as short as possible while remaining comple
 
 - **~** — approximate intent; the user is expressing an idea loosely, not dictating exact wording. Interpret and phrase it appropriately.
 
-## Repo references
-
-Always include the repo when referencing a PR, branch, or file — e.g. `PR #19 in Prototype`.
