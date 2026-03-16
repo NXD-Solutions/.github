@@ -11,6 +11,8 @@ Rules files loaded by Claude Code at every session start. Kept minimal for token
 | `testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
 | `claude-rules-system.md` | | |
 | `ai-human-conventions.md` | | |
+| `task-management.md` | | Confluence page needed |
+| `labels.md` | | Confluence page needed |
 | `confluence.md` | | |
 | `code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
 | `framework-standards.md` | | |

@@ -15,12 +15,12 @@
     - [Commit messages](rules/git-workflow.md#commit-messages) — Rule
     - [Workflow summary](rules/github-actions.md#workflow-summary--process-explanation) — Rule
     - **[Record decisions, not just outcomes](rules/principles.md#record-decisions-not-just-outcomes)** — Sub-principle
-      - [Task crash recovery](rules/ai-human-conventions.md#task-crash-recovery) — Rule
+      - [Task crash recovery](rules/task-management.md#task-crash-recovery) — Rule
       - [Testament](rules/testament.md) — Rule
       - Decision records format — Rule *(missing — to be added to `rules/claude-rules-system.md`)*
   - **[The task list is a contract](rules/principles.md#the-task-list-is-a-contract)** — Principle
-    - [Task list for all work](rules/ai-human-conventions.md#task-list-for-all-work) — Rule
-    - [Task references](rules/ai-human-conventions.md#task-references) — Rule
+    - [Task list for all work](rules/task-management.md#task-list-for-all-work) — Rule
+    - [Task references](rules/task-management.md#task-references) — Rule
   - **[Communicate consequences of change](rules/principles.md#communicate-consequences-of-change)** — Principle
     - [Blast radius](rules/claude-rules-system.md#blast-radius) — Rule
   - **[Names for all artefacts](rules/principles.md#names-for-all-artefacts)** — Principle
