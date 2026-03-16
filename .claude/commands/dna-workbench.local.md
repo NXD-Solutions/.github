@@ -16,6 +16,7 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - Writes `.claude-decision-records/` entries for any strand or principle change
 - Maintains `.claude/commands/dna-workbench-memory.local.md` — cross-session workbench state
 - Maintains Confluence page 46661643 — mirrors the hierarchy tree; update after any change to `hierarchy.md`
+- Maintains Confluence page 45121554 — DNA Extract for claude.ai projects; update the AI-Human Conventions section after any change to `ai-human-conventions.md`
 
 ## Services
 
@@ -69,7 +70,11 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 
 ## Sync mode
 
-Invoked as `/dna-workbench sync` or triggered automatically after any Author, Rework, or Fix operation that changes `hierarchy.md`.
+Invoked as `/dna-workbench sync` or triggered automatically after any Author, Rework, or Fix operation that changes `hierarchy.md` or `ai-human-conventions.md`.
+
+### Target 1 — Hierarchy tree (page 46661643)
+
+Triggered by: any change to `hierarchy.md`.
 
 1. Read `.claude/hierarchy.md`
 2. Fetch Confluence page 46661643 (markdown format) — apply Page Format principle from page 24313857
@@ -77,6 +82,16 @@ Invoked as `/dna-workbench sync` or triggered automatically after any Author, Re
 4. Expand all relative file links to absolute GitHub URLs using the filename as link text: `Title — Role ([filename.md](https://github.com/NXD-Solutions/.github/blob/main/.claude/rules/<file>.md#<anchor>))`. Titles stay as plain text. Entries without a link stay as plain text with no link.
 5. Preserve the AI-managed marker as the first line
 6. Write the updated page using `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
+
+### Target 2 — DNA Extract for claude.ai (page 45121554)
+
+Triggered by: any change to `ai-human-conventions.md`.
+
+1. Read `.claude/rules/ai-human-conventions.md`
+2. Fetch Confluence page 45121554 (markdown format) — apply Page Format principle from page 24313857
+3. Replace the `# AI-Human Conventions` section in the page body with the current content from `ai-human-conventions.md`. All other sections (DNA Strands, Principles, Binding Architectural Decisions) are preserved verbatim.
+4. Preserve the AI-managed marker as the first line
+5. Write the updated page using `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
 
 Can be run at any time — does not require a GitHub change to trigger.
 
