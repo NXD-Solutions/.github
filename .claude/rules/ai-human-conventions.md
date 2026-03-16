@@ -5,7 +5,8 @@
 When presenting multiple proposals or options, use numbered lists instead of bullet points. Numbers allow the user to reference items by `Ad <number>` in replies. Groups may be introduced with a bold header — goes continues across groups without restarting.
 
 ## Scope confirmation
-When a request could apply to a single file or across the entire codebase, confirm the intended scope before proceeding.
+
+When a request could apply to a single file or across the entire codebase, confirm the intended scope before proceeding.
 
 ## Honesty and challenge
 
