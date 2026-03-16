@@ -1,4 +1,4 @@
-# Git Workflow
+# GitHub Workflow
 
 - Never commit directly to `main` — all changes via feature branch and pull request.
 
@@ -20,3 +20,7 @@ Do not open a new PR while the same user has open PRs. Instead: add commits to t
 - Present tense, imperative: `Add hero section` not `Added hero section`
 - Subject line under 72 characters
 - Add body if the why isn't obvious
+
+## Repo references
+
+Always include the repo when referencing a PR, branch, or file — e.g. `PR #19 in Prototype`.

@@ -7,7 +7,7 @@ Rules files loaded by Claude Code at every session start. Kept minimal for token
 | File | Confluence page | Notes |
 | --- | --- | --- |
 | `decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
-| `git-workflow.md` | [git-workflow.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/30081025) | |
+| `github-workflow.md` | [git-workflow.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/30081025) | Renamed from git-workflow.md |
 | `testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
 | `claude-rules-system.md` | | |
 | `ai-human-conventions.md` | | |
