@@ -1,6 +1,6 @@
 # Records — code-standards.md
 
-Decision records for `.claude/rules/code-standards.md`. One entry per important change — anything that can answer "why did we write it as we did."
+Decision records for `.claude/rules/core/code-standards.md`. One entry per important change — anything that can answer "why did we write it as we did."
 
 ---
 

@@ -6,81 +6,82 @@
 
 # Culture
 
-- **[Transparent by Nature](rules/dna.md#transparent-by-nature)** — Strand
-  - **[Principles are processes](rules/principles.md#principles-are-processes)** — Principle
-  - **[Goal before solution](rules/principles.md#goal-before-solution)** — Principle
-    - [Scope confirmation](rules/ai-human-conventions.md#scope-confirmation) — Rule
-  - **[Build context that lasts](rules/principles.md#build-context-that-lasts)** — Principle
-    - [Commit messages](rules/github-workflow.md#commit-messages) — Rule
-    - [Workflow summary](rules/github-actions.md#workflow-summary--process-explanation) — Rule
-    - **[Record decisions, not just outcomes](rules/principles.md#record-decisions-not-just-outcomes)** — Sub-principle
-      - [Task crash recovery](rules/task-management.md#task-crash-recovery) — Rule
-      - [Testament](rules/testament.md) — Rule
-      - Decision records format — Rule *(missing — to be added to `rules/claude-rules-system.md`)*
-  - **[The task list is a contract](rules/principles.md#the-task-list-is-a-contract)** — Principle
-    - [Task list for all work](rules/task-management.md#task-list-for-all-work) — Rule
-    - [Task references](rules/task-management.md#task-references) — Rule
-    - [Task visibility in Claude Code](rules/task-management.md#task-visibility-in-claude-code) — Rule
-  - **[Communicate consequences of change](rules/principles.md#communicate-consequences-of-change)** — Principle
-    - [Blast radius](rules/claude-rules-system.md#blast-radius) — Rule
-  - **[Names for all artefacts](rules/principles.md#names-for-all-artefacts)** — Principle
-    - [Branch naming](rules/github-workflow.md#branch-naming) — Rule
-    - [Repo references](rules/github-workflow.md#repo-references) — Rule
-  - **[Write for the widest audience first](rules/principles.md#write-for-the-widest-audience-first)** — Principle
-    - [Proposals and options](rules/ai-human-conventions.md#proposals-and-options) — Rule
-  - **[Shared language](rules/principles.md#shared-language)** — Principle
-    - [Glossary](rules/glossary.md) — Rule
+- **[Transparent by Nature](rules/core/dna.md#transparent-by-nature)** — Strand
+  - **[Principles are processes](rules/core/principles.md#principles-are-processes)** — Principle
+  - **[Goal before solution](rules/core/principles.md#goal-before-solution)** — Principle
+    - [Scope confirmation](rules/core/ai-human-conventions.md#scope-confirmation) — Rule
+  - **[Build context that lasts](rules/core/principles.md#build-context-that-lasts)** — Principle
+    - [Commit messages](rules/github/github-workflow.md#commit-messages) — Rule
+    - [Workflow summary](rules/github/github-actions.md#workflow-summary--process-explanation) — Rule
+    - **[Record decisions, not just outcomes](rules/core/principles.md#record-decisions-not-just-outcomes)** — Sub-principle
+      - [Task crash recovery](rules/claude-code/task-management.md#task-crash-recovery) — Rule
+      - [Testament](rules/claude-code/testament.md) — Rule
+      - Decision records format — Rule *(missing — to be added to `rules/claude-code/claude-rules-system.md`)*
+  - **[The task list is a contract](rules/core/principles.md#the-task-list-is-a-contract)** — Principle
+    - [Task list for all work](rules/claude-code/task-management.md#task-list-for-all-work) — Rule
+    - [Task references](rules/claude-code/task-management.md#task-references) — Rule
+    - [Task visibility in Claude Code](rules/claude-code/task-management.md#task-visibility-in-claude-code) — Rule
+  - **[Communicate consequences of change](rules/core/principles.md#communicate-consequences-of-change)** — Principle
+    - [Blast radius](rules/claude-code/claude-rules-system.md#blast-radius) — Rule
+  - **[Names for all artefacts](rules/core/principles.md#names-for-all-artefacts)** — Principle
+    - [Branch naming](rules/github/github-workflow.md#branch-naming) — Rule
+    - [Repo references](rules/github/github-workflow.md#repo-references) — Rule
+  - **[Write for the widest audience first](rules/core/principles.md#write-for-the-widest-audience-first)** — Principle
+    - [Proposals and options](rules/core/ai-human-conventions.md#proposals-and-options) — Rule
+  - **[Shared language](rules/core/principles.md#shared-language)** — Principle
+    - [Glossary](rules/core/glossary.md) — Rule
 ---
-- **[Lean by Design](rules/dna.md#lean-by-design)** — Strand
-  - **[Shared scope, shared lifecycle](rules/principles.md#shared-scope-shared-lifecycle)** — Principle
-  - **[Prefer enforcement over documentation](rules/principles.md#prefer-enforcement-over-documentation)** — Principle
-    - [Triggers](rules/claude-rules-system.md#triggers) — Rule
-    - [One open PR at a time](rules/github-workflow.md#one-open-pr-at-a-time-per-user) — Rule
+- **[Lean by Design](rules/core/dna.md#lean-by-design)** — Strand
+  - **[Impact precedes action](rules/core/principles.md#impact-precedes-action)** — Principle
+  - **[Shared scope, shared lifecycle](rules/core/principles.md#shared-scope-shared-lifecycle)** — Principle
+  - **[Prefer enforcement over documentation](rules/core/principles.md#prefer-enforcement-over-documentation)** — Principle
+    - [Triggers](rules/claude-code/claude-rules-system.md#triggers) — Rule
+    - [One open PR at a time](rules/github/github-workflow.md#one-open-pr-at-a-time-per-user) — Rule
 ---
-- **[Resilient by Design](rules/dna.md#resilient-by-design)** — Strand
-  - **[Preserve the source that enables recreation](rules/principles.md#preserve-the-source-that-enables-recreation)** — Principle
-  - **[Design for durability](rules/principles.md#design-for-durability)** — Principle
-    - [Never commit to main](rules/github-workflow.md) — Rule
-    - [Autogenerated files](rules/claude-rules-system.md#autogenerated-files) — Rule
+- **[Resilient by Design](rules/core/dna.md#resilient-by-design)** — Strand
+  - **[Preserve the source that enables recreation](rules/core/principles.md#preserve-the-source-that-enables-recreation)** — Principle
+  - **[Design for durability](rules/core/principles.md#design-for-durability)** — Principle
+    - [Never commit to main](rules/github/github-workflow.md) — Rule
+    - [Autogenerated files](rules/claude-code/claude-rules-system.md#autogenerated-files) — Rule
 ---
-- **[Evolving by Instinct](rules/dna.md#evolving-by-instinct)** — Strand
-  - **[Challenge until conviction](rules/principles.md#challenge-until-conviction)** — Principle
-    - [Honesty and challenge](rules/ai-human-conventions.md#honesty-and-challenge) — Rule
-    - [Conviction gate](rules/ai-human-conventions.md#conviction-gate) — Rule
-    - [Conviction at task transitions](rules/task-management.md#conviction-at-task-transitions) — Rule
+- **[Evolving by Instinct](rules/core/dna.md#evolving-by-instinct)** — Strand
+  - **[Challenge until conviction](rules/core/principles.md#challenge-until-conviction)** — Principle
+    - [Honesty and challenge](rules/core/ai-human-conventions.md#honesty-and-challenge) — Rule
+    - [Conviction gate](rules/core/ai-human-conventions.md#conviction-gate) — Rule
+    - [Conviction at task transitions](rules/claude-code/task-management.md#conviction-at-task-transitions) — Rule
 
 ---
 
 # Architecture
 
-- **[Lean by Design](rules/dna.md#lean-by-design)** — Strand
-  - **[Trace the flow before building](rules/principles.md#trace-the-flow-before-building)** — Principle *(also: Uniform by Design)*
+- **[Lean by Design](rules/core/dna.md#lean-by-design)** — Strand
+  - **[Trace the flow before building](rules/core/principles.md#trace-the-flow-before-building)** — Principle *(also: Uniform by Design)*
 ---
-- **[Sovereign by Design](rules/dna.md#sovereign-by-design)** — Strand
-  - **[No vendor lock-in](rules/principles.md#no-vendor-lock-in)** — Principle
-  - **[Prefer reversible decisions](rules/principles.md#prefer-reversible-decisions)** — Principle
-    - [Local testing](rules/claude-rules-system.md#local-testing) — Rule
+- **[Sovereign by Design](rules/core/dna.md#sovereign-by-design)** — Strand
+  - **[No vendor lock-in](rules/core/principles.md#no-vendor-lock-in)** — Principle
+  - **[Prefer reversible decisions](rules/core/principles.md#prefer-reversible-decisions)** — Principle
+    - [Local testing](rules/claude-code/claude-rules-system.md#local-testing) — Rule
 ---
-- **[Uniform by Design](rules/dna.md#uniform-by-design)** — Strand
-  - **[Domain ownership means building the shared component](rules/principles.md#domain-ownership-means-building-the-shared-component)** — Principle
-    - [Where rules and commands live](rules/claude-rules-system.md#where-rules-and-commands-live) — Rule
-    - [Workflow](rules/claude-rules-system.md#workflow) — Rule
-    - [Deriving local copy](rules/claude-rules-system.md#deriving-local-copy-from-claude-static) — Rule
-    - [Commands](rules/claude-rules-system.md#commands) — Rule
+- **[Uniform by Design](rules/core/dna.md#uniform-by-design)** — Strand
+  - **[Domain ownership means building the shared component](rules/core/principles.md#domain-ownership-means-building-the-shared-component)** — Principle
+    - [Where rules and commands live](rules/claude-code/claude-rules-system.md#where-rules-and-commands-live) — Rule
+    - [Workflow](rules/claude-code/claude-rules-system.md#workflow) — Rule
+    - [Deriving local copy](rules/claude-code/claude-rules-system.md#deriving-local-copy-from-claude-static) — Rule
+    - [Commands](rules/claude-code/claude-rules-system.md#commands) — Rule
 ---
-- **[Evolving by Instinct](rules/dna.md#evolving-by-instinct)** — Strand
-  - **[Build once for many](rules/principles.md#build-once-for-many)** — Principle
-    - [Proposing new rules](rules/claude-rules-system.md#proposing-new-rules) — Rule
+- **[Evolving by Instinct](rules/core/dna.md#evolving-by-instinct)** — Strand
+  - **[Build once for many](rules/core/principles.md#build-once-for-many)** — Principle
+    - [Proposing new rules](rules/claude-code/claude-rules-system.md#proposing-new-rules) — Rule
 ---
-- **[Secure by Design](rules/dna.md#secure-by-design)** — Strand
-  - **[Security is baseline](rules/principles.md#security-is-baseline)** — Principle
+- **[Secure by Design](rules/core/dna.md#secure-by-design)** — Strand
+  - **[Security is baseline](rules/core/principles.md#security-is-baseline)** — Principle
 
 ---
 
 # Engineering
 
-- **[Resilient by Design](rules/dna.md#resilient-by-design)** — Strand
-  - **[Stateless by default](rules/principles.md#stateless-by-default)** — Principle
+- **[Resilient by Design](rules/core/dna.md#resilient-by-design)** — Strand
+  - **[Stateless by default](rules/core/principles.md#stateless-by-default)** — Principle
 
 ---
 
@@ -88,8 +89,8 @@
 
 Rules not yet assigned to a parent principle — workbench to resolve.
 
-- [Conciseness](rules/ai-human-conventions.md#conciseness)
-- [Shorthand](rules/ai-human-conventions.md#shorthand)
-- [Local-only files](rules/claude-rules-system.md#local-only-files)
-- [Autogenerated files note](rules/claude-rules-system.md#autogenerated-files)
-- [Labels](rules/labels.md#labels)
+- [Conciseness](rules/core/ai-human-conventions.md#conciseness)
+- [Shorthand](rules/core/ai-human-conventions.md#shorthand)
+- [Local-only files](rules/claude-code/claude-rules-system.md#local-only-files)
+- [Autogenerated files note](rules/claude-code/claude-rules-system.md#autogenerated-files)
+- [Labels](rules/claude-code/labels.md#labels)

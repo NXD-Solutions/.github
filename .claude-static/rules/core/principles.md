@@ -60,6 +60,12 @@ Define terms that carry specific meaning across the DNA, principles, and rules. 
 
 ## Lean by Design
 
+### Impact precedes action
+
+Before the first change is made, the full set of affected artefacts is known — structural mirrors, content references, and semantic dependents (tests, documentation, examples). All are part of the same unit of work.
+
+Incomplete scope discovered mid-execution is waste.
+
 ### Shared scope, shared lifecycle
 
 Artefacts that belong together live together. Delete the scope, nothing is orphaned, nothing is left behind.

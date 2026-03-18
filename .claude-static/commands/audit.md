@@ -6,7 +6,7 @@ description: Full codebase audit against code-standards.md (NXD)
 ## Responsibilities
 
 - Read-only — does not own or maintain any files
-- Reports violations against `.claude/rules/code-standards.md`
+- Reports violations against `.claude/rules/core/code-standards.md`
 - Proposes fixes only — writes nothing without user approval
 
 ## Context
@@ -19,7 +19,7 @@ Source files:
 
 ## Your task
 
-Audit the entire codebase against the rules in `.claude/rules/code-standards.md` (already loaded). For each check below, read the relevant files and report every violation found. If no violations, state that explicitly.
+Audit the entire codebase against the rules in `.claude/rules/core/code-standards.md` (already loaded). For each check below, read the relevant files and report every violation found. If no violations, state that explicitly.
 
 ### 1. Tier placement
 Verify every directory sits in the correct tier: `apps/` (FE only), `services/` (BE only), `packages/` (shared, framework-agnostic), `infra/` (root-level cluster infra only). Flag anything misplaced.
