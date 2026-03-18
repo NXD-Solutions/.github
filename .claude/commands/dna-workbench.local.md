@@ -12,6 +12,7 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 
 - Maintains `.claude/rules/dna.md` — DNA strands
 - Maintains `.claude/rules/principles.md` — principles and their strand tags
+- Maintains `.claude/rules/glossary.md` — defined terms; update when terms with specific meaning are introduced into the rule network
 - Maintains `.claude/hierarchy.md` — the strand → principle → rule tree (source of truth)
 - Writes `.claude-decision-records/` entries for any strand or principle change
 - Maintains `.claude/commands/dna-workbench-memory.local.md` — cross-session workbench state
@@ -24,6 +25,7 @@ A complete unit of work for the DNA Workbench includes all applicable items:
 
 - `dna.md` and/or `principles.md` changes
 - `hierarchy.md` update
+- `glossary.md` entry (when a new term with specific meaning is introduced)
 - `.claude-static/` derivation of all changed files
 - Decision record (when a principle or strand is added or changed)
 - Confluence sync — Target 1 (hierarchy page 46661643) and/or Target 2 (DNA Extract page 45121554)
@@ -52,7 +54,8 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 2. **Challenge** — is this truly identity, or a derived principle? Would it drive decisions across all domains?
 3. **Draft** — lead with what it is, sharpen with what it isn't
 4. **Convict** — both parties must have conviction before writing
-5. **Link** — tag derived principles in `principles.md` with the strand name
+5. **Glossary** — scan the full rule network for terms that carry specific meaning but are not defined anywhere — in `glossary.md` or within a rule. Propose definitions for any gap found.
+6. **Link** — tag derived principles in `principles.md` with the strand name
 6. **Test** — write a test file in `.claude-test/rules/<filename>/` asserting the observable behaviour the principle requires
 7. **Sync** — run Sync mode to update Confluence page 46661643
 
@@ -160,6 +163,8 @@ When asked to audit the rule network, test against these goals. A network that a
 7. **Human-consideration** — remove AI-irrelevant content. Before discarding, ask whether it earns a place in a decision record or Confluence.
 8. **Tested** — every rule in `.claude/rules/` has a corresponding test file in `.claude-test/rules/` (excluding `.gen.md` and `README.md`)
 9. **Linked** — decision records are bidirectionally linked; no record references another in a lateral relationship without being referenced back
+10. **Glossary-complete** — all terms carrying specific meaning across the rule network are defined in `glossary.md` or within the rule that depends on them
+11. **Glossary-consistent** — defined terms are used consistently; no rule uses a defined term in a way that contradicts its glossary definition
 
 **Checks:**
 1. **Drift** — trace each principle back to its strand. Flag disconnected or low-conviction ones.
@@ -170,6 +175,8 @@ When asked to audit the rule network, test against these goals. A network that a
 6. **AI relevance** — does each rule change AI behaviour? Flag any that don't.
 7. **Coverage** — for each `.md` file in `.claude/rules/` (excluding `.gen.md` and `README.md`), check whether `.claude-test/rules/<filename>/` directory exists. Flag missing test files as coverage gaps.
 8. **Link integrity** — for each record in `.claude-decision-records/`, verify every file named in **Related** with a lateral relationship type (implements, enables, complementary, extends) references the record back. Flag one-way lateral links and surface candidate links between records whose concerns overlap. Parent/child relationships are intentionally asymmetric — do not flag.
+9. **Glossary coverage** — scan rules for terms used as if defined but absent from `glossary.md` or the rule itself. Propose entries for any gap.
+10. **Glossary alignment** — scan rules for defined glossary terms. Flag inconsistent usage and places where the term should be used but isn't.
 
 Present findings to the user — do not revise without confirmation.
 

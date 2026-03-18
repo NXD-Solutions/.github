@@ -74,3 +74,21 @@ The state is not stored in the spec file.
 
 Specs carry an explicit version header for readers outside
 version control. Remove it when it no longer adds value.
+
+---
+
+## Work package (candidate)
+
+*To be validated after a full development cycle. See `.claude-test/rules/spec-lifecycle.md/` for the evaluation test.*
+
+**Acceptance** — artefacts required to accept a component:
+
+- Component folder created
+- `spec-functional.md` committed before any code
+- `README.md` with lifecycle state (`Pre-DoR`) and a comment explaining why
+
+**Implementation** — artefacts required to mark a component `Implemented`:
+
+- All implementation artefacts agreed at DoR
+- `README.md` state updated to `Implemented`
+- Specs updated if they changed during implementation

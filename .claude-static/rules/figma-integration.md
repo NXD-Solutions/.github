@@ -191,3 +191,15 @@ Checklist:
 - [ ] `apps/*/src/components/forms/<CanonicalName>.tsx` created (responsive) or split files if layouts share no logic
 - [ ] JSDoc block at top with `@figma-node` and `@be-contract`
 - [ ] CI check passes
+
+---
+
+## Work package (candidate)
+
+*To be validated after a full development cycle. See `.claude-test/rules/figma-integration.md/` for the evaluation test.*
+
+A complete form delivery includes all of the following:
+
+- `.figma/<CanonicalName>.figma.json` — Code Connect entry (one per form-factor node)
+- `apps/*/src/components/forms/<CanonicalName>.tsx` — form component with `@figma-node` and `@be-contract` JSDoc
+- CI check passing
