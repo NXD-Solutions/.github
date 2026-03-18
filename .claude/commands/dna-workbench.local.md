@@ -84,15 +84,20 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
 - Conviction on structure is not conviction on a specific file — confirm scope explicitly before touching files. Show the proposed change before writing it.
 - A counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a recognisable failure mode. The test isn't "does the mechanism have flaws" — it's "does the insight survive the flaws being fixed."
+- Before proposing any change, name all affected artefacts: structural mirrors, content references, and semantic dependents. Scope discovered mid-execution is a signal the impact check was skipped — stop, re-scope, then resume.
 
 ## Sync mode
 
-Invoked as `/dna-workbench sync` or triggered automatically after any Author, Rework, or Fix operation that changes `hierarchy.md` or `ai-human-conventions.md`.
+Invoked as `/dna-workbench sync` or triggered automatically after any Author, Rework, or Fix operation that changes a source file listed in either target's work package.
 
 ### Target 1 — Hierarchy tree (page 46661643)
 
-Triggered by: any change to `hierarchy.md`.
+**Work package for Hierarchy tree:**
+- `.claude/hierarchy.md` → full page body
 
+**Trigger:** any source file listed in the work package changes.
+
+**Steps:**
 1. Read `.claude/hierarchy.md`
 2. Fetch Confluence page 46661643 (markdown format) — apply Page Format principle from page 24313857
 3. Rewrite the page body to reflect the current hierarchy tree: strands, principles, sub-principles, and rules in the same structure as `hierarchy.md`. Include the unmapped rules section.
@@ -102,12 +107,19 @@ Triggered by: any change to `hierarchy.md`.
 
 ### Target 2 — DNA Extract for claude.ai (page 45121554)
 
-Triggered by: any change to `ai-human-conventions.md`.
+**Work package for DNA Extract:**
+- `core/dna.md` → `# DNA Strands`
+- `core/principles.md` → `# Principles`
+- `core/ai-human-conventions.md` → `# AI-Human Conventions`
+- `core/decision-log-extract.gen.md` → `# Binding Architectural Decisions`
 
-1. Read `.claude/rules/core/ai-human-conventions.md`
+**Trigger:** any source file listed in the work package changes.
+
+**Steps:**
+1. Read all source files from the work package
 2. Fetch Confluence page 45121554 (markdown format) — apply Page Format principle from page 24313857
-3. Replace the `# AI-Human Conventions` section in the page body with the current content from `ai-human-conventions.md`. All other sections (DNA Strands, Principles, Binding Architectural Decisions) are preserved verbatim.
-4. Preserve the AI-managed marker as the first line
+3. For each source file: replace the corresponding section body with the current source content
+4. Preserve the intro paragraph and AI-managed marker as the first line
 5. Write the updated page using `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
 
 Can be run at any time — does not require a GitHub change to trigger.
