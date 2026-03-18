@@ -56,6 +56,10 @@ Templates enforce this — every written artefact template must be structured wi
 
 ## Lean by Design
 
+### Shared scope, shared lifecycle
+
+Artefacts that belong together live together. Delete the scope, nothing is orphaned, nothing is left behind.
+
 ### Prefer enforcement over documentation
 
 A rule that can be silently violated is not a rule. If something matters, make it impossible
@@ -74,6 +78,10 @@ Enforcement has levels — prefer the strongest that is feasible:
 Always apply the highest feasible level. Challenge any proposal that doesn't.
 
 ## Resilient by Design
+
+### Preserve the source that enables recreation
+
+Every derived artefact must retain the source material it was produced from. If the source is lost, the derivation becomes a dead end — it can't be challenged, recreated, or improved when context changes.
 
 ### Design for durability
 
