@@ -56,4 +56,6 @@ mindmap
         Proposing new rules
     Secure by Design
       Security is baseline
+    Pattern-seeking by Instinct
+      Find the pattern not the instance
 ```

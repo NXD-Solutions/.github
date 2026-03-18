@@ -49,6 +49,9 @@
     - [Honesty and challenge](rules/core/ai-human-conventions.md#honesty-and-challenge) — Rule
     - [Conviction gate](rules/core/ai-human-conventions.md#conviction-gate) — Rule
     - [Conviction at task transitions](rules/claude-code/task-management.md#conviction-at-task-transitions) — Rule
+---
+- **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
+  - **[Find the pattern, not the instance](rules/core/principles.md#find-the-pattern-not-the-instance)** — Principle
 
 ---
 

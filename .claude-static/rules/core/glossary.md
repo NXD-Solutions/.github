@@ -34,3 +34,9 @@ An authoritative, decided direction for how a problem must be solved. Mandatory 
 ## Rule network
 
 The complete hierarchy of DNA strands, principles, and rules that govern NXD development. Maintained in `.claude/rules/` with `.claude/hierarchy.md` as its map.
+
+## Primitive
+
+The smallest meaningful unit at a given level of abstraction — the form that holds
+across instances. Finding the right primitive is the goal of pattern-seeking;
+compression is the signal it was found.
