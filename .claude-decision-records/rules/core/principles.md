@@ -1,6 +1,6 @@
 # Records — principles.md
 
-Decision records for `.claude/rules/principles.md`. One entry per important change — anything that can answer "why did we write it as we did."
+Decision records for `.claude/rules/core/principles.md`. One entry per important change — anything that can answer "why did we write it as we did."
 
 Trivial changes (spelling, single word additions) do not require a record.
 

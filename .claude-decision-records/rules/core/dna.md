@@ -1,6 +1,6 @@
 # Records — dna.md
 
-Decision records for `.claude/rules/dna.md`. One entry per important change — anything that can answer "why did we write it as we did."
+Decision records for `.claude/rules/core/dna.md`. One entry per important change — anything that can answer "why did we write it as we did."
 
 ---
 

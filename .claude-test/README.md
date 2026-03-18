@@ -32,33 +32,36 @@ The system prompt is implied by the directory location — not repeated in each 
 
 | Location | System prompt |
 |---|---|
-| `rules/<rule>.md/` | `dna.md` + `principles.md` + the rule under test |
-| `rules/principles.md/` | `dna.md` only |
+| `rules/<subfolder>/<rule>.md/` | `dna.md` + `principles.md` + the rule under test |
+| `rules/core/principles.md/` | `dna.md` only |
 | `commands/<command>.md/` | `dna.md` + `principles.md` |
 
 ## File structure
+
+Mirrors `.claude/rules/` subfolder structure.
 
 ```
 .claude-test/
   README.md
   rules/
-    ai-human-conventions.md/
-      conviction-gate-fires.md
-      conviction-gate-below-high.md
-      ...
-    principles.md/
-      task-list-before-starting.md
-      ...
-    git-workflow.md/
-      direct-commit-to-main.md
-      ...
+    core/
+      ai-human-conventions.md/
+        conviction-gate-fires.md
+        ...
+      principles.md/
+        task-list-before-starting.md
+        ...
+    github/
+      github-workflow.md/
+        direct-commit-to-main.md
+        ...
   commands/
     (test files added as commands are covered)
 ```
 
 ## Coverage
 
-A rule is covered when a directory exists for it under `rules/`. The directory name matches the rule filename exactly (including `.md`). For each `.md` in `.claude/rules/` (excluding `.gen.md` and `README.md`), a corresponding directory should exist here.
+A rule is covered when a directory exists for it under `rules/`, mirroring the rule's location in `.claude/rules/<subfolder>/`. The directory name matches the rule filename exactly (including `.md`). For each `.md` in `.claude/rules/` (excluding `.gen.md` and `README.md`), a corresponding directory should exist here.
 
 ## Running tests
 

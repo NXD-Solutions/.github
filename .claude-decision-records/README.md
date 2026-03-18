@@ -11,13 +11,16 @@ Not loaded into the AI system prompt. Consulted on demand: before flagging drift
 Mirrors `.claude/`:
 
 ```
-rules/          ← records for .claude/rules/
+rules/
+  claude-code/  ← records for .claude/rules/claude-code/
+  confluence/   ← records for .claude/rules/confluence/
+  figma/        ← records for .claude/rules/figma/
+  github/       ← records for .claude/rules/github/
+  core/         ← records for .claude/rules/core/
 commands/       ← records for .claude/commands/
 ```
 
-One file per rules or commands file. All records for a file live in one record file.
-
-**Scaling path:** if a file grows too large to navigate, add a subfolder per rules file, or split the rules file and mirror that.
+One file per rules or commands file. All records for a file live in one record file. Subfolder structure mirrors `.claude/rules/`.
 
 ---
 

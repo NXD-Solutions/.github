@@ -1,6 +1,6 @@
 # Records — framework-standards.md
 
-Decision records for `.claude/rules/framework-standards.md`. One entry per important change — anything that can answer "why did we write it as we did."
+Decision records for `.claude/rules/core/framework-standards.md`. One entry per important change — anything that can answer "why did we write it as we did."
 
 ---
 

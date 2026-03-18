@@ -79,7 +79,7 @@ version control. Remove it when it no longer adds value.
 
 ## Work package (candidate)
 
-*To be validated after a full development cycle. See `.claude-test/rules/spec-lifecycle.md/` for the evaluation test.*
+*To be validated after a full development cycle. See `.claude-test/rules/core/spec-lifecycle.md/` for the evaluation test.*
 
 **Acceptance** — artefacts required to accept a component:
 

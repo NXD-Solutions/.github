@@ -2,7 +2,7 @@
 description: DNA workbench — author, maintain, and audit NXD identity strands and the rule network (NXD)
 ---
 
-Read `.claude/rules/dna.md`, `.claude/rules/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
+Read `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
 
 **Hierarchy update trigger:** When any heading is added to a DNA rules file during any mode, add it to `.claude/hierarchy.md` in the same commit — mapped under the correct parent if conviction is high, unmapped if not. Never leave a new heading without a hierarchy entry. Records explaining why rules were written as they were live in `.claude-decision-records/` — consult them before flagging drift, authoring a strand that may already have been decided, or accepting a challenge against an existing strand or principle. The concern may already have been deliberated and resolved.
 
@@ -10,9 +10,9 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 
 ## Responsibilities
 
-- Maintains `.claude/rules/dna.md` — DNA strands
-- Maintains `.claude/rules/principles.md` — principles and their strand tags
-- Maintains `.claude/rules/glossary.md` — defined terms; update when terms with specific meaning are introduced into the rule network
+- Maintains `.claude/rules/core/dna.md` — DNA strands
+- Maintains `.claude/rules/core/principles.md` — principles and their strand tags
+- Maintains `.claude/rules/core/glossary.md` — defined terms; update when terms with specific meaning are introduced into the rule network
 - Maintains `.claude/hierarchy.md` — the strand → principle → rule tree (source of truth)
 - Writes `.claude-decision-records/` entries for any strand or principle change
 - Maintains `.claude/commands/dna-workbench-memory.local.md` — cross-session workbench state
@@ -56,7 +56,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 4. **Convict** — both parties must have conviction before writing
 5. **Glossary** — scan the full rule network for terms that carry specific meaning but are not defined anywhere — in `glossary.md` or within a rule. Propose definitions for any gap found.
 6. **Link** — tag derived principles in `principles.md` with the strand name
-6. **Test** — write a test file in `.claude-test/rules/<filename>/` asserting the observable behaviour the principle requires
+6. **Test** — write a test file in `.claude-test/rules/<subfolder>/<filename>/` asserting the observable behaviour the principle requires
 7. **Sync** — run Sync mode to update Confluence page 46661643
 
 ## Tests
@@ -104,7 +104,7 @@ Triggered by: any change to `hierarchy.md`.
 
 Triggered by: any change to `ai-human-conventions.md`.
 
-1. Read `.claude/rules/ai-human-conventions.md`
+1. Read `.claude/rules/core/ai-human-conventions.md`
 2. Fetch Confluence page 45121554 (markdown format) — apply Page Format principle from page 24313857
 3. Replace the `# AI-Human Conventions` section in the page body with the current content from `ai-human-conventions.md`. All other sections (DNA Strands, Principles, Binding Architectural Decisions) are preserved verbatim.
 4. Preserve the AI-managed marker as the first line
@@ -141,7 +141,7 @@ Invoked as `/dna-workbench fix PR-<number>`.
 When asked to rework a specific rule, before any changes are proposed:
 
 1. Read the relevant record in `.claude-decision-records/` — this is why the rule was written as it was. A rework that ignores prior deliberation may re-open closed decisions.
-2. Read `.claude-test/rules/<filename>/` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test directory exists, flag the gap and proceed with caution.
+2. Read `.claude-test/rules/<subfolder>/<filename>/` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test directory exists, flag the gap and proceed with caution.
 
 Only after both are read: propose changes. After changes are approved and written, run Sync mode to update Confluence page 46661643.
 
@@ -149,7 +149,7 @@ Only after both are read: propose changes. After changes are approved and writte
 
 If the audit will include token efficiency (goals 4 and 6), ask the user to run `/context` and share the output first. The token breakdown across rules and memory files shows which rules are consuming the most budget — a rule that costs tokens without changing AI behaviour is a candidate for removal or relocation.
 
-Before proposing any rule rewrite, confirm whether `.claude-test/rules/<filename>/` exists. If it does, it is the regression guard — the rewrite must not change the behaviours asserted there. If it does not, flag the missing coverage as part of the finding.
+Before proposing any rule rewrite, confirm whether `.claude-test/rules/<subfolder>/<filename>/` exists. If it does, it is the regression guard — the rewrite must not change the behaviours asserted there. If it does not, flag the missing coverage as part of the finding.
 
 When asked to audit the rule network, test against these goals. A network that achieves all goals passes; any failure is a finding.
 
@@ -161,7 +161,7 @@ When asked to audit the rule network, test against these goals. A network that a
 5. **Complete** — no known gap is unaddressed
 6. **AI-efficient** — every rule changes AI behaviour; rationale belongs elsewhere
 7. **Human-consideration** — remove AI-irrelevant content. Before discarding, ask whether it earns a place in a decision record or Confluence.
-8. **Tested** — every rule in `.claude/rules/` has a corresponding test file in `.claude-test/rules/` (excluding `.gen.md` and `README.md`)
+8. **Tested** — every rule in `.claude/rules/` has a corresponding test file in `.claude-test/rules/` (mirroring `.claude/rules/<subfolder>/`, excluding `.gen.md` and `README.md`)
 9. **Linked** — decision records are bidirectionally linked; no record references another in a lateral relationship without being referenced back
 10. **Glossary-complete** — all terms carrying specific meaning across the rule network are defined in `glossary.md` or within the rule that depends on them
 11. **Glossary-consistent** — defined terms are used consistently; no rule uses a defined term in a way that contradicts its glossary definition
@@ -173,7 +173,7 @@ When asked to audit the rule network, test against these goals. A network that a
 4. **Conflict** — do any two principles pull in opposite directions in the same scenario? Flag as contradictions.
 5. **Complexity** — could any principle be shorter, merged, or removed without loss?
 6. **AI relevance** — does each rule change AI behaviour? Flag any that don't.
-7. **Coverage** — for each `.md` file in `.claude/rules/` (excluding `.gen.md` and `README.md`), check whether `.claude-test/rules/<filename>/` directory exists. Flag missing test files as coverage gaps.
+7. **Coverage** — for each `.md` file in `.claude/rules/` (excluding `.gen.md` and `README.md`), check whether `.claude-test/rules/<subfolder>/<filename>/` directory exists. Flag missing test files as coverage gaps.
 8. **Link integrity** — for each record in `.claude-decision-records/`, verify every file named in **Related** with a lateral relationship type (implements, enables, complementary, extends) references the record back. Flag one-way lateral links and surface candidate links between records whose concerns overlap. Parent/child relationships are intentionally asymmetric — do not flag.
 9. **Glossary coverage** — scan rules for terms used as if defined but absent from `glossary.md` or the rule itself. Propose entries for any gap.
 10. **Glossary alignment** — scan rules for defined glossary terms. Flag inconsistent usage and places where the term should be used but isn't.

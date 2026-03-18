@@ -117,7 +117,9 @@ jobs:
         run: $GITHUB_WORKSPACE/node_modules/.bin/tsx $GITHUB_WORKSPACE/scripts/sync-decisions.ts --role ${{ matrix.role }}
 
       - name: Copy static Claude rules
-        run: cp $GITHUB_WORKSPACE/.claude-static/rules/* subscriber/.claude/rules/
+        run: |
+          mkdir -p subscriber/.claude/rules/
+          cp -r $GITHUB_WORKSPACE/.claude-static/rules/. subscriber/.claude/rules/
 
       - name: Copy static Claude commands
         run: |

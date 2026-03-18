@@ -4,17 +4,49 @@ Rules files loaded by Claude Code at every session start. Kept minimal for token
 
 **Every file here must have a corresponding Confluence page under [Claude Code — Rules Reference](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28442625). Any change to a rules file must include a review and update of the corresponding Confluence page in the same PR.**
 
+## claude-code/
+
+Rules for Claude Code tools and meta-behaviour.
+
 | File | Confluence page | Notes |
 | --- | --- | --- |
-| `decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
-| `github-workflow.md` | [git-workflow.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/30081025) | Renamed from git-workflow.md |
-| `testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
-| `claude-rules-system.md` | | |
-| `ai-human-conventions.md` | | |
-| `task-management.md` | | Confluence page needed |
-| `labels.md` | | Confluence page needed |
-| `confluence.md` | | |
-| `code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
-| `framework-standards.md` | | |
-| `promote-to-static-rules.md` | | |
-| `glossary.md` | | Confluence page needed |
+| `claude-code/claude-rules-system.md` | | |
+| `claude-code/labels.md` | | Confluence page needed |
+| `claude-code/promote-to-static-rules.md` | | |
+| `claude-code/task-management.md` | | Confluence page needed |
+| `claude-code/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
+
+## confluence/
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `confluence/confluence.md` | | |
+
+## figma/
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `figma/figma-integration.md` | | |
+
+## github/
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `github/github-actions.md` | | |
+| `github/github-workflow.md` | [git-workflow.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/30081025) | Renamed from git-workflow.md |
+
+## core/
+
+Identity, standards, and cross-cutting rules.
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `core/ai-human-conventions.md` | | |
+| `core/code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
+| `core/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
+| `core/dna.md` | | |
+| `core/framework-standards.md` | | |
+| `core/glossary.md` | | Confluence page needed |
+| `core/principles.md` | | |
+| `core/roles.md` | | |
+| `core/spec-lifecycle.md` | | |

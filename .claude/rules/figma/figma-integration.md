@@ -196,7 +196,7 @@ Checklist:
 
 ## Work package (candidate)
 
-*To be validated after a full development cycle. See `.claude-test/rules/figma-integration.md/` for the evaluation test.*
+*To be validated after a full development cycle. See `.claude-test/rules/figma/figma-integration.md/` for the evaluation test.*
 
 A complete form delivery includes all of the following:
 
