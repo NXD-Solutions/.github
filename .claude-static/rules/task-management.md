@@ -18,6 +18,12 @@ Whenever tasks are created or updated, write the open task list to `memory/tasks
 
 `tasks.md` is session state — it does not follow the stable-knowledge rules of `MEMORY.md`.
 
+## Task visibility in Claude Code
+
+Print the remaining task list after each task completion. Claude Code has no persistent task UI — visibility depends on text output.
+
+*Remove when Claude Code exposes a shared task view.*
+
 ## Conviction at task transitions
 
 Before marking a task in_progress or completed, evaluate conviction across intent, approach, data, and implementation. If any dimension is not high, surface it and resolve before proceeding.

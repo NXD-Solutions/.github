@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(gh pr:*)",
+      "mcp__atlassian__getConfluencePage"
+    ]
+  }
+}

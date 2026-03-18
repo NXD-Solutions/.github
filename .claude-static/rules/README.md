@@ -17,3 +17,4 @@ Rules files loaded by Claude Code at every session start. Kept minimal for token
 | `code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
 | `framework-standards.md` | | |
 | `promote-to-static-rules.md` | | |
+| `glossary.md` | | Confluence page needed |

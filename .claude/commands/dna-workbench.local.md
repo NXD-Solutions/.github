@@ -18,6 +18,20 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - Maintains Confluence page 46661643 — mirrors the hierarchy tree; update after any change to `hierarchy.md`
 - Maintains Confluence page 45121554 — DNA Extract for claude.ai projects; update the AI-Human Conventions section after any change to `ai-human-conventions.md`
 
+## Work package
+
+A complete unit of work for the DNA Workbench includes all applicable items:
+
+- `dna.md` and/or `principles.md` changes
+- `hierarchy.md` update
+- `.claude-static/` derivation of all changed files
+- Decision record (when a principle or strand is added or changed)
+- Confluence sync — Target 1 (hierarchy page 46661643) and/or Target 2 (DNA Extract page 45121554)
+- Mermaid diagram update (`dna-diagram-test.md`)
+- `rules/README.md` table update (when a new rules file is added)
+
+A PR that touches a workbench-managed file must deliver all applicable items from this list.
+
 ## Services
 
 This skill offers five modes — state which you want, or ask and Claude will clarify:

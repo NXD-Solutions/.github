@@ -23,6 +23,8 @@ mindmap
         Branch naming
       Write for the widest audience first
         Proposals and options
+      Shared language
+        Glossary
     Lean by Design
       Shared scope, shared lifecycle
       Prefer enforcement over documentation

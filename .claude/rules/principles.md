@@ -54,6 +54,10 @@ and still leave informed.
 
 Templates enforce this — every written artefact template must be structured widest-to-narrowest.
 
+### Shared language
+
+Define terms that carry specific meaning across the DNA, principles, and rules. A term defined once and used consistently removes ambiguity — a term left undefined is interpreted differently by every reader. Terms are maintained in `glossary.md`.
+
 ## Lean by Design
 
 ### Shared scope, shared lifecycle

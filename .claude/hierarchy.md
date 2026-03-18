@@ -1,4 +1,4 @@
-Task: # NXD DNA Hierarchy
+# NXD DNA Hierarchy
 
 *Source of truth for the domain → strand → principle → rule chain. Maintained by the DNA Workbench. Validated by CI on every PR.*
 
@@ -20,6 +20,7 @@ Task: # NXD DNA Hierarchy
   - **[The task list is a contract](rules/principles.md#the-task-list-is-a-contract)** — Principle
     - [Task list for all work](rules/task-management.md#task-list-for-all-work) — Rule
     - [Task references](rules/task-management.md#task-references) — Rule
+    - [Task visibility in Claude Code](rules/task-management.md#task-visibility-in-claude-code) — Rule
   - **[Communicate consequences of change](rules/principles.md#communicate-consequences-of-change)** — Principle
     - [Blast radius](rules/claude-rules-system.md#blast-radius) — Rule
   - **[Names for all artefacts](rules/principles.md#names-for-all-artefacts)** — Principle
@@ -27,6 +28,8 @@ Task: # NXD DNA Hierarchy
     - [Repo references](rules/github-workflow.md#repo-references) — Rule
   - **[Write for the widest audience first](rules/principles.md#write-for-the-widest-audience-first)** — Principle
     - [Proposals and options](rules/ai-human-conventions.md#proposals-and-options) — Rule
+  - **[Shared language](rules/principles.md#shared-language)** — Principle
+    - [Glossary](rules/glossary.md) — Rule
 ---
 - **[Lean by Design](rules/dna.md#lean-by-design)** — Strand
   - **[Shared scope, shared lifecycle](rules/principles.md#shared-scope-shared-lifecycle)** — Principle
