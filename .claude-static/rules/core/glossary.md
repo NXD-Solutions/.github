@@ -29,7 +29,7 @@ A written record of a significant decision: what triggered it, what was decided,
 
 ## Framework
 
-An authoritative, decided direction for how a problem must be solved. Mandatory where reasonably applicable. A framework can be challenged; if the challenge is approved, the framework is changed, replaced, or the exception becomes permanent.
+An authoritative, decided direction for how a problem must be solved. Mandatory where reasonably applicable.
 
 ## Rule network
 
@@ -50,5 +50,8 @@ the specifics are known, stable across all instances.
 ## Perspective
 
 A lens applied at a single abstraction level that defines the units of a
-system and what happens between them. The dataflow perspective defines nodes
-and the data moving between them. Invariants are identified within a perspective.
+system and what happens between them. An invariant in one perspective can be
+the parent for many invariants one level down — each perspective reveals its
+own set. Only invariants at the current level belong in the perspective —
+pulling from levels above or below pollutes the view. The dataflow perspective
+defines nodes and the data moving between them.
