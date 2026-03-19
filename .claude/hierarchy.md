@@ -58,7 +58,6 @@
 # Architecture
 
 - **[Lean by Design](rules/core/dna.md#lean-by-design)** — Strand
-  - **[Trace the flow before building](rules/core/principles.md#trace-the-flow-before-building)** — Principle *(also: Uniform by Design)*
 ---
 - **[Sovereign by Design](rules/core/dna.md#sovereign-by-design)** — Strand
   - **[No vendor lock-in](rules/core/principles.md#no-vendor-lock-in)** — Principle
@@ -78,6 +77,9 @@
 ---
 - **[Secure by Design](rules/core/dna.md#secure-by-design)** — Strand
   - **[Security is baseline](rules/core/principles.md#security-is-baseline)** — Principle
+---
+- **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
+  - **[Trace the flow to find the invariants](rules/core/principles.md#trace-the-flow-to-find-the-invariants)** — Principle
 
 ---
 

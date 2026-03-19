@@ -1,6 +1,6 @@
 # Pattern-seeking by Instinct
 
-**Date:** 2026-03-18
+**Date:** 2026-03-18, updated 2026-03-19
 
 **Status:** Accepted
 
@@ -68,4 +68,19 @@ the authoritative reference is correct.
 - Rename of "Build once for many" — rejected: that principle asks "will others face this?";
   Pattern-seeking asks "what is the general form?" — different questions
 
-**Related:** `dna.md`, `principles.md`, `glossary.md`, `hierarchy.md`
+**Update (2026-03-19):**
+
+The inquiry continued to test whether the strand was operationally usable for
+architecture. It was not — the Culture principle "Find the pattern, not the instance"
+doesn't give a practitioner enough to act architecturally. The Socratic Specification
+Collaborator instructions were used as a challenge, surfacing the dataflow discipline
+as the architectural operationalisation of the strand.
+
+This produced: a second principle (*Trace the flow to find the invariants*) under
+Architecture / Pattern-seeking by Instinct, replacing the misattributed "Trace the
+flow before building" from Lean. Two additional glossary entries: *Invariant* (a node
+whose behaviour holds under substitution) and *Perspective* (the lens that fixes the
+abstraction level). See `trace-the-flow-to-find-the-invariants.md` for the full record.
+
+**Related:** `dna.md`, `principles.md`, `glossary.md`, `hierarchy.md`,
+`trace-the-flow-to-find-the-invariants.md`

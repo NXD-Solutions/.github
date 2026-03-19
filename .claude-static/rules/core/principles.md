@@ -131,12 +131,6 @@ they are the primitives of their scope.
 
 ## Lean by Design
 
-### Trace the flow before building
-
-Before implementing, trace the expected data flow. The flow identifies the sub-components, establishes their boundaries, and — once validated by thought or test — becomes the processing strategy. Each step in the flow is a candidate for a replaceable component. Specifics fill the steps; the flow is the framework.
-
-Apply the same question recursively: once the strategy is visible, ask whether the strategy itself can be made replaceable. Each level of abstraction reached is another level of freedom gained.
-
 ## Sovereign by Design
 
 ### No vendor lock-in
@@ -164,6 +158,22 @@ operators own the log contract.
 ### Build once for many
 
 When you encounter a problem, ask whether others will face it too. The ideal is to see structural recurrence at first encounter — before others feel the same pain. When that foresight isn't there, experience is the teacher: pain felt is a signal to act so others don't feel it again.
+
+## Pattern-seeking by Instinct
+
+### Trace the flow to find the invariants
+
+Before designing a system, service, or function, trace how data flows
+through it. The nodes that remain stable regardless of what is substituted
+beneath them are the invariants — the primitives of that perspective.
+
+Decompose until each node can be independently specified. Stop when the
+current level is adaptable without further decomposition. The discipline
+applies at every level: between systems, between services, between functions.
+
+The boundary: where the problem has sufficient complexity or unknowns that
+building without invariants risks rework. Where the solution is self-evident,
+the discipline is overkill.
 
 ## Secure by Design
 

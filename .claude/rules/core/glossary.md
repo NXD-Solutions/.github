@@ -40,3 +40,15 @@ The complete hierarchy of DNA strands, principles, and rules that govern NXD dev
 The smallest meaningful unit at a given level of abstraction — the form that holds
 across instances. Finding the right primitive is the goal of pattern-seeking;
 compression is the signal it was found.
+
+## Invariant
+
+A node in a dataflow whose behaviour holds regardless of what is substituted
+beneath it. Invariants are the primitives of a perspective — found before
+the specifics are known, stable across all instances.
+
+## Perspective
+
+A lens applied at a single abstraction level that defines the units of a
+system and what happens between them. The dataflow perspective defines nodes
+and the data moving between them. Invariants are identified within a perspective.
