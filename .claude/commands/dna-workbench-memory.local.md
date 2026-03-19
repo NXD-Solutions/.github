@@ -4,6 +4,39 @@ Persistent state for the dna-workbench skill. Not loaded at startup — read and
 
 ---
 
+# Test Strategy
+
+Defined in `## Test Strategy` in `.claude/commands/dna-workbench.local.md`. Solo tests (S1–S4 for principles, Is it DNA? / Is it meta? for strands) and pair tests (P1–P3) enforced when any strand or principle is added or changed.
+
+---
+
+# DNA Test Log
+
+Findings from principle and strand tests. One entry per tested item. Untested principles are coverage gaps — prioritize during audits.
+
+## Design for durability
+
+- **Tested:** 2026-03-19
+- **Findings:** S3 boundary contamination — "prefer automated enforcement over human spot-checks" belongs to Prefer enforcement over documentation. P1/P2 false overlap with Prefer enforcement (wording, not intent).
+- **Resolution:** Removed enforcement language, replaced "six months" question with invariant form "what has to remain true for this to keep working?" — PR #159
+- **Open:** none
+
+## Find the pattern, not the instance
+
+- **Tested:** 2026-03-19
+- **Findings:** No findings from pair tests. Extension tested: broadened "implementing" to "choosing", added argumentation paragraph — tested against 21 principles, no findings.
+- **Resolution:** Principle extended — PR #160
+- **Open:** none
+
+## Build context that lasts
+
+- **Tested:** 2026-03-19
+- **Findings:** S3 boundary contamination — lists "decisions" as its territory (owned by Record decisions). P1/P2 with Record decisions: Record decisions is a subset of Build context with stricter requirements. Cross-contamination in wording both ways ("context that survives the session" appears in Record decisions).
+- **Resolution:** pending — revised wording not yet drafted
+- **Open:** separate territory cleanly between Build context (general: patterns, reasoning, rationale) and Record decisions (specific: trigger, decision, conviction)
+
+---
+
 # Anthropic Skills Registry
 
 Tracks skills from `anthropics/skills` — reviewed, adopted, deferred, or rejected.
