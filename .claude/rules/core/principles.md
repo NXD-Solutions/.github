@@ -29,9 +29,11 @@ Document why, not just what. Leave context that survives the session — decisio
 
 The boundary: document what is non-obvious or consequential. Obvious decisions and routine actions need no record — adding them creates noise that buries what matters.
 
-### Record decisions, not just outcomes
+### Record decisions to avoid repeating work
 
-A change without its reasoning is opaque. Important changes to the rule network must record what triggered them, what was decided and why, and with what conviction. A decision that cannot be explained has not been completed. A decision that is recorded is context that survives the session.
+A change without its reasoning is opaque. Important changes must record what triggered them, what was decided and why, and with what conviction. A decision that cannot be explained has not been completed.
+
+Before challenging or revising an artefact, check whether a decision record exists. Work that ignores a prior decision repeats it.
 
 ### The task list is a contract
 

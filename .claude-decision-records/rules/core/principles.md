@@ -90,9 +90,9 @@ The threshold was deliberately set to 1 (all work) rather than 3+ steps. A singl
 
 **Concern:** Multiple practices (decision records, waste archive) share the same underlying intent — building knowledge that outlasts the moment it was created — but no principle named that intent. The practices existed without a parent that explained why they exist.
 
-**Decision:** Principle added under *Transparent by Nature* as the parent of "Record decisions, not just outcomes" and the waste archive practice. Names the intent: document why, not just what. The boundary is explicit — only non-obvious or consequential decisions earn a record; routine actions create noise.
+**Decision:** Principle added under *Transparent by Nature* as the parent of "Record decisions to avoid repeating work" and the waste archive practice. Names the intent: document why, not just what. The boundary is explicit — only non-obvious or consequential decisions earn a record; routine actions create noise.
 
-**Related:** Transparent by Nature (parent), Record decisions, not just outcomes (child), .claude-waste/ archive (child practice)
+**Related:** Transparent by Nature (parent), Record decisions to avoid repeating work (child), .claude-waste/ archive (child practice)
 
 **Trigger:** A hiring session surfaced the trait "Transparent communicator — documents why, not just what. Leaves context that survives the session." The phrasing matched what we had built and named the discipline behind it.
 
@@ -127,7 +127,7 @@ The threshold was deliberately set to 1 (all work) rather than 3+ steps. A singl
 
 ---
 
-## Record decisions, not just outcomes
+## Record decisions to avoid repeating work
 
 **Date:** 2026-03-08
 
@@ -150,7 +150,7 @@ The threshold was deliberately set to 1 (all work) rather than 3+ steps. A singl
 - *Context preservation* — the record survives the session; a future human or AI can resume without starting over. The why, the alternatives rejected, and the conviction at the time are all recoverable
 - *Cognitive focus* — auditors and authors consult records before challenging existing decisions; this prevents relitigating settled questions
 
-**Tests:** Does this principle pass "Record decisions, not just outcomes" applied to itself? Yes — this record is the proof.
+**Tests:** Does this principle pass "Record decisions to avoid repeating work" applied to itself? Yes — this record is the proof.
 
 **Examples:** This record.
 
