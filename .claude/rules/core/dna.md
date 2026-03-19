@@ -45,3 +45,11 @@ We are evolving by instinct. We treat every solution as a starting point — wha
 We are secure by design. Security is not a feature — we do not leave the door open.
 
 ---
+
+## Pattern-seeking by Instinct
+
+We are pattern-seeking by instinct. Before the instance, we find the pattern —
+the primitive that makes a solution compressed, robust, and generic. A specific
+that doesn't survive change is a signal the pattern wasn't found.
+
+---
