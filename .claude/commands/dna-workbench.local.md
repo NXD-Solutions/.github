@@ -116,6 +116,8 @@ Tests are a suite. A passing pair test does not clear solo findings — boundary
 
 ### On failure
 
+Before proposing any revision, check `.claude-decision-records/` for the affected item. The wording may be deliberate — a finding that re-litigates a settled decision wastes the record's value.
+
 A failed test blocks the change. Resolution options:
 
 1. Revise the subject and rerun.
@@ -142,6 +144,7 @@ Option 3 does not remove the failure. It makes the conscious exception visible.
 - Conviction on structure is not conviction on a specific file — confirm scope explicitly before touching files. Show the proposed change before writing it.
 - A counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a recognisable failure mode. The test isn't "does the mechanism have flaws" — it's "does the insight survive the flaws being fixed."
 - Before proposing any change, name all affected artefacts: structural mirrors, content references, and semantic dependents. Scope discovered mid-execution is a signal the impact check was skipped — stop, re-scope, then resume.
+- A test finding that challenges existing wording must be checked against the decision record before proposing a revision. The wording may be deliberate — proposing to remove it without reading the record re-litigates a settled decision.
 
 ## Sync mode
 
