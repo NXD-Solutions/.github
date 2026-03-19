@@ -13,7 +13,7 @@
   - **[Build context that lasts](rules/core/principles.md#build-context-that-lasts)** — Principle
     - [Commit messages](rules/github/github-workflow.md#commit-messages) — Rule
     - [Workflow summary](rules/github/github-actions.md#workflow-summary--process-explanation) — Rule
-    - **[Record decisions, not just outcomes](rules/core/principles.md#record-decisions-not-just-outcomes)** — Sub-principle
+    - **[Record decisions to avoid repeating work](rules/core/principles.md#record-decisions-to-avoid-repeating-work)** — Sub-principle
       - [Task crash recovery](rules/claude-code/task-management.md#task-crash-recovery) — Rule
       - [Testament](rules/claude-code/testament.md) — Rule
       - Decision records format — Rule *(missing — to be added to `rules/claude-code/claude-rules-system.md`)*
