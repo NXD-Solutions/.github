@@ -1,10 +1,4 @@
-# Records — code-standards.md
-
-Decision records for `.claude/rules/core/code-standards.md`. One entry per important change — anything that can answer "why did we write it as we did."
-
----
-
-## Product subfolders in `packages/`
+# Product subfolders in `packages/`
 
 **Date:** 2026-03-09
 

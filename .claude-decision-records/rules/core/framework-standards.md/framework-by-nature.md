@@ -1,10 +1,4 @@
-# Records — framework-standards.md
-
-Decision records for `.claude/rules/core/framework-standards.md`. One entry per important change — anything that can answer "why did we write it as we did."
-
----
-
-## Framework by nature — expanded beyond security; monorepo-first
+# Framework by nature — expanded beyond security; monorepo-first
 
 **Date:** 2026-03-09
 **Authors:** Peter Sixhøj & claude-sonnet-4-6

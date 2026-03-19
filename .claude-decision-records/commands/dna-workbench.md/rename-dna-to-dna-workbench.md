@@ -1,10 +1,4 @@
-# Records — commands/dna-workbench.md
-
-Decision records for `.claude/commands/dna-workbench.md`. One entry per important change — anything that can answer "why did we write it as we did."
-
----
-
-## Rename /dna to /dna-workbench
+# Rename /dna to /dna-workbench
 
 **Date:** 2026-03-08
 
