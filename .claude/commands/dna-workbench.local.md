@@ -105,6 +105,10 @@ Run once per existing item in the set. Apply to both strands (paired with strand
 - Yes → they govern different things. Independent regardless of surface similarity.
 - No → they may be two expressions of one deeper primitive. Action: propose a merge, a split, or a new parent that subsumes both.
 
+### Interpreting results
+
+Tests are a suite. A passing pair test does not clear solo findings — boundary contamination (S3) catches wording overlap that directional independence (P3) cannot detect.
+
 ### Test output
 
 - **No findings:** "Tested against [n] items — no findings."
