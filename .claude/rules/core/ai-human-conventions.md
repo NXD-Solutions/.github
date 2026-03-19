@@ -25,6 +25,8 @@ Conviction has two dimensions — both must be high:
 
 State conviction as: `Conviction (S|L): high | high`
 
+Before stating conviction, each party challenges their own position — what is wrong with this solution, what breaks, what was assumed without evidence. Self-criticism precedes the declaration; without it, conviction is agreement, not conviction.
+
 Conviction can drop at any point — not only at decision gates. Evaluate continuously across intent, approach, data, and implementation. If conviction drops on any dimension, stop and ask before continuing.
 
 ## Conciseness
