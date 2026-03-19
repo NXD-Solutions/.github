@@ -8,13 +8,15 @@ Read `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.clau
 
 Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna-workbench-memory.local.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
 
+**Decision record lookup:** Records mirror the rules path — `.claude-decision-records/<rules-path>/<item-name>.md`. Example: the record for "Design for durability" lives at `.claude-decision-records/rules/core/principles.md/design-for-durability.md`. Direct file lookup, no scanning.
+
 ## Responsibilities
 
 - Maintains `.claude/rules/core/dna.md` — DNA strands
 - Maintains `.claude/rules/core/principles.md` — principles and their strand tags
 - Maintains `.claude/rules/core/glossary.md` — defined terms; update when terms with specific meaning are introduced into the rule network
 - Maintains `.claude/hierarchy.md` — the strand → principle → rule tree (source of truth)
-- Writes `.claude-decision-records/` entries for any strand or principle change
+- Writes `.claude-decision-records/<rules-path>/<item-name>.md` for any strand or principle change
 - Maintains `.claude/commands/dna-workbench-memory.local.md` — cross-session workbench state
 - Maintains Confluence page 46661643 — mirrors the hierarchy tree; update after any change to `hierarchy.md`
 - Maintains Confluence page 45121554 — DNA Extract for claude.ai projects; update the AI-Human Conventions section after any change to `ai-human-conventions.md`
@@ -28,6 +30,7 @@ A complete unit of work for the DNA Workbench includes all applicable items:
 - `glossary.md` entry (when a new term with specific meaning is introduced)
 - `.claude-static/` derivation of all changed files
 - Decision record (when a principle or strand is added or changed)
+- On rename: rename the test file (`.claude-test/`) and decision record (`.claude-decision-records/`) to match — both use the item name as filename
 - Confluence sync — Target 1 (hierarchy page 46661643) and/or Target 2 (DNA Extract page 45121554)
 - Mermaid diagram update (`dna-diagram-test.md`)
 - `rules/README.md` table update (when a new rules file is added)
@@ -116,7 +119,7 @@ Tests are a suite. A passing pair test does not clear solo findings — boundary
 
 ### On failure
 
-Before proposing any revision, check `.claude-decision-records/` for the affected item. The wording may be deliberate — a finding that re-litigates a settled decision wastes the record's value.
+Before proposing any revision, check the decision record for the affected item (see **Decision record lookup** above). The wording may be deliberate — a finding that re-litigates a settled decision wastes the record's value.
 
 A failed test blocks the change. Resolution options:
 
@@ -214,7 +217,7 @@ Invoked as `/dna-workbench fix PR-<number>`.
 
 When asked to rework a specific rule, before any changes are proposed:
 
-1. Read the relevant record in `.claude-decision-records/` — this is why the rule was written as it was. A rework that ignores prior deliberation may re-open closed decisions.
+1. Read the decision record for the item (see **Decision record lookup** above) — this is why the rule was written as it was. A rework that ignores prior deliberation may re-open closed decisions.
 2. Read `.claude-test/rules/<subfolder>/<filename>/` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test directory exists, flag the gap and proceed with caution.
 
 Only after both are read: propose changes. After changes are approved, written, and the PR is reviewed, run Sync mode to update Confluence page 46661643.
