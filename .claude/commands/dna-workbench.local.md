@@ -42,7 +42,7 @@ This skill offers five modes — state which you want, or ask and Claude will cl
 - **Audit** — review the existing rule network; trace each principle back to its DNA strand and flag drift
 - **Rework** — revise a specific existing rule; reads decision record and test file as constraints before any changes are proposed
 - **Fix** — repair a failing PR; resolves broken hierarchy references and commits the fix to the PR branch
-- **Sync** — update Confluence page 46661643 to reflect the current state of `hierarchy.md`; can be run at any time regardless of whether GitHub changes exist
+- **Sync** — update Confluence page 46661643 to reflect the current state of `hierarchy.md`; run after the PR has been reviewed, or at any time on explicit request
 
 ## Attitude
 
@@ -57,15 +57,68 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 5. **Glossary** — scan the full rule network for terms that carry specific meaning but are not defined anywhere — in `glossary.md` or within a rule. Propose definitions for any gap found.
 6. **Link** — tag derived principles in `principles.md` with the strand name
 6. **Test** — write a test file in `.claude-test/rules/<subfolder>/<filename>/` asserting the observable behaviour the principle requires
-7. **Sync** — run Sync mode to update Confluence page 46661643
+7. **PR** — create the PR; ask the user to review it
+8. **Sync** — after the PR is reviewed, run Sync mode to update Confluence page 46661643
 
-## Tests
+## Test Strategy
 
-**Is it DNA?** — Would it drive decisions across any domain, regardless of context? If it only applies within one domain, it's a principle.
+Enforced by the workbench when a strand or principle is added or changed. The changed item is the **subject**. All other existing items at the same level are the **set**.
 
-**Is it distinct?** — Name the core value it delivers. If two strands share the same core value, merge them. Overlap in application is acceptable; overlap in core value is not.
+### Strand solo tests
+
+Run once on the subject strand.
+
+**Is it DNA?** — Would it drive decisions across any domain, regardless of context? If it only applies within one domain, it's a principle, not a strand.
 
 **Is it meta?** — If it names a technology or implementation, replace with the human truth behind it.
+
+### Principle solo tests
+
+Run once on the subject principle.
+
+**S1: Strand derivation** — Does this principle derive from the strand it's tagged under? A principle that passes all other tests but is tagged under the wrong strand is still broken.
+
+**S2: Lone governance**
+- For a new principle: *What decision does this principle govern that no existing principle covers?*
+- For a changed principle: *Does the revised wording still govern the same territory? Has it gained or lost scope?*
+- Fail: the principle governs nothing that isn't already governed. It does not earn its place.
+
+**S3: Boundary contamination** — Does the principle contain language — verbs, mechanisms, concerns — that more precisely belong to another principle in the set?
+- Fail: the principle carries foreign content. Revise the wording to remove what belongs elsewhere before accepting.
+
+**S4: Stable under substitution** — Replace the specific examples, tools, and mechanisms in the principle with different ones. Does it still say something meaningful?
+- Fail: the principle depends on its specifics to have meaning. It may be a rule (belongs in binding decisions) rather than a principle.
+
+### Pair tests
+
+Run once per existing item in the set. Apply to both strands (paired with strands) and principles (paired with principles).
+
+**P1: Redundancy screen** — When both items apply to the same decision, does each contribute distinct guidance?
+- Pass: independent or additive. Move on.
+- Fail: one adds nothing in the presence of the other. Proceed to P2.
+
+**P2: Intent separation** — Reduce both items to their core intent — one sentence each, no mechanisms, no examples. Do the intents still overlap?
+- Yes → true overlap. One must go, or both must merge.
+- No → false overlap caused by imprecision. The fix is wording, not structure. Revise and rerun P1.
+
+**P3: Directional independence** — Can you satisfy the subject while violating the paired item?
+- Yes → they govern different things. Independent regardless of surface similarity.
+- No → they may be two expressions of one deeper primitive. Action: propose a merge, a split, or a new parent that subsumes both.
+
+### Test output
+
+- **No findings:** "Tested against [n] items — no findings."
+- **Findings:** only the failures — each with the paired item (if a pair test), the test that failed, and the diagnosis. Passes are not listed.
+
+### On failure
+
+A failed test blocks the change. Resolution options:
+
+1. Revise the subject and rerun.
+2. Revise the affected existing item and rerun.
+3. Override with recorded reasoning — what triggered the override, what was decided, and why. Requires bilateral conviction on the override itself.
+
+Option 3 does not remove the failure. It makes the conscious exception visible.
 
 ## Patterns learned
 
@@ -76,6 +129,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 - "by Nature" vs "by Design" is meaningful — intrinsic identity earns "by Nature"; qualities built in intentionally earn "by Design". Not all strands qualify for "by Nature".
 - When two strands feel close, name what each one *does to the system*: Lean removes what costs without return; Uniform builds consistency as a stable foundation. Same application, different core value — that difference justifies two strands.
 - Conviction has a time dimension — short and long term. A proposal can feel right now but wrong over time. Conviction holds only when both are settled.
+- When choosing between alternative wordings, the strongest argument is that the chosen form is the better primitive — the most general form that holds. Name the invariant, not the specific advantage. This is pattern-seeking applied to the argument itself.
 - When a principle could be misconstrued as license to over-engineer or gold-plate, make the boundary explicit — name what the principle stops as well as what it starts.
 - Before asking whether a decision record should be written, write the draft first and assess its value. Value cannot be assessed from a description of the record — only from reading it. The draft may need improvement before it earns its place; surface the draft, the value assessment, and any proposed improvements together before asking for approval.
 - Define what the network should achieve before defining how to test it. Goals are the specification; checks are the tests against it. A check that doesn't serve a goal is noise; a goal without a check is unverifiable.
@@ -88,7 +142,7 @@ DNA is identity, not rules. Every strand describes what NXD *is*, not what it do
 
 ## Sync mode
 
-Invoked as `/dna-workbench sync` or triggered automatically after any Author, Rework, or Fix operation that changes a source file listed in either target's work package.
+Invoked as `/dna-workbench sync` or triggered after any Author, Rework, or Fix operation once the PR has been reviewed. Can also be run at any time on explicit request.
 
 ### Target 1 — Hierarchy tree (page 46661643)
 
@@ -144,7 +198,7 @@ Invoked as `/dna-workbench fix PR-<number>`.
 5. If a node is missing entirely (new rule with no hierarchy entry): propose the correct parent and add the node — confirm with user before writing
 6. Present all proposed changes to the user
 7. On confirmation: commit the updated hierarchy to the PR branch and push
-8. After committing: run Sync mode to update Confluence page 46661643
+8. After the PR is reviewed: run Sync mode to update Confluence page 46661643
 
 **Confirmation is required before any commit.** Do not push without explicit user approval.
 
@@ -155,7 +209,7 @@ When asked to rework a specific rule, before any changes are proposed:
 1. Read the relevant record in `.claude-decision-records/` — this is why the rule was written as it was. A rework that ignores prior deliberation may re-open closed decisions.
 2. Read `.claude-test/rules/<subfolder>/<filename>/` — these are constraints, not suggestions. The rework must preserve every asserted behaviour. If no test directory exists, flag the gap and proceed with caution.
 
-Only after both are read: propose changes. After changes are approved and written, run Sync mode to update Confluence page 46661643.
+Only after both are read: propose changes. After changes are approved, written, and the PR is reviewed, run Sync mode to update Confluence page 46661643.
 
 ## Review mode
 

@@ -96,16 +96,14 @@ Every derived artefact must retain the source material it was produced from. If 
 ### Design for durability
 
 Build things that remain correct after they are finished, without requiring re-verification.
-Prefer automated enforcement over human spot-checks. A check that fails when something breaks
-is worth more than a rule that relies on people remembering it.
 
-Ask of every solution: *will this still be true in six months without anyone actively maintaining it?*
+Ask of every solution: *what has to remain true for this to keep working?*
 
 Applied to:
-- Code — tests, not just working code
-- Rules — CI gates, not just documentation
+- Code — tests that fail when correctness breaks
+- Rules — gates that block when violated
 - Integrations — stable identifiers (IDs, not names), not fragile references
-- Completion criteria — automated checks, not snapshot sign-offs
+- Completion criteria — verifiable conditions, not snapshot sign-offs
 
 ## Evolving by Instinct
 
