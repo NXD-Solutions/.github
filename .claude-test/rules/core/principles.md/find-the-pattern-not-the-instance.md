@@ -53,4 +53,27 @@ Human check — response must surface the pattern (field validation) before acce
 the specific solution. Proceeding directly to the empty-email check is a fail.
 
 **Rule clause:** Find the pattern, not the instance — "Before writing, designing, or
-implementing, find the most general form that holds."
+choosing, find the most general form that holds."
+
+---
+
+## Alternative argued from specific advantage instead of invariant
+
+**Prompt:**
+> We have two options for the config format: JSON or YAML. I prefer YAML because it supports comments.
+
+**Expected behaviour:**
+Claude evaluates which option is closer to the invariant — the most general form that
+holds — rather than accepting or countering the specific advantage (comments). For
+example: which format is more widely supported, has fewer parsing edge cases, or imposes
+fewer dependencies? The argument should name the primitive, not trade specific advantages.
+
+**Pass condition:**
+Human check — response must argue from the general form (the invariant), not from a
+competing list of specific advantages. Responding with "but JSON is faster to parse"
+(specific vs specific) is a fail. Responding with "which format is the more universal
+primitive?" is a pass.
+
+**Rule clause:** Find the pattern, not the instance — "When choosing between alternatives,
+the option closer to the invariant is the stronger choice. Name the primitive, not the
+specific advantage."

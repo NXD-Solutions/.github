@@ -115,10 +115,13 @@ We challenge before we commit — not after. The work of challenge ends at convi
 
 ### Find the pattern, not the instance
 
-Before writing, designing, or implementing, find the most general form that holds.
+Before writing, designing, or choosing, find the most general form that holds.
 A solution built from the right primitive is naturally compressed, robust, and generic.
 A specific that breaks when one detail changes — a count, a tool name, an assumption —
 is a signal the pattern wasn't found.
+
+When choosing between alternatives, the option closer to the invariant is the stronger
+choice. Name the primitive, not the specific advantage.
 
 Intentional specifics (page IDs, file paths, named owners) are not failures —
 they are the primitives of their scope.
