@@ -145,6 +145,7 @@ Option 3 does not remove the failure. It makes the conscious exception visible.
 - A counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a recognisable failure mode. The test isn't "does the mechanism have flaws" — it's "does the insight survive the flaws being fixed."
 - Before proposing any change, name all affected artefacts: structural mirrors, content references, and semantic dependents. Scope discovered mid-execution is a signal the impact check was skipped — stop, re-scope, then resume.
 - A test finding that challenges existing wording must be checked against the decision record before proposing a revision. The wording may be deliberate — proposing to remove it without reading the record re-litigates a settled decision.
+- When naming a discipline-type principle, use the template `<Action> <Item> for <Invariant Value>` — the name carries the why, not just the what. Example: "Record decisions to avoid repeating work." Does not apply to principles that name an instinct or a stance (e.g. "Challenge until conviction"). Apply when touching a discipline, not as a bulk rework.
 
 ## Sync mode
 
