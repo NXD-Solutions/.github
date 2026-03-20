@@ -149,6 +149,7 @@ Option 3 does not remove the failure. It makes the conscious exception visible.
 - Before proposing any change, name all affected artefacts: structural mirrors, content references, and semantic dependents. Scope discovered mid-execution is a signal the impact check was skipped — stop, re-scope, then resume.
 - A test finding that challenges existing wording must be checked against the decision record before proposing a revision. The wording may be deliberate — proposing to remove it without reading the record re-litigates a settled decision.
 - When naming a discipline-type principle, use the template `<Action> <Item> for <Invariant Value>` — the name carries the why, not just the what. Example: "Record decisions to avoid repeating work." Does not apply to principles that name an instinct or a stance (e.g. "Challenge until conviction"). Apply when touching a discipline, not as a bulk rework.
+- When asked "do we need a DR?", surface the evaluation — don't collapse it into an answer. The question is an invitation to reason together. State each criterion (non-obvious reasoning? future reversal risk?) and which applies before concluding.
 
 ## Sync mode
 
@@ -264,8 +265,13 @@ surface the proposed addition or update to **Patterns learned** before closing, 
 value it adds. Update existing entries in place where the insight refines rather than
 extends. Do not wait for the user to ask. Write only on approval.
 
-When a significant strand or principle decision is made in the session, check whether a
-decision record should be written or updated in `.claude-decision-records/`. Getting wiser
-about the same decision means updating the existing record — not adding a new one. Surface
-the proposed change with its rationale. Write only on approval. Apply the same trigger:
-anything that can answer "why did we write it as we did."
+When a significant strand or principle decision is made in the session, evaluate whether a
+decision record should be written or updated in `.claude-decision-records/`. The evaluation
+must be made visible — never collapsed into a conclusion. Surface:
+
+1. **Is the reasoning non-obvious from the change itself?** — Could a reader reconstruct why from the diff, the commit message, or the principle text alone?
+2. **Could a future reader reasonably reverse or repeat this without the record?** — Is there a real risk of re-litigating what was settled here?
+
+If yes to either: a DR is warranted. State which criterion applies and why.
+
+Getting wiser about the same decision means updating the existing record — not adding a new one. Write only on approval.
