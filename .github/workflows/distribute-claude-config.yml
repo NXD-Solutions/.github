@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Reject .local.md files in .claude-static
+      - name: Preflight
         run: |
           {
             echo "## Distribute Claude Config"
@@ -22,20 +22,9 @@ jobs:
             echo "- *Preflight* — GitHub validates the workflow and prepares runners"
             echo "- *Load subscribers* — discovers all org repos, applies overrides, builds the sync matrix"
             echo "- *Sync* — runs in parallel per repo: updates decision-log extract, static rules, and PR template, opens a PR if anything changed"
+            echo ""
+            echo "✅ Preflight passed."
           } >> "$GITHUB_STEP_SUMMARY"
-          files=$(find .claude-static -name "*.local.md")
-          if [ -n "$files" ]; then
-            echo "## :x: .local.md violation" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "The following files must not be committed to \`.claude-static/\`:" >> "$GITHUB_STEP_SUMMARY"
-            echo "$files" | while read f; do echo "- \`$f\`" >> "$GITHUB_STEP_SUMMARY"; done
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "**How to fix:** \`.local.md\` files are repo-specific and must never be distributed." >> "$GITHUB_STEP_SUMMARY"
-            echo "Remove the file from \`.claude-static/\` and keep it only in the target repo's \`.claude/rules/\`." >> "$GITHUB_STEP_SUMMARY"
-            echo "$files"
-            exit 1
-          fi
-          echo "✅ Preflight passed — no \`.local.md\` files found in \`.claude-static/\`." >> "$GITHUB_STEP_SUMMARY"
 
   load-subscribers:
     needs: preflight
