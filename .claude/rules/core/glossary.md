@@ -15,7 +15,7 @@ The direction of travel is from inherent toward declared as the system matures.
 
 ## Work package
 
-The declared list of artefacts that constitute a complete unit of work for a specific scope. A work package makes the unit of work explicit — what must travel together is named, not assumed.
+The declared list of artefacts a unit of work comprises — whether consumed or produced.
 
 ---
 
