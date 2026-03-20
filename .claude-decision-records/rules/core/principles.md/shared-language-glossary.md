@@ -25,3 +25,32 @@
 **Why scoped to the rule network:** Corporate-wide terms belong in a different artefact. The glossary serves the DNA, principles, and rules — terms defined here are the ones that appear in strands, principles, and rules where meaning isn't self-evident.
 
 **Related:** `principles.md`, `glossary.md`, `.claude/commands/dna-workbench.local.md`
+
+---
+
+## Revision — Active use (2026-03-20)
+
+**Status:** Accepted
+
+**Conviction (S|L):** high | high
+
+**What triggered it:** DNA test against the original principle. S4 (stable under substitution) surfaced that "define terms" is a practice — what doesn't change is the outcome: a shared vocabulary actively used. The wording described the act (define), not the invariant (shared, active use). A glossary that is defined but never referenced is decoration.
+
+**What was decided:**
+
+Principle reworded from passive definition to active use:
+
+- Old: "Define terms that carry specific meaning across the DNA, principles, and rules. A term defined once and used consistently removes ambiguity..."
+- New: "Build and actively use a shared glossary. Terms that carry specific meaning across the DNA, principles, and rules are defined once and used as working vocabulary — not reference material. A term left undefined is interpreted differently by every reader. A term defined but not actively used is decoration."
+
+**Why the wording changed:**
+
+"Define" describes the act. The invariant is that terms are shared and actively used — if you change the tool (drop the glossary file, embed terms inline), "define terms" breaks but "build and actively use a shared vocabulary" still holds. The revision names the invariant.
+
+"Working vocabulary — not reference material" names the failure mode the original wording permitted: a glossary that exists but sits unread is technically compliant with "define terms" but defeats the purpose.
+
+"A term defined but not actively used is decoration" provides a test — if a term can be removed from the glossary without anyone noticing, it has not been made shared vocabulary.
+
+**What did not change:**
+
+The glossary artefact itself, its scope (rule network), and the definitions within it are unchanged.
