@@ -1,4 +1,4 @@
-# Shared language and glossary
+pr# Shared language and glossary
 
 **Date:** 2026-03-18
 
@@ -10,7 +10,7 @@
 
 **What was decided:**
 
-1. **Shared language** principle added to `principles.md` under Culture → Transparent by Nature. Terms that carry specific meaning in the DNA, principles, and rules must be defined once and used consistently.
+1. **Shared language** principle added to `principles.md` under Culture → Transparent by Nature. Terms that carry specific meaning must be defined once and used consistently across all internal NXD work products.
 
 2. **`glossary.md`** created as the home for defined terms. Scoped to the rule network — not a corporate-wide glossary. Definitions only; rationale lives in decision records.
 
@@ -22,9 +22,28 @@
 
 **Why a glossary, not inline definitions:** The glossary compresses the rule network. If three rules explain the same concept differently, extracting the definition to the glossary removes the redundancy. One definition, many references.
 
-**Why scoped to the rule network:** Corporate-wide terms belong in a different artefact. The glossary serves the DNA, principles, and rules — terms defined here are the ones that appear in strands, principles, and rules where meaning isn't self-evident.
+**Why the obligation is bounded to internal work products:** The glossary obligation applies to all internal NXD work products — DNA, principles, rules, specifications, decision records, skills, and internal documentation. External-facing content (customer documentation, public-audience material) is excluded: the audience may not share NXD's vocabulary, and audience comprehension takes precedence over glossary consistency. Corporate-wide terms and external terms belong in a different artefact.
 
 **Related:** `principles.md`, `glossary.md`, `.claude/commands/dna-workbench.local.md`
+
+---
+
+## Revision — Scope boundary (2026-03-20)
+
+**Status:** Accepted
+
+**Conviction (S|L):** high | high
+
+**What triggered it:** Invariant analysis of the principle identified "across the DNA, principles, and rules" as an instance masquerading as the invariant. The phrase caused first-time readers to conclude the principle applies only to DNA maintenance. A follow-up challenge surfaced that the correct boundary is internal vs external — not rule network vs everything else.
+
+**What was decided:**
+
+- Scoping phrase "across the DNA, principles, and rules" removed from the principle text. The invariant is "terms that carry specific meaning" — where those terms appear is not the principle's job to enumerate.
+- Scope boundary corrected: the obligation applies to all internal NXD work products (DNA, principles, rules, specifications, decision records, skills, internal documentation). External-facing content is excluded — the audience may not share NXD vocabulary, and audience comprehension takes precedence.
+
+**Why the obligation does not extend to external-facing content:**
+
+Specifications, decision records, and skills are internal — their readers are NXD practitioners who share the vocabulary. Customer documentation and public-audience material are written for readers who may not know NXD's defined terms. Imposing the glossary obligation there would harm clarity rather than improve it.
 
 ---
 
@@ -53,4 +72,4 @@ Principle reworded from passive definition to active use:
 
 **What did not change:**
 
-The glossary artefact itself, its scope (rule network), and the definitions within it are unchanged.
+The glossary artefact itself and the definitions within it are unchanged. The scope of the obligation (then: rule network) was later revised — see revision below.

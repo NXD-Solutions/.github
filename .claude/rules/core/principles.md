@@ -58,7 +58,7 @@ Templates enforce this — every written artefact template must be structured wi
 
 ### Shared language
 
-Build and actively use a shared glossary. Terms that carry specific meaning across the DNA, principles, and rules are defined once and used as working vocabulary — not reference material. A term left undefined is interpreted differently by every reader. A term defined but not actively used is decoration.
+Build and actively use a shared glossary. Terms that carry specific meaning are defined once and used as working vocabulary — not reference material. A term left undefined is interpreted differently by every reader. A term defined but not actively used is decoration.
 
 ## Lean by Design
 
