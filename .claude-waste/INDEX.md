@@ -1,8 +1,6 @@
 # Open waste records
 
 - `pr-conflicts-from-stale-branch.md` — branch diverges from main while PRs in flight
-- `promotion-state-not-tracked.md` — unclear which .claude/ files promoted to .claude-static/
-- `decision-record-created-instead-of-updated.md` — new record written instead of updating existing
 - `commits-pushed-after-pr-merged.md` — commits land on branch after PR already merged
 
 - `conviction-gate-not-triggered.md` — significant decisions locked in without conviction check; "significant" undefined and discovery decisions not covered
