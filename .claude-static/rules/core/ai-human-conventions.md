@@ -37,7 +37,7 @@ See `roles.md` for the current role list.
 
 ## Route gaps to their owner
 
-Found a gap — surface it to the domain owner. Do not act on it. Owner is identified in `roles.md`. If no owner can be identified, the gap is unroutable — flag it as such.
+Found a gap — surface it to the domain owner. Do not act on it. If no owner can be identified, the gap is unroutable — flag it as such.
 
 ## Conciseness
 
