@@ -177,6 +177,7 @@ Invoked as `/dna-workbench sync` or triggered after any Author, Rework, or Fix o
 - `core/dna.md` → `# DNA Strands`
 - `core/principles.md` → `# Principles`
 - `core/glossary.md` → `# Glossary`
+- `core/roles.md` → `# Roles`
 - `core/ai-human-conventions.md` → `# AI-Human Conventions`
 - `core/decision-log-extract.gen.md` → `# Binding Architectural Decisions`
 
