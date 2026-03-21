@@ -47,6 +47,10 @@ A node in a dataflow whose behaviour holds regardless of what is substituted
 beneath it. Invariants are the primitives of a perspective — found before
 the specifics are known, stable across all instances.
 
+## Role
+
+A named lens applied to a unit of work; defines what must be seen and what falls outside scope. Not a job title.
+
 ## Perspective
 
 A lens applied at a single abstraction level that defines the units of a
