@@ -35,6 +35,10 @@ Before executing any task, declare the role(s) being applied. A single executor 
 
 See `roles.md` for the current role list.
 
+## Route gaps to their owner
+
+Found a gap — surface it to the domain owner. Do not act on it. Owner is identified in `roles.md`. If no owner can be identified, the gap is unroutable — flag it as such.
+
 ## Conciseness
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
