@@ -10,6 +10,7 @@
   - **[Principles are processes](rules/core/principles.md#principles-are-processes)** — Principle
   - **[Goal before solution](rules/core/principles.md#goal-before-solution)** — Principle
     - [Scope confirmation](rules/core/ai-human-conventions.md#scope-confirmation) — Rule
+    - [Role assignment](rules/core/ai-human-conventions.md#role-assignment) — Rule
   - **[Build context that lasts](rules/core/principles.md#build-context-that-lasts)** — Principle
     - [Commit messages](rules/github/github-workflow.md#commit-messages) — Rule
     - [Workflow summary](rules/github/github-actions.md#workflow-summary--process-explanation) — Rule
