@@ -180,7 +180,7 @@ the discipline is overkill.
 
 ### Architectural Thinking
 
-Evaluate whether a solution is fit for the full scope of a Worker's responsibilities — as they stand today and as they can reasonably be anticipated to grow.
+Evaluating whether a solution is fit for the full scope of a Worker's responsibilities: current and foreseeable.
 
 ## Secure by Design
 
