@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import sys, json, subprocess; data=json.load(sys.stdin); cmd=data.get('tool_input',{}).get('command',''); r=subprocess.run(['git','diff','HEAD@{1}','HEAD','--name-only','--','.claude/rules/','.claude/commands/'],capture_output=True,text=True) if 'git pull' in cmd else None; files=r.stdout.strip() if r else ''; print('{\\\"systemMessage\\\": \\\"⚠️ RULES CHANGED — restart session now. Changed files:\\\\n' + files.replace(chr(10), '\\\\n') + '\\\"}') if files else None\""
+          }
+        ]
+      }
+    ]
+  }
+}
