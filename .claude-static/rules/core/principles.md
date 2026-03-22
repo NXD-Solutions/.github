@@ -178,6 +178,10 @@ The boundary: where the problem has sufficient complexity or unknowns that
 building without invariants risks rework. Where the solution is self-evident,
 the discipline is overkill.
 
+### Architectural Thinking
+
+Evaluate whether a solution is fit for the full scope of a Worker's responsibilities — as they stand today and as they can reasonably be anticipated to grow.
+
 ## Secure by Design
 
 ### Security is baseline
