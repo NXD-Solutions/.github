@@ -51,6 +51,14 @@ the specifics are known, stable across all instances.
 
 A named lens applied to a unit of work; defines what must be seen and what falls outside scope. Not a job title.
 
+## Worker
+
+Any named unit — person, system, role, or process — that holds duties at a given abstraction level. A microservice, a team, a workbench, and a developer are all Workers; what distinguishes them is the abstraction level at which their duties are defined.
+
+## Change Request
+
+A named artefact proposing a change to an artefact. Contains a finding — what problem was encountered — and a proposed change. The input to a deliberation; distinct from a Decision Record, which is the output.
+
 ## Perspective
 
 A lens applied at a single abstraction level that defines the units of a

@@ -82,6 +82,7 @@
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[Trace the flow to find the invariants](rules/core/principles.md#trace-the-flow-to-find-the-invariants)** — Principle
+  - **[Architectural Thinking](rules/core/principles.md#architectural-thinking)** — Principle
 
 ---
 
