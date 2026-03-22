@@ -13,7 +13,7 @@ Maintains the DNA, its hierarchy, and their integrity. Manages content subscribe
 - **DNA content** — `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, `.claude/rules/core/glossary.md`
 - **Hierarchy** — `.claude/hierarchy.md` (strand → principle → rule tree, source of truth)
 - **Decision records** — `.claude-decision-records/<rules-path>/<item-name>.md` for any strand or principle change
-- **Cross-session state** — `.claude/commands/dna-workbench-memory.local.md`
+- **Cross-session state** — `.claude/commands/dna/memory.md`
 - **Content subscribers** — Confluence page 46661643 (hierarchy mirror), Confluence page 45121554 (DNA Extract for claude.ai)
 
 ## Services
@@ -62,7 +62,7 @@ Records mirror the rules path — `.claude-decision-records/<rules-path>/<item-n
 
 ## Cross-session state
 
-Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna-workbench-memory.local.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
+Persistent workbench state (Anthropic skills registry and other cross-session memory) lives in `.claude/commands/dna/memory.md` — read it when evaluating external skills or tools, and update it when a skill is reviewed or its status changes.
 
 ## Patterns learned
 
