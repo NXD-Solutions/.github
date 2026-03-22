@@ -14,3 +14,4 @@ type: project
 - Add Reorg mode to dna-workbench — invariant: workbench owns .claude*/; reorg task: test owned files for consistency, then sync Confluence
 - Extend validate-hierarchy.cjs to cover full .claude*/ broken-reference patterns, not just hierarchy links
 - Defer: does claude-rules-system.md belong in the workbench? All sections appear workbench-owned; risk is sessions touching .claude-static/ without invoking workbench
+- `.claude*/` folder Steward — owns structural integrity of all `.claude*` folders (READMEs, mirrors, orphaned files, command structure convention). Delegates content to domain Stewards (DNA workbench, spec workbench, etc.). Absorbs `claude-rules-system.md` ownership. Triggered by: file moves, renames, new commands, distribution syncs.

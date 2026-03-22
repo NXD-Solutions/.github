@@ -21,7 +21,7 @@ Maintains the DNA, its hierarchy, and their integrity. Manages content subscribe
 This skill offers five modes — state which you want, or ask and Claude will clarify:
 
 - **Author** — identify, challenge, draft, and lock in a new DNA strand or derived principle
-- **Audit** — review the existing rule network; trace each principle back to its DNA strand and flag drift
+- **Audit** — delegate to the auditor: read `.claude/commands/dna/auditor.md` and execute its audit
 - **Rework** — revise a specific existing rule; reads decision record and test file as constraints before any changes are proposed
 - **Fix** — repair a failing PR; resolves broken hierarchy references and commits the fix to the PR branch
 - **Sync** — update Confluence pages to reflect the current state of managed content; run after the PR has been reviewed, or at any time on explicit request
@@ -80,6 +80,9 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When naming a discipline-type principle, use the template `<Action> <Item> for <Invariant Value>` — the name carries the why, not just the what. Example: "Record decisions to avoid repeating work." Does not apply to principles that name an instinct or a stance (e.g. "Challenge until conviction"). Apply when touching a discipline, not as a bulk rework.
 - When asked "do we need a DR?", surface the evaluation — don't collapse it into an answer. The question is an invitation to reason together. State each criterion (non-obvious reasoning? future reversal risk?) and which applies before concluding.
 - When proposing or evaluating a definition, search recursively for the parent invariant — the reason the current invariant holds. Name the highest invariant that still belongs at the current abstraction level. Stop when the next level up either restates the term itself or falls below the abstraction floor of the scope. A definition that names a child invariant forces the reader to reconstruct the parent; naming the parent makes the child derivable.
+- Delegation pattern: a command can read another command's `.md` file to invoke its services. Validated with workbench → auditor. Enables Steward decomposition without command-to-command invocation support.
+- Patterns learned is a staging area, not permanent storage. An insight absorbed into native instructions should be removed. A pattern reinforcing a principle that failed in practice stays until a review gate proves it redundant.
+- When writing duty statements, name the invariant, not the instance. "Manages content subscribers" not "maintains two Confluence pages." The invariant survives when instances change.
 
 ## Self-improvement
 
@@ -204,7 +207,7 @@ Only after both are read: propose changes. After changes are approved, written, 
 
 ## Fix mode
 
-Invoked as `/dna-workbench fix PR-<number>`.
+Invoked as `/dna:workbench fix PR-<number>`.
 
 1. Fetch the PR to understand what changed
 2. Read `.claude/hierarchy.md`
@@ -216,41 +219,6 @@ Invoked as `/dna-workbench fix PR-<number>`.
 8. After the PR is reviewed: run Sync mode to update Confluence pages
 
 **Confirmation is required before any commit.** Do not push without explicit user approval.
-
-## Review mode
-
-If the audit will include token efficiency (goals 4 and 6), ask the user to run `/context` and share the output first. The token breakdown across rules and memory files shows which rules are consuming the most budget — a rule that costs tokens without changing AI behaviour is a candidate for removal or relocation.
-
-Before proposing any rule rewrite, confirm whether `.claude-test/rules/<subfolder>/<filename>/` exists. If it does, it is the regression guard — the rewrite must not change the behaviours asserted there. If it does not, flag the missing coverage as part of the finding.
-
-When asked to audit the rule network, test against these goals. A network that achieves all goals passes; any failure is a finding.
-
-**Goals:**
-1. **Traceable** — every principle derives from its strand(s)
-2. **Non-redundant** — no two principles govern the same ground
-3. **Non-contradictory** — no two principles pull in opposite directions in the same scenario
-4. **Minimal** — no principle contains more than it needs to
-5. **Complete** — no known gap is unaddressed
-6. **AI-efficient** — every rule changes AI behaviour; rationale belongs elsewhere
-7. **Human-consideration** — remove AI-irrelevant content. Before discarding, ask whether it earns a place in a decision record or Confluence.
-8. **Tested** — every rule in `.claude/rules/` has a corresponding test file in `.claude-test/rules/` (mirroring `.claude/rules/<subfolder>/`, excluding `.gen.md` and `README.md`)
-9. **Linked** — decision records are bidirectionally linked; no record references another in a lateral relationship without being referenced back
-10. **Glossary-complete** — all terms carrying specific meaning across the rule network are defined in `glossary.md` or within the rule that depends on them
-11. **Glossary-consistent** — defined terms are used consistently; no rule uses a defined term in a way that contradicts its glossary definition
-
-**Checks:**
-1. **Drift** — trace each principle back to its strand. Flag disconnected or low-conviction ones.
-2. **Strand redundancy** — do any two strands share the same core value? Flag as merge candidates.
-3. **Principle overlap** — do any two principles govern the same ground, regardless of strand? Flag as merge or cut candidates.
-4. **Conflict** — do any two principles pull in opposite directions in the same scenario? Flag as contradictions.
-5. **Complexity** — could any principle be shorter, merged, or removed without loss?
-6. **AI relevance** — does each rule change AI behaviour? Flag any that don't.
-7. **Coverage** — for each `.md` file in `.claude/rules/` (excluding `.gen.md` and `README.md`), check whether `.claude-test/rules/<subfolder>/<filename>/` directory exists. Flag missing test files as coverage gaps.
-8. **Link integrity** — for each record in `.claude-decision-records/`, verify every file named in **Related** with a lateral relationship type (implements, enables, complementary, extends) references the record back. Flag one-way lateral links and surface candidate links between records whose concerns overlap. Parent/child relationships are intentionally asymmetric — do not flag.
-9. **Glossary coverage** — scan rules for terms used as if defined but absent from `glossary.md` or the rule itself. Propose entries for any gap.
-10. **Glossary alignment** — scan rules for defined glossary terms. Flag inconsistent usage and places where the term should be used but isn't.
-
-Present findings to the user — do not revise without confirmation.
 
 ---
 
