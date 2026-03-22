@@ -37,16 +37,23 @@ Rules for Claude Code tools and meta-behaviour.
 
 ## core/
 
-Identity, standards, and cross-cutting rules.
+Identity and cross-cutting rules — universal, applies to everyone.
 
 | File | Confluence page | Notes |
 | --- | --- | --- |
 | `core/ai-human-conventions.md` | | |
-| `core/code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
 | `core/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
 | `core/dna.md` | | |
-| `core/framework-standards.md` | | |
 | `core/glossary.md` | | Confluence page needed |
 | `core/principles.md` | | |
 | `core/roles.md` | | |
 | `core/spec-lifecycle.md` | | |
+
+## dev/
+
+Developer-scoped rules — applies to engineers working on code.
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `dev/code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
+| `dev/framework-standards.md` | | |

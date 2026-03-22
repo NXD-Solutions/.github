@@ -18,9 +18,9 @@ Fetch the Jira issue, then review it against the following rules:
 - `.claude/rules/claude-code/testament.local.md` — recurring problems and known workarounds (if file exists)
 
 **Full** — all of the above plus:
-- `.claude/rules/core/code-standards.md`
+- `.claude/rules/dev/code-standards.md`
 - `.claude/rules/figma/figma-integration.md` (only if the issue concerns Figma or UI)
-- `.claude/rules/core/framework-standards.md`
+- `.claude/rules/dev/framework-standards.md`
 - `.claude/rules/github/github-workflow.md`
 
 For each source, determine whether the issue:
