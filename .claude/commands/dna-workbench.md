@@ -66,9 +66,6 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 
 ## Patterns learned
 
-- Lead with identity ("what it is") before contrast ("what it isn't")
-- Replace implementation detail with the human truth behind it. "Authentication, authorisation, encryption" becomes "we do not leave the door open." The metaphor carries the intent; the technology is a derived principle.
-- "Across domains" is the test: real DNA drives decisions in Architecture, Engineering, and Culture alike
 - Token cost matters: rationale belongs in Confluence, not in rules files
 - "by Nature" vs "by Design" is meaningful — intrinsic identity earns "by Nature"; qualities built in intentionally earn "by Design". Not all strands qualify for "by Nature".
 - When two strands feel close, name what each one *does to the system*: Lean removes what costs without return; Uniform builds consistency as a stable foundation. Same application, different core value — that difference justifies two strands.
@@ -76,13 +73,10 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When a principle could be misconstrued as license to over-engineer or gold-plate, make the boundary explicit — name what the principle stops as well as what it starts.
 - Before asking whether a decision record should be written, write the draft first and assess its value. Value cannot be assessed from a description of the record — only from reading it. The draft may need improvement before it earns its place; surface the draft, the value assessment, and any proposed improvements together before asking for approval.
 - Define what the network should achieve before defining how to test it. Goals are the specification; checks are the tests against it. A check that doesn't serve a goal is noise; a goal without a check is unverifiable.
-- Challenge audit findings before presenting them as errors. A finding that doesn't survive challenge was not an error — it was a misread. Reversed findings erode trust in the audit; only surface findings with conviction.
 - When a solution is proposed without a stated goal, surface the goal first. Without it, intent is invisible and the solution cannot be evaluated or challenged.
 - A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
 - Conviction on structure is not conviction on a specific file — confirm scope explicitly before touching files. Show the proposed change before writing it.
 - A counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a recognisable failure mode. The test isn't "does the mechanism have flaws" — it's "does the insight survive the flaws being fixed."
-- Before proposing any change, name all affected artefacts: structural mirrors, content references, and semantic dependents. Scope discovered mid-execution is a signal the impact check was skipped — stop, re-scope, then resume.
-- A test finding that challenges existing wording must be checked against the decision record before proposing a revision. The wording may be deliberate — proposing to remove it without reading the record re-litigates a settled decision.
 - When naming a discipline-type principle, use the template `<Action> <Item> for <Invariant Value>` — the name carries the why, not just the what. Example: "Record decisions to avoid repeating work." Does not apply to principles that name an instinct or a stance (e.g. "Challenge until conviction"). Apply when touching a discipline, not as a bulk rework.
 - When asked "do we need a DR?", surface the evaluation — don't collapse it into an answer. The question is an invitation to reason together. State each criterion (non-obvious reasoning? future reversal risk?) and which applies before concluding.
 - When proposing or evaluating a definition, search recursively for the parent invariant — the reason the current invariant holds. Name the highest invariant that still belongs at the current abstraction level. Stop when the next level up either restates the term itself or falls below the abstraction floor of the scope. A definition that names a child invariant forces the reader to reconstruct the parent; naming the parent makes the child derivable.
@@ -118,8 +112,12 @@ Getting wiser about the same decision means updating the existing record — not
 5. **Glossary** — scan the full rule network for terms that carry specific meaning but are not defined anywhere — in `glossary.md` or within a rule. Propose definitions for any gap found.
 6. **Link** — tag derived principles in `principles.md` with the strand name
 7. **Test** — write a test file in `.claude-test/rules/<subfolder>/<filename>/` asserting the observable behaviour the principle requires
-8. **PR** — create the PR; ask the user to review it
-9. **Sync** — after the PR is reviewed, run Sync mode to update Confluence pages
+8. **Review gate** — before creating the PR, verify:
+   - Goal before solution — was the goal named before the first proposal?
+   - Impact precedes action — were all affected artefacts identified before changes began?
+   - Conviction stated — was conviction declared before locking in?
+9. **PR** — create the PR; ask the user to review it
+10. **Sync** — after the PR is reviewed, run Sync mode to update Confluence pages
 
 ## Test Strategy
 
