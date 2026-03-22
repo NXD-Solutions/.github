@@ -51,9 +51,9 @@ the specifics are known, stable across all instances.
 
 A named lens applied to a unit of work; defines what must be seen and what falls outside scope. Not a job title.
 
-## Worker
+## Steward
 
-Any named unit — person, system, role, or process — that holds duties at a given abstraction level. A microservice, a team, a workbench, and a developer are all Workers; what distinguishes them is the abstraction level at which their duties are defined.
+Any named unit — person, system, role, or process — that holds duties at a given abstraction level. A microservice, a team, a workbench, and a developer are all Stewards; what distinguishes them is the abstraction level at which their duties are defined.
 
 ## Change Request
 

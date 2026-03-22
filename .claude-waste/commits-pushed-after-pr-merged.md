@@ -12,6 +12,10 @@ Work continues on a branch after its PR has been merged and the branch deleted. 
 
 Root cause: no signal from the user that the PR has merged before the next commit is pushed. The one-PR-at-a-time rule prevents opening a second PR while one is open, but does not prevent committing to a branch after its PR closes.
 
+## Solution Ideas
+
+- **Pre-push PR state check** — `PostToolUse` hook on Bash, filter for `git push`, run `gh pr view --json state` on the current branch; if state is `MERGED`, emit a `systemMessage` warning before the push lands. Same pattern as the rule-change detection hook. Fires at the moment of risk, before damage is done.
+
 ## Evidence
 
 ### 2026-03-10

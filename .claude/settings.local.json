@@ -3,7 +3,9 @@
     "allow": [
       "Bash(git checkout:*)",
       "Bash(gh pr:*)",
-      "mcp__atlassian__getConfluencePage"
+      "mcp__atlassian__getConfluencePage",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
