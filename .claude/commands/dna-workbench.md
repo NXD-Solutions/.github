@@ -8,7 +8,7 @@ Read `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.clau
 
 ## Duties
 
-Maintains the DNA and its hierarchy. Manages content subscribers.
+Maintains the DNA, its hierarchy, and their integrity. Manages content subscribers.
 
 - **DNA content** — `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, `.claude/rules/core/glossary.md`
 - **Hierarchy** — `.claude/hierarchy.md` (strand → principle → rule tree, source of truth)
