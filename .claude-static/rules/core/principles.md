@@ -180,7 +180,14 @@ the discipline is overkill.
 
 ### Architectural Thinking
 
-Evaluate whether a solution is fit for the full scope of a Worker's responsibilities — as they stand today and as they can reasonably be anticipated to grow.
+Evaluating whether a solution is fit for the full scope of a Steward's duties: current and foreseeable.
+
+Apply by:
+
+1. Name the Steward and its stated duties
+2. Enumerate what those duties actually contain — make the implicit explicit. The list is a living artefact; an instruction not covered by it is either a missing duty or a misrouted instruction — not a free pass.
+3. Test fitness — does one unit hold this cleanly, current and foreseeable?
+4. If not — decompose — name the lower-level Stewards and what they must own
 
 ## Secure by Design
 
