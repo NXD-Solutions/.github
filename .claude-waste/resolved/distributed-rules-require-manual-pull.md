@@ -4,7 +4,7 @@
 - **First seen:** 2026-03-10
 - **Last seen:** 2026-03-10
 - **Consequences:** After every distribution, all active sessions across all repos are running stale rules. Each user must manually pull main and restart their Claude Code session — friction that scales with the number of active repos and users.
-- **Status:** open
+- **Status:** resolved — 2026-03-20
 
 ## Description
 
@@ -24,3 +24,7 @@ This is inherent to how Claude Code loads rules at session start — there is no
 
 ### 2026-03-10
 Distribution of updated rules triggered by PR #107 (task list contract + crash recovery). Observation: active sessions continue running old rules until the user manually pulls main and restarts.
+
+### Resolution — 2026-03-20
+
+A `PostToolUse` hook on the Bash tool was added to `~/.claude/settings.json`. After any `git pull` run via Claude, it checks `git diff HEAD@{1} HEAD -- .claude/rules/ .claude/commands/` and outputs a `systemMessage` prompting the user to restart if rules changed. The live reload limitation is inherent to Claude Code and unchanged — but the signal now fires at the moment the rules land.
