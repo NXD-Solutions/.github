@@ -28,6 +28,13 @@ Findings from principle and strand tests. One entry per tested item. Untested pr
 - **Resolution:** Principle extended — PR #160
 - **Open:** none
 
+## Protect assigned scope
+
+- **Tested:** 2026-03-24
+- **Findings:** No findings. S1–S4 pass. P1/P3 tested against Preserve the source, Design for durability, Stateless by default, Communicate consequences, Architectural Thinking, Domain ownership — all pass. S3 noted remap signal: "Route gaps to their owner" moved under this principle.
+- **Resolution:** Principle added, rule remapped — this PR
+- **Open:** none
+
 ## Build context that lasts
 
 - **Tested:** 2026-03-19

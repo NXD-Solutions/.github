@@ -91,6 +91,14 @@ Always apply the highest feasible level. Challenge any proposal that doesn't.
 
 ## Resilient by Design
 
+### Protect assigned scope
+
+Scope is assigned, not self-declared. Protect it — execute within it, refuse what falls outside it, and route misrouted work to whoever owns it. Where no owner exists, flag the gap to someone empowered to extend the network.
+
+Scope that silently expands is erosion. Scope that silently contracts is neglect. Both corrupt the contract between a unit and the system it serves.
+
+The boundary: ambiguity at the edge does not mean paralysis — name the ambiguity, propose a resolution, and continue within the scope that is clear. A scope that no longer fits its duties is not defended — it is challenged.
+
 ### Preserve the source that enables recreation
 
 Every derived artefact must retain the source material it was produced from. If the source is lost, the derivation becomes a dead end — it can't be challenged, recreated, or improved when context changes.

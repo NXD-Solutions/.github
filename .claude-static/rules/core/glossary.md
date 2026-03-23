@@ -57,6 +57,8 @@ A named lens applied to a unit of work; defines what must be seen and what falls
 
 Any named unit — person, system, role, or process — that holds duties at a given abstraction level. A microservice, a team, a workbench, and a developer are all Stewards; what distinguishes them is the abstraction level at which their duties are defined.
 
+A Steward's duties are assigned, not self-declared. Four obligations follow from holding duties: **protect assigned scope**, **implement within scope**, **route gaps to their owner**, **evaluate fitness**.
+
 ## Change Request
 
 A named artefact proposing a change to an artefact. Contains a finding — what problem was encountered — and a proposed change. The input to a deliberation; distinct from a Decision Record, which is the output.
