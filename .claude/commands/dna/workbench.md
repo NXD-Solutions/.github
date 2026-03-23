@@ -30,7 +30,13 @@ This skill offers five modes — state which you want, or ask and Claude will cl
 
 # Foundation
 
-Shared knowledge and constraints that apply to all duties.
+Shared knowledge, constraints, and invariants that apply to all duties.
+
+## Invariants
+
+1. **Repo owners decide when to accept changes** — the workbench opens PRs, never pushes directly. Subscriber repos merge on their own schedule.
+2. **Local files are respected** — files that exist only in `.claude/` (never distributed via `.claude-static/`) are never overwritten or deleted by the workbench.
+3. **Static files are owned centrally** — `.claude-static/` is the source of truth. Local disagreements with a distributed rule go to the local testament, not to a local file edit.
 
 ## Attitude
 
