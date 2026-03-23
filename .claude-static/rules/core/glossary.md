@@ -43,9 +43,11 @@ compression is the signal it was found.
 
 ## Invariant
 
-A node in a dataflow whose behaviour holds regardless of what is substituted
-beneath it. Invariants are the primitives of a perspective — found before
-the specifics are known, stable across all instances.
+What holds regardless of what is substituted beneath it. The primitive of a perspective — stable across all instances.
+
+## Invariant Owner
+
+The authority that defines an invariant's scope and when it applies. May be external (regulatory body, legal requirement) or internal. Non-negotiable — the owner sets the constraint, not the implementer.
 
 ## Role
 
