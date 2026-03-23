@@ -1,4 +1,4 @@
-# Promote to Static
+# Distribution Sync
 
 `.claude-static/` is the source of truth — changes start there. `.claude/` is the local working copy, derived from `.claude-static/`.
 
