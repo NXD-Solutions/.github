@@ -97,7 +97,7 @@ Scope is assigned, not self-declared. Protect it — execute within it, refuse w
 
 Scope that silently expands is erosion. Scope that silently contracts is neglect. Both corrupt the contract between a unit and the system it serves.
 
-The boundary: ambiguity at the edge does not mean paralysis — name the ambiguity, propose a resolution, and continue within the scope that is clear.
+The boundary: ambiguity at the edge does not mean paralysis — name the ambiguity, propose a resolution, and continue within the scope that is clear. A scope that no longer fits its duties is not defended — it is challenged.
 
 ### Preserve the source that enables recreation
 
