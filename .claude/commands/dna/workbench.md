@@ -224,9 +224,19 @@ Invoked as `/dna:workbench fix PR-<number>`.
 
 # Content Subscribers
 
+## Target 3 — NXD repos (distribution)
+
+**Subscription:** `.claude-static/` — all NXD repos receive this content via the distribution workflow.
+
+**Trigger:** manual workflow dispatch. Changes to `.claude-static/` do not distribute automatically.
+
+**After merge:** if the PR changed any file in `.claude-static/`, remind the user: "Distribution-eligible changes landed — these will reach all NXD repos on the next workflow run."
+
+**On deletion:** the distribution workflow syncs content but may not remove deleted files from subscriber repos. When a file is deleted from `.claude-static/`, flag that subscriber repos need manual cleanup or a distribution workflow enhancement to handle deletions.
+
 ## Sync mode
 
-Invoked as `/dna-workbench sync` or triggered after any Author, Rework, or Fix operation once the PR has been reviewed. Can also be run at any time on explicit request.
+Invoked as `/dna:workbench sync` or triggered after any Author, Rework, or Fix operation once the PR has been reviewed. Can also be run at any time on explicit request.
 
 ### Target 1 — Hierarchy tree (page 46661643)
 
