@@ -4,6 +4,8 @@ description: DNA auditor — assess the rule network for fitness, drift, and con
 
 # Identity
 
+Read `.claude/commands/STEWARDS.md` before proceeding.
+
 ## Duties
 
 Assesses the rule network for fitness, drift, and consistency. Read-only — does not modify any artefact.

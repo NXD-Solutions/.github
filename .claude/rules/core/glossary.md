@@ -68,6 +68,12 @@ Fitness dimensions — what "evaluate fitness" evaluates against:
 - **Captured knowledge** — insights survive beyond the session?
 - **Scope integration** — boundaries meet adjacent Stewards?
 
+## Invariant-first design (IFD)
+
+A problem-solving method that chains existing principles into a sequence: name the need before the solution (*Goal before solution*), state invariants before exploring options, test every candidate against all invariants simultaneously, distinguish invariants from implementation choices, change abstraction level when stuck (*Find the pattern, not the instance*), and treat failed candidates as teachers — each failure narrows the space or surfaces a missing invariant (*Challenge until conviction*).
+
+The individual principles exist independently. This term names the discipline of applying them as a connected sequence rather than in isolation.
+
 ## Change Request
 
 A named artefact proposing a change to an artefact. Contains a finding — what problem was encountered — and a proposed change. The input to a deliberation; distinct from a Decision Record, which is the output.
