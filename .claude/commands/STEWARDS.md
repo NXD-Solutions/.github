@@ -12,6 +12,14 @@ Format: Steward (command name), Scope (path or path pattern), Property (what asp
 
 Before modifying a file outside your own scope, check the registry. If another steward owns that scope, surface the consequence to the user before proceeding.
 
+## Fix what you see
+
+Fix simple errors that can be resolved without context — do not route them back to the author. A typo, a broken link, a stale title in an index: fix it directly. Routing trivial fixes is waste.
+
+## Review findings on Confluence
+
+Post review findings as a comment on the affected Confluence page — not in a separate channel. Findings stay where the content lives.
+
 ## Governance
 
 Format governed by the command workbench. Audited for accuracy alongside command structure (check #6).
