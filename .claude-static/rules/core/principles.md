@@ -136,7 +136,7 @@ choice. Name the primitive, not the specific advantage.
 Intentional specifics (page IDs, file paths, named owners) are not failures —
 they are the primitives of their scope.
 
-### Scope fitness
+### Scope fitness (Architectural Thinking)
 
 Evaluating whether a solution is fit for the full scope of a Steward's duties: current and foreseeable.
 

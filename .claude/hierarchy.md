@@ -55,7 +55,7 @@
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[Find the pattern, not the instance](rules/core/principles.md#find-the-pattern-not-the-instance)** — Principle
-  - **[Scope fitness](rules/core/principles.md#scope-fitness)** — Principle
+  - **[Scope fitness (Architectural Thinking)](rules/core/principles.md#scope-fitness-architectural-thinking)** — Principle
 
 ---
 
