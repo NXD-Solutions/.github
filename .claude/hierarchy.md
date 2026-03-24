@@ -55,6 +55,7 @@
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[Find the pattern, not the instance](rules/core/principles.md#find-the-pattern-not-the-instance)** — Principle
+  - **[Scope fitness](rules/core/principles.md#scope-fitness)** — Principle
 
 ---
 
@@ -83,7 +84,6 @@
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[Trace the flow to find the invariants](rules/core/principles.md#trace-the-flow-to-find-the-invariants)** — Principle
-  - **[Architectural Thinking](rules/core/principles.md#architectural-thinking)** — Principle
 
 ---
 

@@ -1,8 +1,8 @@
 ---
-name: Architectural Thinking
+name: Scope fitness
 type: principle
 strand: Pattern-seeking by Instinct
-domain: Architecture
+domain: Culture
 status: accepted
 ---
 
@@ -47,11 +47,20 @@ Resolution: "current and foreseeable" scopes what AT evaluates against. It says 
 
 Deliberately undefined at this stage. The principle establishes the practice; the trigger for when to invoke it is deferred until a pattern of application accumulates.
 
+## Rename: Architectural Thinking → Scope fitness (2026-03-24)
+
+The principle was applied to cultural Stewards (dna-workbench) during the session that added the method — not just architectural ones. The content already used universal terms (Steward, duties, decompose) with no architecture-specific language. The name "Architectural" and the Architecture domain placement were the only things limiting its perceived scope.
+
+During a session authoring "Protect assigned scope," the principle was repeatedly identified as broadly applicable. Moving to Culture domain (universal) required dropping the "Architectural" prefix. "Scope fitness" names what the principle evaluates: whether a scope fits its duties.
+
+Strand derivation (Pattern-seeking by Instinct) is unchanged — evaluating whether the current shape is the right primitive for its duties is pattern-seeking regardless of domain.
+
 ## Conviction
 
 `Conviction (S|L): high | high`
 
 ## Related
 
-- `rules/core/glossary.md#steward` — Steward is the unit whose duties AT evaluates
-- `rules/core/principles.md#trace-the-flow-to-find-the-invariants` — parent principle in the same strand; AT is the ongoing complement to design-time invariant discovery
+- `rules/core/glossary.md#steward` — Steward is the unit whose duties scope fitness evaluates
+- `rules/core/principles.md#trace-the-flow-to-find-the-invariants` — sibling principle in the same strand; Trace governs design-time discovery, scope fitness governs ongoing evaluation
+- `rules/core/principles.md#protect-assigned-scope` — complementary principle; scope fitness evaluates, protect assigned scope enforces
