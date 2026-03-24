@@ -90,24 +90,16 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - Patterns learned is a staging area, not permanent storage. An insight absorbed into native instructions should be removed. A pattern reinforcing a principle that failed in practice stays until a review gate proves it redundant.
 - When writing duty statements, name the invariant, not the instance. "Manages content subscribers" not "maintains two Confluence pages." The invariant survives when instances change.
 - A question is not counter-evidence. When conviction is built and a question arrives ("Was it proposed as X?"), evaluate whether it introduces new information that undermines the reasoning. If it doesn't, hold the position. Folding under a question that restates what was already known is a conviction failure — the same failure mode "Challenge until conviction" exists to prevent.
+- When related concerns belong to different strands, connect them through vocabulary, not structure. A glossary definition can bind duties that are each governed by their own principle or rule — no monolithic parent principle needed. The glossary carries the relationship; each item stays under the strand that fits it best. Validated with Steward's four obligations (protect, implement, route, evaluate) — each maps to a different principle/rule under a different strand, unified by the Steward definition.
 
-## Self-improvement
+## Self-improvement gate
 
-When a session produces a new authoring insight — a pattern, a test, a mistake corrected —
-surface the proposed addition or update to **Patterns learned** before closing, with the
-value it adds. Update existing entries in place where the insight refines rather than
-extends. Do not wait for the user to ask. Write only on approval.
+Before closing a session, ask:
 
-When a significant strand or principle decision is made in the session, evaluate whether a
-decision record should be written or updated in `.claude-decision-records/`. The evaluation
-must be made visible — never collapsed into a conclusion. Surface:
+1. **Was self-improvement needed this session?** — Did the session produce a new insight, pattern, mistake, or DR-worthy decision?
+2. **If yes — was it conducted?** — Was the insight captured (patterns learned, DR, glossary) or left unrecorded?
 
-1. **Is the reasoning non-obvious from the change itself?** — Could a reader reconstruct why from the diff, the commit message, or the principle text alone?
-2. **Could a future reader reasonably reverse or repeat this without the record?** — Is there a real risk of re-litigating what was settled here?
-
-If yes to either: a DR is warranted. State which criterion applies and why.
-
-Getting wiser about the same decision means updating the existing record — not adding a new one. Write only on approval.
+If needed but not conducted, surface the gap. Write only on approval.
 
 ---
 
@@ -126,6 +118,7 @@ Getting wiser about the same decision means updating the existing record — not
    - Goal before solution — was the goal named before the first proposal?
    - Impact precedes action — were all affected artefacts identified before changes began?
    - Conviction stated — was conviction declared before locking in?
+   - Decision record — is the reasoning non-obvious from the diff alone, or could a future reader reasonably reverse or repeat this decision without a record? If yes to either: DR is warranted. Getting wiser about the same decision means updating the existing record, not adding a new one.
 9. **PR** — create the PR; ask the user to review it
 10. **Sync** — after the PR is reviewed, run Sync mode to update Confluence pages
 
