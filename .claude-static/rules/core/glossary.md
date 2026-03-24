@@ -59,6 +59,15 @@ Any named unit — person, system, role, or process — that holds duties at a g
 
 A Steward's duties are assigned, not self-declared. Four obligations follow from holding duties: **protect assigned scope**, **implement within scope**, **route gaps to their owner**, **evaluate fitness**.
 
+Fitness dimensions — what "evaluate fitness" evaluates against:
+
+- **Scope** — correctly assigned and cleanly held?
+- **Received tasks** — appropriate for this Steward?
+- **Implementation** — output meets conviction?
+- **Processes** — methods serving or hindering?
+- **Captured knowledge** — insights survive beyond the session?
+- **Scope integration** — boundaries meet adjacent Stewards?
+
 ## Change Request
 
 A named artefact proposing a change to an artefact. Contains a finding — what problem was encountered — and a proposed change. The input to a deliberation; distinct from a Decision Record, which is the output.
