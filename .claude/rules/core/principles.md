@@ -136,6 +136,17 @@ choice. Name the primitive, not the specific advantage.
 Intentional specifics (page IDs, file paths, named owners) are not failures —
 they are the primitives of their scope.
 
+### Scope fitness (Architectural Thinking)
+
+Evaluating whether a solution is fit for the full scope of a Steward's duties: current and foreseeable.
+
+Apply by:
+
+1. Name the Steward and its stated duties
+2. Enumerate what those duties actually contain — make the implicit explicit. The list is a living artefact; an instruction not covered by it is either a missing duty or a misrouted instruction — not a free pass.
+3. Test fitness — does one unit hold this cleanly, current and foreseeable?
+4. If not — decompose — name the lower-level Stewards and what they must own
+
 ---
 
 # Architecture
@@ -185,17 +196,6 @@ applies at every level: between systems, between services, between functions.
 The boundary: where the problem has sufficient complexity or unknowns that
 building without invariants risks rework. Where the solution is self-evident,
 the discipline is overkill.
-
-### Architectural Thinking
-
-Evaluating whether a solution is fit for the full scope of a Steward's duties: current and foreseeable.
-
-Apply by:
-
-1. Name the Steward and its stated duties
-2. Enumerate what those duties actually contain — make the implicit explicit. The list is a living artefact; an instruction not covered by it is either a missing duty or a misrouted instruction — not a free pass.
-3. Test fitness — does one unit hold this cleanly, current and foreseeable?
-4. If not — decompose — name the lower-level Stewards and what they must own
 
 ## Secure by Design
 

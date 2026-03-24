@@ -89,6 +89,7 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - Delegation pattern: a command can read another command's `.md` file to invoke its services. Validated with workbench → auditor. Enables Steward decomposition without command-to-command invocation support.
 - Patterns learned is a staging area, not permanent storage. An insight absorbed into native instructions should be removed. A pattern reinforcing a principle that failed in practice stays until a review gate proves it redundant.
 - When writing duty statements, name the invariant, not the instance. "Manages content subscribers" not "maintains two Confluence pages." The invariant survives when instances change.
+- A question is not counter-evidence. When conviction is built and a question arrives ("Was it proposed as X?"), evaluate whether it introduces new information that undermines the reasoning. If it doesn't, hold the position. Folding under a question that restates what was already known is a conviction failure — the same failure mode "Challenge until conviction" exists to prevent.
 
 ## Self-improvement
 
