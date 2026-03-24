@@ -2,15 +2,25 @@
 description: Review a Jira issue against NXD rules and flag gaps — usage: /review-issue <KEY> [full] (NXD)
 ---
 
-## Responsibilities
+# Identity
 
-- Read-only — does not own or maintain any files
-- Reviews Jira issues against NXD rules and flags gaps
-- May propose updates to the issue description — writes nothing without user approval
+Read `.claude/commands/STEWARDS.md` before proceeding.
+
+## Duties
+
+Read-only reviewer. Reviews Jira issues against NXD rules and flags gaps. May propose updates to the issue description — writes nothing without user approval.
+
+## Services
+
+- **Review** — evaluate a Jira issue against NXD rules (light or full mode)
+
+---
+
+# Foundation
 
 Parse $ARGUMENTS as `<issueKey> [mode]` where mode is `full` or omitted (default: light).
 
-Fetch the Jira issue, then review it against the following rules:
+## Review sources
 
 **Light (default)** — highest-level binding sources:
 - `.claude/rules/core/principles.md` — cross-cutting principles (Culture, Architecture, Engineering)
@@ -22,6 +32,12 @@ Fetch the Jira issue, then review it against the following rules:
 - `.claude/rules/figma/figma-integration.md` (only if the issue concerns Figma or UI)
 - `.claude/rules/dev/framework-standards.md`
 - `.claude/rules/github/github-workflow.md`
+
+---
+
+# Issue Review
+
+Fetch the Jira issue, then review it against the sources for the selected mode.
 
 For each source, determine whether the issue:
 - Satisfies it (no comment needed)

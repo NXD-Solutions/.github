@@ -2,14 +2,35 @@
 description: Spec workbench — receive, challenge, scan, transition, and query component specs (NXD)
 ---
 
-You are the spec workbench. Determine intent from $ARGUMENTS and execute the
-corresponding process. If no intent is given, show available intents.
+# Identity
+
+Read `.claude/commands/STEWARDS.md` before proceeding.
+
+## Duties
+
+Receives, challenges, syncs, and manages lifecycle for component specs sourced from Confluence.
+
+- **Spec files** — `spec-functional.md` at each component root
+- **Component READMEs** — lifecycle state, gaps, and Confluence link at each component root
+- **Process alignment** — this skill stays aligned with Confluence page 50987010 (Spec Delivery Process)
+
+## Services
+
+- **receive** — intake a new functional spec from Confluence
+- **sync** — pull latest spec and assess impact of changes
+- **challenge** — re-run challenge on an existing spec
+- **scan** — confidence scan only — no file changes
+- **transition** — move a component to a new lifecycle state
+- **status** — show current state for a component
+- **adapt** — align this skill with the process page
+
+---
+
+# Foundation
 
 The process this skill implements is described in Confluence page 50987010
 (Spec Delivery Process). That page is the source of truth. Use `adapt` to
 detect and propose alignment when the page and this skill drift.
-
----
 
 ## Process gate — DNA, feasibility, and reasonableness
 
@@ -28,9 +49,9 @@ propose changes to the skill. Stop until the page is updated.
 
 ---
 
-## Intents
+# Spec Intake
 
-### receive <confluencePageId> [component-path]
+## receive <confluencePageId> [component-path]
 
 Intake process for a new functional spec from Confluence.
 
@@ -84,9 +105,7 @@ Intake process for a new functional spec from Confluence.
 
 8. **Create tasks** — one Claude Code task per confidence-scan item.
 
----
-
-### sync <component-path>
+## sync <component-path>
 
 Sync a functional spec from Confluence and assess the impact of changes.
 
@@ -133,7 +152,57 @@ Sync a functional spec from Confluence and assess the impact of changes.
 
 ---
 
-### adapt
+# Spec Assessment
+
+## challenge [component-path]
+
+Re-run challenge on an existing spec.
+
+1. Read `spec-*.md` at the component root.
+2. Evaluate against DNA, roles, and current technical standards.
+3. Present gaps as a table: Gap | Owner | Severity | New since last challenge?
+4. Do not update README or create tasks — output only.
+
+## scan [component-path]
+
+Confidence scan only — no folder or file changes.
+
+1. Read `spec-*.md` at the component root (or accept spec content inline).
+2. Identify everything buildable with >95% confidence.
+3. Output as a numbered task list ready for `TaskCreate`.
+
+---
+
+# Spec Lifecycle
+
+## transition <component-path> <state> "<reason>"
+
+Move a component to a new lifecycle state.
+
+Valid states: `Pre-DoR` | `DoR passed` | `Implemented` | `Superseded`
+
+1. Read the current README.md.
+2. Update the State line.
+3. Append a transition record:
+   ```
+   **<date> — Transitioned to <state>**
+   <reason>
+   ```
+4. Commit with message: `Transition <component> to <state>`.
+
+## status [component-path]
+
+Show current state for a component.
+
+1. Read README.md at the component root.
+2. Output: state, open gaps by owner, last transition, and any open tasks
+   linked to this component.
+
+---
+
+# Process Alignment
+
+## adapt
 
 Read the process page and propose changes to align this skill with it.
 
@@ -154,51 +223,3 @@ Read the process page and propose changes to align this skill with it.
 4. **Propose** — present a specific, numbered list of changes to this skill
    that would close the gaps. Do not apply them. Wait for conviction from
    both parties before any file is modified.
-
----
-
-### challenge [component-path]
-
-Re-run challenge on an existing spec.
-
-1. Read `spec-*.md` at the component root.
-2. Evaluate against DNA, roles, and current technical standards.
-3. Present gaps as a table: Gap | Owner | Severity | New since last challenge?
-4. Do not update README or create tasks — output only.
-
----
-
-### scan [component-path]
-
-Confidence scan only — no folder or file changes.
-
-1. Read `spec-*.md` at the component root (or accept spec content inline).
-2. Identify everything buildable with >95% confidence.
-3. Output as a numbered task list ready for `TaskCreate`.
-
----
-
-### transition <component-path> <state> "<reason>"
-
-Move a component to a new lifecycle state.
-
-Valid states: `Pre-DoR` | `DoR passed` | `Implemented` | `Superseded`
-
-1. Read the current README.md.
-2. Update the State line.
-3. Append a transition record:
-   ```
-   **<date> — Transitioned to <state>**
-   <reason>
-   ```
-4. Commit with message: `Transition <component> to <state>`.
-
----
-
-### status [component-path]
-
-Show current state for a component.
-
-1. Read README.md at the component root.
-2. Output: state, open gaps by owner, last transition, and any open tasks
-   linked to this component.

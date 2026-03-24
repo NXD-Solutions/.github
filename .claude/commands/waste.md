@@ -2,15 +2,19 @@
 description: Log and fix recurring waste patterns in .claude-waste/ (NXD)
 ---
 
-Read `.claude-waste/README.md` (process contract) and `.claude-waste/INDEX.md` (open records) before proceeding.
+# Identity
 
-## Responsibilities
+Read `.claude/commands/STEWARDS.md`, `.claude-waste/README.md` (process contract), and `.claude-waste/INDEX.md` (open records) before proceeding.
 
-- Maintains `.claude-waste/` — the waste archive
-- Maintains `.claude-waste/INDEX.md` — index of open records
-- Owns the lifecycle of each waste record: created → evidenced → resolved → archived
+## Duties
 
-## Modes
+Maintains `.claude-waste/` — the waste archive.
+
+- **Waste archive** — `.claude-waste/` root (open records) and `.claude-waste/resolved/` (closed records)
+- **Index** — `.claude-waste/INDEX.md` — index of open records
+- **Record lifecycle** — created → evidenced → resolved → archived
+
+## Services
 
 This command offers two modes — state which you want, or ask and Claude will clarify:
 
@@ -20,6 +24,8 @@ This command offers two modes — state which you want, or ask and Claude will c
 Triggered by the `Waste:` prefix in a user message — default to Log mode.
 
 ---
+
+# Foundation
 
 ## Goals
 
@@ -32,9 +38,19 @@ A well-managed waste archive achieves all of these. Fix mode tests against them;
 5. **Linked** — related records are connected bidirectionally
 6. **Navigable** — any user can understand the process and find their footing from this command alone, without prior knowledge of the archive
 
+## Process orientation
+
+For users new to the archive:
+
+- **What it is** — an evidence archive of recurring waste patterns across NXD work. One file per pattern.
+- **What it is not** — a task list, a project plan, or a place for one-off problems. A pattern must recur to earn a record.
+- **Who can use it** — either party (human or AI) may log or fix waste, by agreement.
+- **How to trigger** — prefix any message with `Waste:` to invoke Log mode. Type `/waste fix` to invoke Fix mode.
+- **Where records live** — open records at `.claude-waste/` root. Resolved records in `.claude-waste/resolved/`.
+
 ---
 
-## Log mode
+# Waste Logging
 
 1. Search `.claude-waste/` root for an existing record covering the same pattern — a new occurrence may only need a new evidence entry
 2. If found — add a dated evidence entry, increment **Occurrences**, update **Last seen**
@@ -45,7 +61,7 @@ A well-managed waste archive achieves all of these. Fix mode tests against them;
 
 ---
 
-## Fix mode
+# Waste Resolution
 
 1. List all records at the `.claude-waste/` root — these are open
 2. Group by `**Related:**` links — linked records are a bundle; fix together or not at all
@@ -60,15 +76,3 @@ A well-managed waste archive achieves all of these. Fix mode tests against them;
    - **New waste record** → `*Recorded: <filename>*` — idea reveals a new recurring pattern
    - **Ignore** → `*Ignored: <reason>*` — explicitly out of scope
 9. Before closing: ask whether any new waste was observed during the session that has not been recorded. The fixer may log it, defer it, or explicitly ignore it — but the question must be asked.
-
----
-
-## Process orientation
-
-For users new to the archive:
-
-- **What it is** — an evidence archive of recurring waste patterns across NXD work. One file per pattern.
-- **What it is not** — a task list, a project plan, or a place for one-off problems. A pattern must recur to earn a record.
-- **Who can use it** — either party (human or AI) may log or fix waste, by agreement.
-- **How to trigger** — prefix any message with `Waste:` to invoke Log mode. Type `/waste fix` to invoke Fix mode.
-- **Where records live** — open records at `.claude-waste/` root. Resolved records in `.claude-waste/resolved/`.

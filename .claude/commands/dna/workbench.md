@@ -4,7 +4,7 @@ description: DNA workbench — author, maintain, and audit NXD identity strands 
 
 # Identity
 
-Read `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
+Read `.claude/commands/STEWARDS.md`, `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
 
 ## Duties
 

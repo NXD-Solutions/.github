@@ -1,3 +1,7 @@
+---
+description: DNA Workbench Memory — cross-session state, not user-invocable (NXD)
+---
+
 # DNA Workbench Memory
 
 Persistent state for the dna-workbench skill. Not loaded at startup — read and updated by the workbench as needed.
