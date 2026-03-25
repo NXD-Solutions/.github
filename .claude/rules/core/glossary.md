@@ -70,7 +70,7 @@ Fitness dimensions — what "evaluate fitness" evaluates against:
 
 ## Invariant-first design (IFD)
 
-A problem-solving method that chains existing principles into a sequence: name the need before the solution (*Goal before solution*), state invariants before exploring options, test every candidate against all invariants simultaneously, distinguish invariants from implementation choices, change abstraction level when stuck (*Find the pattern, not the instance*), and treat failed candidates as teachers — each failure narrows the space or surfaces a missing invariant (*Challenge until conviction*).
+A problem-solving method that chains existing principles into a sequence: name the need before the solution (*Goal before solution*), state invariants before exploring options, test every candidate against all invariants simultaneously, distinguish invariants from what they are not — choices, and attributes of the invariant set itself, change abstraction level when stuck (*Find the pattern, not the instance*), and treat failed candidates as teachers — each failure narrows the space or surfaces a missing invariant (*Challenge until conviction*).
 
 The individual principles exist independently. This term names the discipline of applying them as a connected sequence rather than in isolation.
 

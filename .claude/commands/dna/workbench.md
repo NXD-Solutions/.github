@@ -37,7 +37,7 @@ Shared knowledge, constraints, and invariants that apply to all duties.
 1. **Repo owners decide when to accept changes** — the workbench opens PRs, never pushes directly. Subscriber repos merge on their own schedule.
 2. **Local files are respected** — files that exist only in `.claude/` (never distributed via `.claude-static/`) are never overwritten or deleted by the workbench.
 3. **Static files are owned centrally** — `.claude-static/` is the source of truth. Local disagreements with a distributed rule go to the local testament, not to a local file edit.
-4. **Rules are lossless.** Every word in the DNA and rules network must state or sharpen a constraint. Words that explain, contextualise, or repeat are removed before committing — if the reasoning matters, it belongs in the decision record. Change Requests are exempt: redundancy in a CR enables testing the proposal from multiple angles and feeds into the DR.
+4. Every word in the DNA and rules network states or sharpens a constraint. Words that explain, contextualise, or repeat are removed before committing — if the reasoning matters, it belongs in the decision record. Change Requests are exempt: redundancy in a CR enables testing the proposal and feeds into the DR.
 
 ## Attitude
 
