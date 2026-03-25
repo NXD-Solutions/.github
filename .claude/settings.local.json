@@ -5,7 +5,15 @@
       "Bash(gh pr:*)",
       "mcp__atlassian__getConfluencePage",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "mcp__claude_ai_Figma__get_metadata",
+      "Bash(git push:*)",
+      "Bash(mkdir -p \"C:/Users/sixfu/IdeaProjects/manager-assistant/apps/manager-assistant/src/screens\")",
+      "Bash(mkdir -p \"C:/Users/sixfu/IdeaProjects/manager-assistant/apps/manager-assistant/src/components\")",
+      "Read(//c/Users/sixfu/IdeaProjects/manager-assistant/**)",
+      "Bash(npm install:*)",
+      "Bash(npm -w manager-assistant-api run typecheck)",
+      "Bash(npm -w manager-assistant-app run typecheck)"
     ]
   }
 }

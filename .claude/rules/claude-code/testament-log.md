@@ -29,3 +29,13 @@ Local log of recurring problems and non-obvious workarounds.
 **Solution:** After editing a command file, verify the first line is exactly `---` with no preceding text. If the picker shows unexpected text for a command, check line 1 of the file.
 
 **Permanent fix candidate:** Unknown root cause — may be an editor auto-save collision or a paste artefact. Monitor for recurrence to identify the trigger.
+
+---
+
+## Manual scaffold missing package-lock.json
+
+**Symptom:** When scaffolding a Node.js project by writing files manually (instead of running `create-vite` or equivalent), `package-lock.json` is not generated. CI fails immediately — `npm ci` and `actions/setup-node` cache both require it.
+
+**Solution:** After writing `package.json` files manually, run `npm install` before the first commit. The lock file is an inherent part of a complete scaffold — not an optional follow-up.
+
+**Permanent fix candidate:** Add a step to the scaffold checklist: "run `npm install` and stage `package-lock.json` before committing."
