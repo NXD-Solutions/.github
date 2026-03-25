@@ -37,6 +37,7 @@ Shared knowledge, constraints, and invariants that apply to all duties.
 1. **Repo owners decide when to accept changes** — the workbench opens PRs, never pushes directly. Subscriber repos merge on their own schedule.
 2. **Local files are respected** — files that exist only in `.claude/` (never distributed via `.claude-static/`) are never overwritten or deleted by the workbench.
 3. **Static files are owned centrally** — `.claude-static/` is the source of truth. Local disagreements with a distributed rule go to the local testament, not to a local file edit.
+4. Every word in the DNA and rules network states or sharpens a constraint. Words that explain, contextualise, or repeat are removed before committing — if the reasoning matters, it belongs in the decision record. Change Requests are exempt: redundancy in a CR enables testing the proposal and feeds into the DR.
 
 ## Attitude
 
@@ -119,6 +120,7 @@ If needed but not conducted, surface the gap. Write only on approval.
    - Impact precedes action — were all affected artefacts identified before changes began?
    - Conviction stated — was conviction declared before locking in?
    - Decision record — is the reasoning non-obvious from the diff alone, or could a future reader reasonably reverse or repeat this decision without a record? If yes to either: DR is warranted. Getting wiser about the same decision means updating the existing record, not adding a new one.
+   - Distillation — apply the Rules are lossless invariant: scan every sentence for words that explain, contextualise, or repeat without constraining. Cut them; if the reasoning matters, move it to the decision record.
 9. **PR** — create the PR; ask the user to review it
 10. **Sync** — after the PR is reviewed, run Sync mode to update Confluence pages
 
