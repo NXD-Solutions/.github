@@ -26,6 +26,10 @@ Owns first-clone readiness from empty repo to development-ready.
 
 Every script declared in `package.json` must pass after `git clone` + `npm install` + documented env setup. A script that has never successfully run must not exist.
 
+## Verifiable vs interactive scripts
+
+The invariant applies to verifiable scripts only — those that complete and return an exit code: `build`, `lint`, `test`, `typecheck`. Interactive scripts (`dev`, `start`, `watch`) run indefinitely and cannot be pass/fail checked. They are excluded from the invariant check but must reference only installed dependencies and existing config.
+
 ## Bootstrap checklist
 
 A repo is bootstrap-ready when:
@@ -42,7 +46,7 @@ A repo is bootstrap-ready when:
 1. Scaffold `package.json` with standard scripts for the stack (`build`, `lint`, `test`, `dev` — adjust per stack)
 2. Install ESLint and required plugins; write config file
 3. Write `.env.example` — one entry per required env var with a comment describing its purpose
-4. Run every declared script — all must pass before the first commit
+4. Run every verifiable script — all must pass before the first commit
 5. Apply the bootstrap checklist — no item may remain unchecked
 
 ---
@@ -51,7 +55,7 @@ A repo is bootstrap-ready when:
 
 Invoked after DNA distribution on a freshly cloned repo.
 
-1. Run every script declared in `package.json`
+1. Run every verifiable script declared in `package.json`
 2. Report pass/fail for each
 3. For each failure: surface what is missing — config file, plugin, or env var
 4. Repo is verified only when all scripts pass
