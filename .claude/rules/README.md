@@ -54,5 +54,6 @@ Developer-scoped rules — applies to engineers working on code.
 
 | File | Confluence page | Notes |
 | --- | --- | --- |
+| `dev/bootstrap.md` | | |
 | `dev/code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
 | `dev/framework-standards.md` | | |
