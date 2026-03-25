@@ -1,3 +1,3 @@
 # Repo creation + Bootstrap
 
-Repo creation requires `/bootstrap`. If the command is not present in `.claude/commands/`, stop and flag the gap to the user before proceeding.
+`/bootstrap` is the authority for repo creation — do not create a repo by any other means. `/bootstrap` lives in the `.github` repo — run it from there.
