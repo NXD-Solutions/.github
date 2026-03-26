@@ -103,4 +103,6 @@ The page must answer:
 
 ## Review gate
 
+Before authoring or making significant changes to the page, read the Newcomer perspective criteria in `review.md`. Pre-applying criteria reduces review cost.
+
 Before publishing, run `/review` with the newcomer perspective (mandatory). The page must pass before it is considered complete. Once published, update `STEWARDS.md` with the page ID.
