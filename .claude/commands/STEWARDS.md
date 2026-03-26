@@ -40,7 +40,7 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dna:command-workbench` | `.claude/commands/README.md`, `.claude-static/commands/README.md` | content |
 | `dna:command-workbench` | `.claude/commands/STEWARDS.md` | format |
 | `dna:command-workbench` | Confluence page 62947329 (newcomer root) | content, structure |
-| `dna:command-workbench` | Confluence child page under 62947329 (page ID TBD — recorded here once created) | content |
+| `dna:command-workbench` | Confluence child page 63373313 | content |
 | `dev:bootstrap` | `**/package.json` (scripts) | correctness — all declared scripts must pass on first clone |
 | `dev:bootstrap` | `.claude-static/rules/dev/bootstrap.md`, `.claude/rules/dev/bootstrap.md` | content |
 | `dev:audit` | — | read-only (no owned scope) |

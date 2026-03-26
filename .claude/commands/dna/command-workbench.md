@@ -27,6 +27,10 @@ Maintains the structural integrity of all command files under `.claude/commands/
 
 # Foundation
 
+## Distribution
+
+This command is local to the `.github` repo — it is not distributed to other repos. Do not add it to `.claude-static/commands/`.
+
 ## Command structure convention
 
 Defined in `claude-rules-system.md` under Commands. Every command is a Steward. H1 headings are reserved for structural divisions:
@@ -77,11 +81,12 @@ Maintain the root newcomer introduction page (Confluence 62947329). This page is
 The root page is the entry point for anyone new to the Claude Code command system.
 
 Content must:
-- Explain what Claude Code commands are and how to invoke them
-- List all available commands with a one-line description and link to each command's own child page (where it exists)
-- Be kept current when commands are added, renamed, or removed
+- Explain what Claude Code commands are and how to invoke them — this is cross-cutting and always present
+- Index registered command child pages — one row per command with a link, added when a child page is created and its ID registered in `STEWARDS.md`; removed when the page is deregistered
 
-Update the root page whenever a command is added, removed, or renamed, or when a child page is created or its ID changes in `STEWARDS.md`.
+The index does not store command descriptions. Descriptions live on each command's child page.
+
+Update the root page whenever a child page is created, removed, or its ID changes in `STEWARDS.md`.
 
 ## Own child page
 
@@ -89,4 +94,6 @@ Create and maintain a newcomer child page under 62947329 introducing `/dna:comma
 
 ## Review gate
 
-Before publishing significant content changes to either page, run `/review` with the newcomer perspective (mandatory).
+Before authoring or making significant changes to either page, read the Newcomer perspective criteria in `review.md`. Pre-applying criteria reduces review cost.
+
+Before publishing, run `/review` with the newcomer perspective (mandatory).

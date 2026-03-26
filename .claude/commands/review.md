@@ -18,6 +18,10 @@ Owns perspective-based document review as a DoD gate. Conducts structured review
 
 # Foundation
 
+## Pre-authoring
+
+Before authoring a document subject to a perspective review, read the relevant perspective criteria. Pre-applying criteria makes the review a quality check rather than a correction pass.
+
 ## Perspectives
 
 A perspective is a named review lens with its own criteria. No mandatory/optional classification on the perspective itself — that belongs to the DoD.
@@ -112,3 +116,13 @@ After accepted changes are applied, the steward assesses impact on previously sa
 ## Exit condition
 
 DoD passes when all mandatory perspectives hold conviction simultaneously on the same document version. Optional perspectives that were engaged are either satisfied or explicitly accepted as-is by the steward.
+
+## Evolve the criteria
+
+After a review session closes, extract general rules from the accepted challenges:
+
+1. List the accepted challenges
+2. Apply IFD — find the meta pattern each challenge points to
+3. Propose amendments to the relevant perspective criteria in Foundation
+
+A review session that produces no criteria amendment is a missed opportunity to improve future reviews.
