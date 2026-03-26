@@ -9,10 +9,12 @@ Read `.claude/commands/STEWARDS.md` before proceeding.
 ## Duties
 
 - **Register** — run the one-time Figma project registration for this repo
+- **Document** — create and maintain a newcomer Confluence page introducing this command
 
 ## Services
 
 - **Register** — verify prerequisites, run the acceptance gate, and write `.figma/project.json` and the root `README.md` design entry
+- **Document** — create a newcomer child page under Confluence 62947329; review with newcomer perspective before publishing
 
 ---
 
@@ -80,3 +82,25 @@ Figma: <url>
 ```
 
 The `fileKey` is extracted from the Figma URL: `figma.com/design/<fileKey>/...`
+
+---
+
+# Document
+
+Create and maintain a newcomer-friendly Confluence page introducing `/dev:figma` to developers who have never used it.
+
+## Setup
+
+Create a child page under Confluence root page 62947329. Record the page ID in `STEWARDS.md` under the `dev:figma` entry.
+
+## Content
+
+The page must answer:
+- What is `/dev:figma` and when is it needed?
+- What does registration involve — what will the developer be asked for?
+- What does the developer need to have ready before running it?
+- What does a successful registration look like?
+
+## Review gate
+
+Before publishing, run `/review` with the newcomer perspective (mandatory). The page must pass before it is considered complete. Once published, update `STEWARDS.md` with the page ID.

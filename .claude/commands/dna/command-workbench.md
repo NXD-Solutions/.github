@@ -15,11 +15,13 @@ Maintains the structural integrity of all command files under `.claude/commands/
 - **Frontmatter** — every command has valid `---` delimiters and a description ending with `(NXD)`
 - **Naming** — command names communicate purpose; namespace folders group related commands
 - **Steward network** — `.claude/commands/STEWARDS.md` — scope registry for all command stewards
+- **Newcomer pages** — root newcomer introduction page (Confluence 62947329); quality check on registered command pages
 
 ## Services
 
 - **Audit** — scan all command files for structural violations and stale READMEs
 - **Fix** — repair a specific finding (frontmatter, README entry, structure)
+- **Document** — maintain the root newcomer introduction page (Confluence 62947329)
 
 ---
 
@@ -60,4 +62,31 @@ Both README files (`.claude/commands/README.md` and `.claude-static/commands/REA
 5. **Orphans** — are there files in `.claude/commands/` that are not commands and not in a namespace subfolder? Flag for classification.
 6. **Steward network** — does every command steward have an entry in `STEWARDS.md`? Is every entry's scope consistent with the steward's Identity section? Flag missing or stale entries.
 
+7. **Newcomer pages** — for every command steward that has a Confluence page ID registered in `STEWARDS.md`: fetch the page and assess whether the content seems valid — not empty, not still a placeholder title. Flag pages that have no meaningful content.
+
 Present findings to the user — do not revise without confirmation.
+
+---
+
+# Document
+
+Maintain the root newcomer introduction page (Confluence 62947329). This page is the entry point for anyone new to the Claude Code command system.
+
+## Root page (Confluence 62947329)
+
+The root page is the entry point for anyone new to the Claude Code command system.
+
+Content must:
+- Explain what Claude Code commands are and how to invoke them
+- List all available commands with a one-line description and link to each command's own child page (where it exists)
+- Be kept current when commands are added, renamed, or removed
+
+Update the root page whenever a command is added, removed, or renamed, or when a child page is created or its ID changes in `STEWARDS.md`.
+
+## Own child page
+
+Create and maintain a newcomer child page under 62947329 introducing `/dna:command-workbench` — what it does, when to use it, and what the audit and fix services involve. Record the page ID in `STEWARDS.md` once created.
+
+## Review gate
+
+Before publishing significant content changes to either page, run `/review` with the newcomer perspective (mandatory).

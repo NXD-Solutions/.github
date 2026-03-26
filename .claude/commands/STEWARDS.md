@@ -39,10 +39,13 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dna:command-workbench` | `.claude/commands/**` | structure, frontmatter |
 | `dna:command-workbench` | `.claude/commands/README.md`, `.claude-static/commands/README.md` | content |
 | `dna:command-workbench` | `.claude/commands/STEWARDS.md` | format |
+| `dna:command-workbench` | Confluence page 62947329 (newcomer root) | content, structure |
+| `dna:command-workbench` | Confluence child page under 62947329 (page ID TBD — recorded here once created) | content |
 | `dev:bootstrap` | `**/package.json` (scripts) | correctness — all declared scripts must pass on first clone |
 | `dev:bootstrap` | `.claude-static/rules/dev/bootstrap.md`, `.claude/rules/dev/bootstrap.md` | content |
 | `dev:audit` | — | read-only (no owned scope) |
 | `dev:figma` | `.figma/project.json` | content, lifecycle |
+| `dev:figma` | Confluence child page under 62947329 (page ID TBD — recorded here once created) | content |
 | `review` | — | read-only (no owned scope) |
 | `review-issue` | — | read-only (no owned scope) |
 | `claude-librarian` | Confluence page 46661650 + children | structure, standards, quality reviews |
