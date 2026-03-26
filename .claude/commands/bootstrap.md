@@ -118,12 +118,12 @@ Creating a repo involves:
 
 1. Create GitHub repo
 2. Scaffold structure — package.json, scripts, tooling, .env.example
-3. Distribute DNA — rules and commands from .github synced to the repo  *(manual — automation planned)*
+3. Distribute DNA — rules and commands from .github synced to the repo
 4. Create CLAUDE.md — enforces branch policy for AI coding assistants
 5. Configure branch protection on main
 6. Verify — all declared scripts pass
 
-Steps marked manual must be completed by the user.
+All steps are automated by bootstrap.
 ```
 
 ---
@@ -133,8 +133,15 @@ Steps marked manual must be completed by the user.
 1. Scaffold `package.json` with standard scripts for the stack (`build`, `lint`, `test`, `dev` — adjust per stack)
 2. Install ESLint and required plugins; write config file
 3. Write `.env.example` — one entry per required env var with a comment describing its purpose
-4. Run every verifiable script — all must pass before the first commit
-5. Apply the bootstrap checklist — no item may remain unchecked
+4. Distribute DNA — trigger the workflow and wait for completion:
+   ```bash
+   gh workflow run distribute-claude-config.yml -f repo=<org/repo>
+   sleep 5
+   RUN_ID=$(gh run list --workflow=distribute-claude-config.yml --limit=1 --json databaseId --jq '.[0].databaseId')
+   gh run watch $RUN_ID --exit-status
+   ```
+5. Run every verifiable script — all must pass before the first commit
+6. Apply the bootstrap checklist — no item may remain unchecked
 
 ---
 
