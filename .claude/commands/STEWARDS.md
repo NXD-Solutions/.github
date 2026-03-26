@@ -42,6 +42,7 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dev:bootstrap` | `**/package.json` (scripts) | correctness — all declared scripts must pass on first clone |
 | `dev:bootstrap` | `.claude-static/rules/dev/bootstrap.md`, `.claude/rules/dev/bootstrap.md` | content |
 | `dev:audit` | — | read-only (no owned scope) |
+| `dev:figma` | `.figma/project.json` | content, lifecycle |
 | `review-issue` | — | read-only (no owned scope) |
 | `claude-librarian` | Confluence page 46661650 + children | structure, standards, quality reviews |
 | `spec-workbench` | `**/spec-functional.md` | content |

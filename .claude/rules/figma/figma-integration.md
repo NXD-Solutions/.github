@@ -8,44 +8,7 @@ Applies to all form components — files matching `apps/*/src/components/forms/*
 
 ## Figma project registration
 
-A Figma project must be formally registered before any form DoR can run. This is a one-time
-step per repo.
-
-### Prerequisites
-
-- [ ] **[hard]** Figma API access confirmed — MCP tool calls must succeed before the gate can run
-- [ ] **[hard]** Dev team has view access to the Figma file
-
-### Acceptance gate
-
-- [ ] **[hard]** File is a proper Figma project — not a draft, personal file, or community fork being actively edited without permission
-- [ ] **[hard]** File structure is navigable — pages and components are organised, not a dumping ground
-- [ ] **[hard]** A named designer owner is identified and reachable
-- [ ] **[soft]** Community or third-party files: confirm licence permits use in production
-
-### Registration
-
-Once accepted, register the project in two places:
-
-**`README.md` (root)** — human entry point, linked from onboarding:
-```md
-## Design
-Figma: <url>
-```
-
-**`.figma/project.json`** — machine-readable metadata:
-```json
-{
-  "fileKey": "<fileKey>",
-  "projectName": "<name>",
-  "url": "<url>",
-  "designerOwner": "<name or null>",
-  "status": "accepted",
-  "registeredAt": "<YYYY-MM-DD>"
-}
-```
-
-The `fileKey` is extracted from the Figma URL: `figma.com/design/<fileKey>/...`
+Run `/figma` to register the Figma project for this repo. Registration is a one-time step per repo and must be completed before any form DoR can run.
 
 ---
 
