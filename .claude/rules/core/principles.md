@@ -56,6 +56,10 @@ and still leave informed.
 
 Templates enforce this — every written artefact template must be structured widest-to-narrowest.
 
+### Every communicative artefact serves the reader's context — not the system's structure
+
+Every communicative artefact serves the reader's context — not the system's structure. Audience, trigger, and topic boundary are the organising inputs — not the system's modules, categories, or output order.
+
 ### Shared language
 
 Build and actively use a shared glossary. Terms that carry specific meaning are defined once and used as working vocabulary — not reference material. A term left undefined is interpreted differently by every reader. A term defined but not actively used is decoration.
