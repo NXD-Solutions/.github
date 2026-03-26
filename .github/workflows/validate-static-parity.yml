@@ -1,0 +1,54 @@
+name: Validate static parity
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.claude-static/**'
+      - '.claude/**'
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Write step summary header
+        run: |
+          echo "## Validate static parity" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Purpose**: Every file in \`.claude-static/\` must have an identical copy in \`.claude/\`." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Parity check
+        shell: bash
+        run: |
+          failures=0
+
+          while IFS= read -r -d '' static_file; do
+            relative="${static_file#.claude-static/}"
+            local_file=".claude/${relative}"
+
+            # README.md is intentionally a superset in .claude/ (includes local-only commands)
+            if [[ "$relative" == "README.md" || "$relative" == */README.md ]]; then
+              continue
+            fi
+
+            if [ ! -f "$local_file" ]; then
+              echo "Missing: .claude/${relative}" | tee -a "$GITHUB_STEP_SUMMARY"
+              failures=$((failures + 1))
+            elif ! diff -q "$static_file" "$local_file" > /dev/null 2>&1; then
+              echo "Mismatch: .claude/${relative}" | tee -a "$GITHUB_STEP_SUMMARY"
+              failures=$((failures + 1))
+            fi
+          done < <(find .claude-static -type f -print0)
+
+          if [ "$failures" -eq 0 ]; then
+            echo "All .claude-static/ files match their .claude/ counterparts." >> "$GITHUB_STEP_SUMMARY"
+            echo "Parity check passed."
+          else
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Fix: cp .claude-static/<path> .claude/<path> for each mismatch." >> "$GITHUB_STEP_SUMMARY"
+            echo "Parity check failed: $failures mismatch(es)."
+            exit 1
+          fi

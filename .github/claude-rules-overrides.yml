@@ -12,4 +12,6 @@
 #   NXD-Solutions/config-repo:
 #     exclude: true           # skip this repo entirely
 
-overrides: {}
+overrides:
+  NXD-Solutions/.github:
+    exclude: true  # source repo — manages its own .claude/ manually; parity enforced by validate-static-parity.yml

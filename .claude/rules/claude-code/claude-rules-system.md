@@ -14,7 +14,7 @@ All changes to org-wide rules and commands start in `.claude-static/`. After edi
 cp .claude-static/<subdir>/<file>.md .claude/<subdir>/<file>.md
 ```
 
-Both files ship in the same commit and PR.
+Both files ship in the same commit and PR. The `validate-static-parity` CI workflow enforces this — a PR that changes `.claude-static/` without a matching `.claude/` update will fail.
 
 ## Local testing
 
