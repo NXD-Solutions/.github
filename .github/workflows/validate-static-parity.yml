@@ -1,0 +1,48 @@
+name: Validate static parity
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.claude-static/**'
+      - '.claude/**'
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Parity check — .claude-static/ must match .claude/
+        run: |
+          {
+            echo "## Validate static parity"
+            echo ""
+            echo "**Purpose**: Every file in \`.claude-static/\` must have an identical copy in \`.claude/\`. This enforces the rule that changes start in \`.claude-static/\` and are derived to \`.claude/\` in the same commit."
+            echo ""
+            echo "**Process**:"
+            echo "- *Parity check* — diff each file in \`.claude-static/\` against its \`.claude/\` counterpart"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          failures=0
+
+          while IFS= read -r -d '' static_file; do
+            relative="${static_file#.claude-static/}"
+            local_file=".claude/${relative}"
+
+            if [ ! -f "$local_file" ]; then
+              echo "❌ Missing: \`.claude/${relative}\` (exists in \`.claude-static/\` but not in \`.claude/\`)" >> "$GITHUB_STEP_SUMMARY"
+              failures=$((failures + 1))
+            elif ! diff -q "$static_file" "$local_file" > /dev/null 2>&1; then
+              echo "❌ Mismatch: \`.claude/${relative}\` differs from \`.claude-static/${relative}\`" >> "$GITHUB_STEP_SUMMARY"
+              failures=$((failures + 1))
+            fi
+          done < <(find .claude-static -type f -print0)
+
+          if [ "$failures" -eq 0 ]; then
+            echo "✅ All \`.claude-static/\` files match their \`.claude/\` counterparts." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Fix:** for each mismatch, run \`cp .claude-static/<path> .claude/<path>\` and include both files in the same commit." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
