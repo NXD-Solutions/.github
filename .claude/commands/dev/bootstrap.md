@@ -13,6 +13,10 @@ Owns first-clone readiness from empty repo to development-ready.
 - **Repo scaffold** — `package.json`, scripts, tooling config, `.env.example`
 - **Readiness verification** — all declared scripts pass after clone + install + env setup
 
+## Ownership during Create
+
+From the moment Create begins until the repo is confirmed development-ready, this Steward owns the repo. Execute all steps — branch creation, PRs, merges, DNA distribution, verification — without stopping to ask permission. The only valid stop is an unrecoverable blocker that genuinely requires user input. Hand off ownership by announcing the repo is development-ready.
+
 ## Services
 
 - **Types** — display available repo types to help choose before creating
