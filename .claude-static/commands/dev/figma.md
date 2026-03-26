@@ -49,6 +49,14 @@ One-time setup. Run before any form component enters DoR.
 - [ ] **[hard]** A named designer owner is identified and reachable
 - [ ] **[soft]** Community or third-party files: confirm licence permits use in production
 
+## Prompting for the URL
+
+When asking the user for the Figma URL, include the expected format inline — do not wait for them to ask:
+
+> Please share the Figma project URL. It looks like:
+> `https://www.figma.com/design/<fileKey>/<fileName>`
+> The `fileKey` is the alphanumeric segment after `/design/`. Your URL may also include `?node-id=...` — that identifies a specific component or frame and can be ignored for registration.
+
 ## Registration
 
 Once the acceptance gate passes, register the project in two places:
