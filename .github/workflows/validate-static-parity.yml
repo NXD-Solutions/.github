@@ -29,6 +29,11 @@ jobs:
             relative="${static_file#.claude-static/}"
             local_file=".claude/${relative}"
 
+            # README.md is intentionally a superset in .claude/ (includes local-only commands)
+            if [[ "$relative" == "README.md" || "$relative" == */README.md ]]; then
+              continue
+            fi
+
             if [ ! -f "$local_file" ]; then
               echo "Missing: .claude/${relative}" | tee -a "$GITHUB_STEP_SUMMARY"
               failures=$((failures + 1))
