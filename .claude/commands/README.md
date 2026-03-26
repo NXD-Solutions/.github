@@ -6,7 +6,8 @@ Claude Code slash commands. Invoked by typing `/` in Claude Code — commands wi
 
 | Command | Description |
 |---|---|
-| `/audit` | Full codebase audit against code-standards.md |
+| `/dev:audit` | Full codebase audit against code-standards.md |
+| `/dev:bootstrap` | Bootstrap — create and verify repo readiness for development |
 | `/claude-librarian` | Newcomer manual — publishes Claude Code conventions as Confluence chapters |
 | `/dna:auditor` | Assess the rule network for fitness, drift, and consistency |
 | `/dna:command-workbench` | Maintain structural integrity of all command files |
