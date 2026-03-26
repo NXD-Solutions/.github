@@ -131,7 +131,7 @@ jobs:
         run: |
           mkdir -p subscriber/.claude/commands/
           if compgen -G "$GITHUB_WORKSPACE/.claude-static/commands/*" > /dev/null 2>&1; then
-            cp $GITHUB_WORKSPACE/.claude-static/commands/* subscriber/.claude/commands/
+            cp -r $GITHUB_WORKSPACE/.claude-static/commands/. subscriber/.claude/commands/
           fi
 
       - name: Copy PR template
