@@ -16,6 +16,7 @@ Owns first-clone readiness from empty repo to development-ready.
 ## Services
 
 - **Types** — display available repo types to help choose before creating
+- **Process** — show what creating a repo involves, step by step
 - **Create** — scaffold a new repo to first-clone ready state
 - **Verify** — confirm readiness after DNA distribution
 
@@ -27,8 +28,9 @@ After crash recovery, print exactly:
 What would you like to do?
 
 1. Types — display available repo types
-2. Create — scaffold a new repo
-3. Verify — confirm readiness after DNA distribution
+2. Process — show what creating a repo involves
+3. Create — scaffold a new repo
+4. Verify — confirm readiness after DNA distribution
 ```
 
 Do not display repo types or any other content at startup. Wait for the user to choose.
@@ -104,6 +106,25 @@ What it enables:
 Repeat the block above for each type, separated by `---`. After the last type, add a blank line followed by:
 
 `Currently one type is formally adopted. Additional types are added here when formally approved.`
+
+---
+
+# Process
+
+Print the creation process exactly as follows — no deviation:
+
+```
+Creating a repo involves:
+
+1. Create GitHub repo
+2. Scaffold structure — package.json, scripts, tooling, .env.example
+3. Distribute DNA — rules and commands from .github synced to the repo  *(manual — automation planned)*
+4. Create CLAUDE.md — enforces branch policy for AI coding assistants
+5. Configure branch protection on main
+6. Verify — all declared scripts pass
+
+Steps marked manual must be completed by the user.
+```
 
 ---
 
