@@ -14,6 +14,8 @@ Claude Code slash commands. Invoked by typing `/` in Claude Code — commands wi
 | `/dna:command-workbench` | Maintain structural integrity of all command files |
 | `/dna:memory` | Cross-session state for the DNA workbench (not user-invocable) |
 | `/dna:workbench` | Author, maintain, and audit NXD identity strands and the rule network |
+| `/dev:figma` | Register the repo-to-Figma project link |
+| `/review` | Perspective-based document review — DoD gate for document-creating stewards |
 | `/review-issue` | Review a Jira issue against NXD rules and flag gaps |
 | `/spec-workbench` | Receive, challenge, scan, transition, and query component specs |
 | `/waste` | Log and fix recurring waste patterns in .claude-waste/ |
