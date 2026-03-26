@@ -15,8 +15,23 @@ Owns first-clone readiness from empty repo to development-ready.
 
 ## Services
 
+- **Types** — display available repo types to help choose before creating
 - **Create** — scaffold a new repo to first-clone ready state
 - **Verify** — confirm readiness after DNA distribution
+
+## Session preamble
+
+After crash recovery, print exactly:
+
+```
+What would you like to do?
+
+1. Types — display available repo types
+2. Create — scaffold a new repo
+3. Verify — confirm readiness after DNA distribution
+```
+
+Do not display repo types or any other content at startup. Wait for the user to choose.
 
 ---
 
@@ -28,11 +43,11 @@ Available repo types. Currently one type is defined — the monorepo. New types 
 
 ### Monorepo
 
-A single repo hosting multiple apps, services, and shared packages.
+A single repo hosting multiple apps (FE), services (BE), and shared packages (framework).
 
 **Choose this when** the product spans multiple apps or services that share code and evolve together.
 
-**Structure** — apps (FE), services (BE), shared packages (framework):
+**Structure** — apps, services, shared packages:
 - `apps/<name>/` — React + Vite + TypeScript + Tailwind
 - `services/<name>/` — Node.js + TypeScript
 - `packages/<product>/<package>/` — grouped by product
@@ -61,6 +76,34 @@ A repo is bootstrap-ready when:
 - [ ] ESLint config exists and all required plugins are installed
 - [ ] `.env.example` documents every required env var
 - [ ] No script references a missing dependency or config file
+
+---
+
+# Types
+
+Print the repo types from Foundation using this exact format — no deviation:
+
+```
+Repo Types
+
+<Type name>
+
+<Description>
+
+Choose this when <criterion>.
+
+Structure:
+<path>    <stack>
+...
+
+What it enables:
+- <point>
+...
+```
+
+Repeat the block above for each type, separated by `---`. After the last type, add a blank line followed by:
+
+`Currently one type is formally adopted. Additional types are added here when formally approved.`
 
 ---
 
