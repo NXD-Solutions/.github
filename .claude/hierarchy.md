@@ -29,6 +29,11 @@
     - [Repo references](rules/github/github-workflow.md#repo-references) — Rule
   - **[Write for the widest audience first](rules/core/principles.md#write-for-the-widest-audience-first)** — Principle
     - [Proposals and options](rules/core/ai-human-conventions.md#proposals-and-options) — Rule
+  - **[Every communicative artefact serves the reader's context — not the system's structure](rules/core/principles.md#every-communicative-artefact-serves-the-readers-context--not-the-systems-structure)** — Principle
+    - [Define Audience before writing](rules/core/communication.md#define-audience-before-writing) — Rule
+    - [Define Topic before writing](rules/core/communication.md#define-topic-before-writing) — Rule
+    - [Define Trigger before writing](rules/core/communication.md#define-trigger-before-writing) — Rule
+    - [Reader-need filter](rules/core/communication.md#reader-need-filter) — Rule
   - **[Shared language](rules/core/principles.md#shared-language)** — Principle
     - [Glossary](rules/core/glossary.md) — Rule
 ---
