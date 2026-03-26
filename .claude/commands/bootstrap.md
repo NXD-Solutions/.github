@@ -22,6 +22,29 @@ Owns first-clone readiness from empty repo to development-ready.
 
 # Foundation
 
+## Repo types
+
+Available repo types. Currently one type is defined — the monorepo. New types are added here when formally adopted.
+
+### Monorepo
+
+A single repo hosting multiple apps, services, and shared packages.
+
+**Choose this when** the product spans multiple apps or services that share code and evolve together.
+
+**Structure** — apps (FE), services (BE), shared packages (framework):
+- `apps/<name>/` — React + Vite + TypeScript + Tailwind
+- `services/<name>/` — Node.js + TypeScript
+- `packages/<product>/<package>/` — grouped by product
+- `infra/` — root-level dev infrastructure only
+
+**What it enables:**
+- Multiple apps and services developed and versioned together
+- Shared packages without cross-repo dependencies
+- Unified tooling and consistent standards across the codebase
+
+---
+
 ## Invariant
 
 Every script declared in `package.json` must pass after `git clone` + `npm install` + documented env setup. A script that has never successfully run must not exist.
