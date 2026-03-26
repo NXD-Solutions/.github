@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 6 * * 1'
   workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Target repo (org/repo) — leave empty to sync all repos'
+        required: false
+        type: string
 
 jobs:
   preflight:
@@ -38,40 +43,52 @@ jobs:
         id: build
         env:
           GH_TOKEN: ${{ secrets.REPOS_PAT }}
+          TARGET_REPO: ${{ inputs.repo }}
         run: |
           output=$(python3 -c "
-          import yaml, json, subprocess
+          import yaml, json, subprocess, os
 
           with open('.github/claude-rules-overrides.yml') as f:
             config = yaml.safe_load(f) or {}
           overrides = config.get('overrides') or {}
 
-          result = subprocess.run(
-            ['gh', 'api', 'orgs/NXD-Solutions/repos', '--paginate', '--jq', '.[].full_name'],
-            capture_output=True, text=True
-          )
-          repos = [r.strip() for r in result.stdout.strip().splitlines() if r.strip()]
+          target = os.environ.get('TARGET_REPO', '').strip()
 
-          include = []
-          excluded = 0
-          for repo in repos:
-            override = overrides.get(repo, {})
-            if override.get('exclude'):
-              excluded += 1
-              continue
+          if target:
+            override = overrides.get(target, {})
             role = override.get('role', 'Developer')
-            include.append({'repo': repo, 'role': role})
+            include = [{'repo': target, 'role': role}]
+            print(json.dumps({'matrix': {'include': include}, 'total': 1, 'excluded': 0, 'targeted': True}))
+          else:
+            result = subprocess.run(
+              ['gh', 'api', 'orgs/NXD-Solutions/repos', '--paginate', '--jq', '.[].full_name'],
+              capture_output=True, text=True
+            )
+            repos = [r.strip() for r in result.stdout.strip().splitlines() if r.strip()]
 
-          print(json.dumps({'matrix': {'include': include}, 'total': len(repos), 'excluded': excluded}))
+            include = []
+            excluded = 0
+            for repo in repos:
+              override = overrides.get(repo, {})
+              if override.get('exclude'):
+                excluded += 1
+                continue
+              role = override.get('role', 'Developer')
+              include.append({'repo': repo, 'role': role})
+
+            print(json.dumps({'matrix': {'include': include}, 'total': len(repos), 'excluded': excluded, 'targeted': False}))
           ")
           matrix=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(d['matrix']))")
           total=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['total'])")
           excluded=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['excluded'])")
+          targeted=$(echo "$output" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['targeted'])")
           subscribers=$((total - excluded))
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-          {
-            echo "**Subscribers:** $subscribers repos queued for sync ($excluded excluded by overrides — see \`.github/claude-rules-overrides.yml\`)"
-          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$targeted" = "True" ]; then
+            echo "**Target:** \`${{ inputs.repo }}\` (single-repo run)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "**Subscribers:** $subscribers repos queued for sync ($excluded excluded by overrides — see \`.github/claude-rules-overrides.yml\`)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   sync:
     needs: load-subscribers
