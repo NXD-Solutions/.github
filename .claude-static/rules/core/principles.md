@@ -127,6 +127,10 @@ We challenge before we commit — not after. The work of challenge ends at convi
 
 ## Pattern-seeking by Instinct
 
+### What holds for one holds for many — uniqueness requires justification
+
+What holds for one holds for many — uniqueness requires justification.
+
 ### Find the pattern, not the instance
 
 Before writing, designing, or choosing, find the most general form that holds.

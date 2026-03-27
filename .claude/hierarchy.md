@@ -65,6 +65,7 @@
     - [Conviction at task transitions](rules/claude-code/task-management.md#conviction-at-task-transitions) — Rule
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
+  - **[What holds for one holds for many — uniqueness requires justification](rules/core/principles.md#what-holds-for-one-holds-for-many--uniqueness-requires-justification)** — Principle
   - **[Find the pattern, not the instance](rules/core/principles.md#find-the-pattern-not-the-instance)** — Principle
   - **[Scope fitness (Architectural Thinking)](rules/core/principles.md#scope-fitness-architectural-thinking)** — Principle
 
