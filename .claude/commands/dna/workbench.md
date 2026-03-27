@@ -15,6 +15,7 @@ Maintains the DNA, its hierarchy, and their integrity. Manages content subscribe
 - **Decision records** — `.claude-decision-records/<rules-path>/<item-name>.md` for any strand or principle change
 - **Cross-session state** — `.claude/commands/dna/memory.md`
 - **Content subscribers** — Confluence page 46661643 (hierarchy mirror), Confluence page 45121554 (DNA Extract for claude.ai)
+- **Confluence explanation** — Confluence pages under (64913411), mirroring `rules/` structure; one sub-page per rules file
 
 ## Services
 
@@ -54,6 +55,7 @@ A complete unit of work for the DNA Workbench includes all applicable items:
 - Decision record (when a principle or strand is added or changed)
 - On rename: rename the test file (`.claude-test/`) and decision record (`.claude-decision-records/`) to match — both use the item name as filename
 - Confluence sync — Target 1 (hierarchy page 46661643) and/or Target 2 (DNA Extract page 45121554)
+- Confluence explanation page (when a new item is added — see # Confluence Explanation)
 - Mermaid diagram update (`dna-diagram-test.md`)
 - `rules/README.md` table update (when a new rules file is added)
 
@@ -260,11 +262,13 @@ Invoked as `/dna:workbench sync` or triggered after any Author, Rework, or Fix o
 **Subscription:** `rules/core/*.md` — page subscribes to the core folder. Any change to a file in `rules/core/` triggers a sync.
 
 **Section mapping** (current contributors and their target sections):
+- `core/constitution.md` → `# Constitution`
 - `core/dna.md` → `# DNA Strands`
 - `core/principles.md` → `# Principles`
 - `core/glossary.md` → `# Glossary`
 - `core/roles.md` → `# Roles`
 - `core/ai-human-conventions.md` → `# AI-Human Conventions`
+- `core/communication.md` → `# Communication`
 - `core/decision-log-extract.gen.md` → `# Binding Architectural Decisions`
 
 **Trigger:** any file under `rules/core/` changes.
@@ -277,3 +281,37 @@ Invoked as `/dna:workbench sync` or triggered after any Author, Rework, or Fix o
 5. Write the updated page using `mcp__atlassian__updateConfluencePage` with `contentFormat: "markdown"`
 
 Can be run at any time — does not require a GitHub change to trigger.
+---
+
+# Confluence Explanation
+
+Creates a human-readable explanation sub-page whenever a new item is added to the rule network. Mirrors the GitHub `rules/` structure.
+
+## Standing meta-definitions
+
+- **Audience:** Any NXD practitioner — developer, architect, or AI assistant — who encounters this item in the hierarchy and needs to understand it before applying, challenging, or extending it.
+- **Topic:** The item itself — what it is, what it governs, and where it lives in the network.
+- **Trigger:** The item's name appeared in a hierarchy, a rule, or a conversation, and the name alone is insufficient to act on.
+
+## Structure mirror
+
+`rules/<folder>/<file>.md` maps to:
+(64913411) → `<folder>` page → `<file>` explanation page
+
+Before creating: check descendants of (64913411) for an existing `<folder>` page. If absent, create it first (empty body, title = folder name capitalised).
+
+Known folder pages:
+- `core/` → (65798145)
+
+## Page structure
+
+Every explanation page follows:
+
+1. What it says — the exact text of the item
+2. What it means — operational consequences
+3. Why it exists — the problem it solves
+4. Where it lives — position in the hierarchy and source file path
+
+## Trigger
+
+Fires as part of the Author work package, after the item is committed to the branch.
