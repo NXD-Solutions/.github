@@ -131,6 +131,10 @@ We challenge before we commit — not after. The work of challenge ends at convi
 
 What holds for one holds for many — uniqueness requires justification.
 
+### A misfit is a signal — redesign the container or create one
+
+A misfit is a signal — redesign the container or create one.
+
 ### Find the pattern, not the instance
 
 Before writing, designing, or choosing, find the most general form that holds.

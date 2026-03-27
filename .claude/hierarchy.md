@@ -66,6 +66,7 @@
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[What holds for one holds for many — uniqueness requires justification](rules/core/principles.md#what-holds-for-one-holds-for-many--uniqueness-requires-justification)** — Principle
+  - **[A misfit is a signal — redesign the container or create one](rules/core/principles.md#a-misfit-is-a-signal--redesign-the-container-or-create-one)** — Principle
   - **[Find the pattern, not the instance](rules/core/principles.md#find-the-pattern-not-the-instance)** — Principle
   - **[Scope fitness (Architectural Thinking)](rules/core/principles.md#scope-fitness-architectural-thinking)** — Principle
 
