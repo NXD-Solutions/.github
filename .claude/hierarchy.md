@@ -4,6 +4,12 @@
 
 ---
 
+# Constitution
+
+- **[The DNA governs by what is true, not by what is stated](rules/core/constitution.md#constitution)** — Constitutional clause
+
+---
+
 # Culture
 
 - **[Transparent by Nature](rules/core/dna.md#transparent-by-nature)** — Strand

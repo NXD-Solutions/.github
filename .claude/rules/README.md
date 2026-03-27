@@ -42,6 +42,7 @@ Identity and cross-cutting rules — universal, applies to everyone.
 | --- | --- | --- |
 | `core/ai-human-conventions.md` | | |
 | `core/communication.md` | | Confluence page needed |
+| `core/constitution.md` | | Confluence page needed |
 | `core/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
 | `core/dna.md` | | |
 | `core/glossary.md` | | Confluence page needed |
