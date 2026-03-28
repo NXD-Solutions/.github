@@ -17,3 +17,7 @@ What situation brought this reader here right now? The trigger determines what c
 ## Reader-need filter
 
 Before publishing any paragraph: does this paragraph exist because the reader needs it, or because the system produces it? If the latter — exclude it.
+
+## Evidence serves the reader, not the author
+
+Two thresholds size evidence: comprehension — enough for the reader to form a mental model of the claim; challenge — enough for a sceptical reader to evaluate and push back. Below comprehension, the claim is unverifiable. Above challenge, the excess is noise.
