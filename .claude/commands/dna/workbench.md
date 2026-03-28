@@ -94,6 +94,7 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When writing duty statements, name the invariant, not the instance. "Manages content subscribers" not "maintains two Confluence pages." The invariant survives when instances change.
 - A question is not counter-evidence. When conviction is built and a question arrives ("Was it proposed as X?"), evaluate whether it introduces new information that undermines the reasoning. If it doesn't, hold the position. Folding under a question that restates what was already known is a conviction failure — the same failure mode "Challenge until conviction" exists to prevent.
 - When related concerns belong to different strands, connect them through vocabulary, not structure. A glossary definition can bind duties that are each governed by their own principle or rule — no monolithic parent principle needed. The glossary carries the relationship; each item stays under the strand that fits it best. Validated with Steward's four obligations (protect, implement, route, evaluate) — each maps to a different principle/rule under a different strand, unified by the Steward definition.
+- When a principle lists alternatives, order them by priority — the sequence encodes preference without needing explicit language. "Redesign or create" reads as "try redesign first." Least effort comes first; the reader gets the priority for free.
 
 ## Self-improvement gate
 
