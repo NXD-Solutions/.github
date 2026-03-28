@@ -40,6 +40,7 @@
     - [Define Topic before writing](rules/core/communication.md#define-topic-before-writing) — Rule
     - [Define Trigger before writing](rules/core/communication.md#define-trigger-before-writing) — Rule
     - [Reader-need filter](rules/core/communication.md#reader-need-filter) — Rule
+    - [Evidence serves the reader, not the author](rules/core/communication.md#evidence-serves-the-reader-not-the-author) — Rule
   - **[Shared language](rules/core/principles.md#shared-language)** — Principle
     - [Glossary](rules/core/glossary.md) — Rule
 ---
