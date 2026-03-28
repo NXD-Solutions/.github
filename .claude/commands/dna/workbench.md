@@ -85,7 +85,6 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When a solution is proposed without a stated goal, surface the goal first. Without it, intent is invisible and the solution cannot be evaluated or challenged.
 - A stated goal opens the solution space upward — the immediate solution often reveals itself as a subset of something broader. Example: "per-workflow token reporting" became "org-wide spend visibility" once the goal (cost management) was named. Solution-first thinking blocked the generalisation; goal-first thinking enabled it.
 - Conviction on structure is not conviction on a specific file — confirm scope explicitly before touching files. Show the proposed change before writing it.
-- A counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a recognisable failure mode. The test isn't "does the mechanism have flaws" — it's "does the insight survive the flaws being fixed."
 - When naming a discipline-type principle, use the template `<Action> <Item> for <Invariant Value>` — the name carries the why, not just the what. Example: "Record decisions to avoid repeating work." Does not apply to principles that name an instinct or a stance (e.g. "Challenge until conviction"). Apply when touching a discipline, not as a bulk rework.
 - When asked "do we need a DR?", surface the evaluation — don't collapse it into an answer. The question is an invitation to reason together. State each criterion (non-obvious reasoning? future reversal risk?) and which applies before concluding.
 - When proposing or evaluating a definition, search recursively for the parent invariant — the reason the current invariant holds. Name the highest invariant that still belongs at the current abstraction level. Stop when the next level up either restates the term itself or falls below the abstraction floor of the scope. A definition that names a child invariant forces the reader to reconstruct the parent; naming the parent makes the child derivable.
@@ -96,6 +95,13 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When related concerns belong to different strands, connect them through vocabulary, not structure. A glossary definition can bind duties that are each governed by their own principle or rule — no monolithic parent principle needed. The glossary carries the relationship; each item stays under the strand that fits it best. Validated with Steward's four obligations (protect, implement, route, evaluate) — each maps to a different principle/rule under a different strand, unified by the Steward definition.
 - When a principle lists alternatives, order them by priority — the sequence encodes preference without needing explicit language. "Redesign or create" reads as "try redesign first." The ordering is an active decision: sometimes lean drives it (redesign before create), sometimes quality drives it (create before patch). State the order deliberately; the reader gets the priority for free.
 - If meta provides flexibility or uniformity, go meta. Flexibility and uniformity are the signals that abstraction compressed without losing precision. When meta adds neither, it is over-engineering.
+
+## Authoring lenses
+
+Reusable quality tests applied when constructing or reviewing principles and rules. Graduated from patterns learned when proven across multiple authoring sessions.
+
+- **Predict the next question and answer it** — if the reader's next question is predictable, the answer is already present. Applied when sizing evidence, ordering content, and testing whether a rule leaves gaps.
+- **Test the insight, not the mechanism** — a counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a failure mode. The test: does the insight survive the flaws being fixed?
 
 ## Self-improvement gate
 
