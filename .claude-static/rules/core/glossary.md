@@ -80,7 +80,7 @@ The individual principles exist independently. This term names the discipline of
 
 ## Change Request
 
-A named artefact proposing a change to an artefact. Contains a finding — what problem was encountered — and a proposed change. The input to a deliberation; distinct from a Decision Record, which is the output.
+A named artefact proposing a change to an artefact. Contains: a **finding** (what problem was encountered), the **trigger** (what situation surfaced it), the **consequence** (what goes wrong if nothing changes), and a **proposed change**. The input to a deliberation; distinct from a Decision Record, which is the output.
 
 ## Perspective
 
