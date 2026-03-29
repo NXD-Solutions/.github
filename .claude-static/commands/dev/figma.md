@@ -198,13 +198,19 @@ Every form component must carry this block as the first JSDoc comment:
 
 Creates or updates `screens.json` for a `.figma/` folder.
 
+## Project selection
+
+1. Discover all `.figma/project.json` files in the repo
+2. If one — run it, no prompt
+3. If multiple — list them with project names, ask which to check (or "all")
+
 ## Run
 
 ```bash
-FIGMA_TOKEN=<token> node .claude/scripts/figma-index.cjs apps/<name>/.figma
+FIGMA_TOKEN=<token> node .claude/scripts/figma-index.cjs <selected-path>
 ```
 
-Requires `FIGMA_TOKEN` env var (Figma personal access token).
+Where `<selected-path>` is resolved by Project selection above. Requires `FIGMA_TOKEN` env var (Figma personal access token).
 
 ## What it does
 
