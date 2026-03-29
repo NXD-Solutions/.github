@@ -8,6 +8,9 @@ Scope registry and shared identity for all command stewards.
 
 Every command steward maintains their own entry in the registry below. When your scope changes — new files owned, files dropped, property changed — update your row before closing the session. If you are a new steward with no entry, add one.
 
+- **In `.github` repo:** update the row directly in `.claude-static/commands/STEWARDS.md` and derive to `.claude/commands/STEWARDS.md` in the same commit.
+- **In any other repo:** open a PR against `.github` with the updated row in `.claude-static/commands/STEWARDS.md` (derived copy in the same commit).
+
 Format: Steward (command name), Scope (path or path pattern), Property (what aspect is owned: content, structure, lifecycle, format).
 
 ## Network visibility
@@ -42,7 +45,8 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dev:bootstrap` | `**/package.json` (scripts) | correctness — all declared scripts must pass on first clone |
 | `dev:bootstrap` | `.claude-static/rules/dev/bootstrap.md`, `.claude/rules/dev/bootstrap.md` | content |
 | `dev:audit` | — | read-only (no owned scope) |
-| `dev:figma` | `.figma/project.json` | content, lifecycle |
+| `dev:figma` | `.figma/**` | content, lifecycle |
+| `dev:figma` | `.claude/scripts/figma-index.cjs` | content |
 | `review-issue` | — | read-only (no owned scope) |
 | `claude-librarian` | Confluence page 46661650 + children | structure, standards, quality reviews |
 | `spec-workbench` | `**/spec-functional.md` | content |
