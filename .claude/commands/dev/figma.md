@@ -207,10 +207,10 @@ Creates or updates `screens.json` for a `.figma/` folder.
 ## Run
 
 ```bash
-FIGMA_TOKEN=<token> node .claude/scripts/figma-index.cjs <path/to/.figma>
+FIGMA_TOKEN=<token> node .claude/scripts/figma-index.cjs <selected-path>
 ```
 
-Requires `FIGMA_TOKEN` env var (Figma personal access token).
+Where `<selected-path>` is resolved by Project selection above. Requires `FIGMA_TOKEN` env var (Figma personal access token).
 
 ## What it does
 
