@@ -21,3 +21,15 @@ Before publishing any paragraph: does this paragraph exist because the reader ne
 ## Evidence serves the reader, not the author
 
 Two thresholds size evidence: comprehension — enough for the reader to form a mental model of the claim; challenge — enough for a sceptical reader to evaluate and push back. Below comprehension, the claim is unverifiable. Above challenge, the excess is noise.
+
+## Sequencing — do not present what the reader cannot yet receive
+
+An example proves a claim the reader has already seen — placed before the claim, it proves nothing. A concept lands only after the reader has the vocabulary to hold it. Place each element after its prerequisites, not after the writer's reasoning arrives at it.
+
+## Bridging — close what came before, earn what comes next
+
+A section transition that starts without connecting to what preceded it asks the reader to do the writer's work. Bridge with a sentence that closes the previous section and opens the next.
+
+## Signposting — advance the reader, do not narrate the argument
+
+Signposting that announces a contrast instead of letting it land is evidence of a sequencing failure. If the contrast needs to be named, the ground has not been built for it. Fix the sequence, not the signpost.

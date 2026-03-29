@@ -60,6 +60,10 @@ Templates enforce this — every written artefact template must be structured wi
 
 Every communicative artefact serves the reader's context — not the system's structure. Audience, trigger, and topic boundary are the organising inputs — not the system's modules, categories, or output order.
 
+### Every element earns its place by serving the reader's current position in the document
+
+Does this element belong, and is the reader ready for it? An element in the right position that doesn't belong is noise. An element that belongs but arrives before the reader can receive it is a sequencing failure.
+
 ### Shared language
 
 Build and actively use a shared glossary. Terms that carry specific meaning are defined once and used as working vocabulary — not reference material. A term left undefined is interpreted differently by every reader. A term defined but not actively used is decoration.
