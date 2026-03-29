@@ -36,4 +36,4 @@ Signposting that announces a contrast instead of letting it land is evidence of 
 
 ## Every question is an opportunity to improve the artefact
 
-A question asked against an artefact is a signal: the artefact did not prevent it. Evaluate whether the artefact already answers the question. If it does, no change is needed. If it does not, the artefact has a gap.
+A question asked against an artefact is a signal: the artefact did not prevent it. If the artefact already answers it, surface the text. If the questioner is not satisfied, the text is not working. If the artefact does not answer it, the artefact has a gap.
