@@ -33,3 +33,7 @@ A section transition that starts without connecting to what preceded it asks the
 ## Signposting — advance the reader, do not narrate the argument
 
 Signposting that announces a contrast instead of letting it land is evidence of a sequencing failure. If the contrast needs to be named, the ground has not been built for it. Fix the sequence, not the signpost.
+
+## Every question is an opportunity to improve the artefact
+
+A question asked against an artefact is a signal: the artefact did not prevent it. Evaluate whether the artefact already answers the question. If it does, no change is needed. If it does not, the artefact has a gap.

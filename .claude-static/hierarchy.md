@@ -45,6 +45,7 @@
       - [Sequencing](rules/core/communication.md#sequencing--do-not-present-what-the-reader-cannot-yet-receive) — Rule
       - [Bridging](rules/core/communication.md#bridging--close-what-came-before-earn-what-comes-next) — Rule
       - [Signposting](rules/core/communication.md#signposting--advance-the-reader-do-not-narrate-the-argument) — Rule
+    - [Every question is an opportunity to improve the artefact](rules/core/communication.md#every-question-is-an-opportunity-to-improve-the-artefact) — Rule
   - **[Shared language](rules/core/principles.md#shared-language)** — Principle
     - [Glossary](rules/core/glossary.md) — Rule
 ---
