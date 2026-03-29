@@ -23,6 +23,16 @@ mindmap
         Branch naming
       Write for the widest audience first
         Proposals and options
+      Serve the readers context
+        Define Audience
+        Define Topic
+        Define Trigger
+        Reader-need filter
+        Evidence serves the reader
+        Every element earns its place
+          Sequencing
+          Bridging
+          Signposting
       Shared language
         Glossary
     Lean by Design
