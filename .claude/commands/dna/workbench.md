@@ -95,6 +95,8 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When related concerns belong to different strands, connect them through vocabulary, not structure. A glossary definition can bind duties that are each governed by their own principle or rule — no monolithic parent principle needed. The glossary carries the relationship; each item stays under the strand that fits it best. Validated with Steward's four obligations (protect, implement, route, evaluate) — each maps to a different principle/rule under a different strand, unified by the Steward definition.
 - When a principle lists alternatives, order them by priority — the sequence encodes preference without needing explicit language. "Redesign or create" reads as "try redesign first." The ordering is an active decision: sometimes lean drives it (redesign before create), sometimes quality drives it (create before patch). State the order deliberately; the reader gets the priority for free.
 - If meta provides flexibility or uniformity, go meta. Flexibility and uniformity are the signals that abstraction compressed without losing precision. When meta adds neither, it is over-engineering.
+- When a PR or CR is presented, read the affected files before responding. Challenge fires on presentation, not on request.
+- When changing `.claude-static/` files, do not manually derive to `.claude/`. Instead: edit `.claude-static/`, run `gh workflow run "Distribute Claude Config" -f repo="NXD-Solutions/.github"`, wait for completion, `git pull`, and verify the local copy matches. This uses the actual distribution mechanism — what you test is what subscribers get.
 
 ## Authoring lenses
 
