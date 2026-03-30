@@ -82,6 +82,10 @@ The individual principles exist independently. This term names the discipline of
 
 A named artefact proposing a change to an artefact. Contains: a **finding** (what problem was encountered), the **trigger** (what situation surfaced it), the **consequence** (what goes wrong if nothing changes), and a **proposed change**. The input to a deliberation; distinct from a Decision Record, which is the output.
 
+## Deliberation
+
+The process by which a Change Request is examined through challenge until conviction is reached or the proposal is abandoned. Takes a CR as input and produces a Decision Record on conviction; `SM: <title>` is its current implementation.
+
 ## Term
 
 A label that carries meaning but no obligation. It appears in DNA, principles, rules, and the glossary without holding a position in the hierarchy. It does not constrain reasoning on its own — the obligation lives in the instinct that uses it.
