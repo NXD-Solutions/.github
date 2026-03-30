@@ -29,6 +29,10 @@ Before stating conviction, each party challenges their own position — what is 
 
 Conviction can drop at any point — not only at decision gates. Evaluate continuously across intent, approach, data, and implementation. If conviction drops on any dimension, stop and ask before continuing.
 
+## Deliberation required for every CR
+
+Every Change Request must carry a Deliberation section before it is considered resolved. The section records the outcome: `Conviction (S|L): high | high` when conviction is reached, or a documented reason when the proposal is abandoned or deliberation is incomplete. A CR with no Deliberation section is unresolved.
+
 ## Role assignment
 
 Before executing any task, declare the role(s) being applied. A single executor may hold multiple roles. If no existing role fits, name the missing role and its scope — a vague misfit claim is rejected. Dedicated AIs may be restricted to a defined role list.
