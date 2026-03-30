@@ -69,6 +69,7 @@
     - [Honesty and challenge](rules/core/ai-human-conventions.md#honesty-and-challenge) — Rule
     - [Conviction gate](rules/core/ai-human-conventions.md#conviction-gate) — Rule
     - [Conviction at task transitions](rules/claude-code/task-management.md#conviction-at-task-transitions) — Rule
+    - [Deliberation required for every CR](rules/core/ai-human-conventions.md#deliberation-required-for-every-cr) — Rule
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[What holds for one holds for many — uniqueness requires justification](rules/core/principles.md#what-holds-for-one-holds-for-many--uniqueness-requires-justification)** — Principle
