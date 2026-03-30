@@ -82,6 +82,12 @@ The individual principles exist independently. This term names the discipline of
 
 A named artefact proposing a change to an artefact. Contains: a **finding** (what problem was encountered), the **trigger** (what situation surfaced it), the **consequence** (what goes wrong if nothing changes), and a **proposed change**. The input to a deliberation; distinct from a Decision Record, which is the output.
 
+## Term
+
+A label that carries meaning but no obligation. It appears in DNA, principles, rules, and the glossary without holding a position in the hierarchy. It does not constrain reasoning on its own — the obligation lives in the instinct that uses it.
+
+A term becomes a hierarchy item when it acquires an obligation — when its meaning affects how a principle is applied.
+
 ## Perspective
 
 A lens applied at a single abstraction level that defines the units of a
