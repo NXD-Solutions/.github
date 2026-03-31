@@ -117,6 +117,14 @@
 
 ---
 
+# Policies
+
+- **[Preserve the ability to change](rules/core/policies.md#preserve-the-ability-to-change)** — Policy
+  - [No vendor lock-in](rules/core/principles.md#no-vendor-lock-in) — enforcing principle
+  - [Prefer reversible decisions](rules/core/principles.md#prefer-reversible-decisions) — enforcing principle
+
+---
+
 ## Unmapped rules
 
 Rules not yet assigned to a parent principle — workbench to resolve.

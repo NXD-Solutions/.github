@@ -133,6 +133,7 @@ If needed but not conducted, surface the gap. Write only on approval.
    - Conviction stated — was conviction declared before locking in?
    - Decision record — is the reasoning non-obvious from the diff alone, or could a future reader reasonably reverse or repeat this decision without a record? If yes to either: DR is warranted. Getting wiser about the same decision means updating the existing record, not adding a new one.
    - Distillation — apply the Rules are lossless invariant: scan every sentence for words that explain, contextualise, or repeat without constraining. Cut them; if the reasoning matters, move it to the decision record.
+   - Policy enforcement — does this principle enforce an architectural invariant in `policies.md`? If yes, add `Enforces: <policy name>` to the principle text.
 9. **PR** — create the PR; ask the user to review it
 10. **Sync** — after the PR is reviewed, run Sync mode to update Confluence pages
 

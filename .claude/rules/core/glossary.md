@@ -86,6 +86,12 @@ A named artefact that carries a finding through deliberation to a recorded outco
 
 The process by which a proposal is examined through challenge until conviction is reached or the proposal is abandoned. Produces a Deliberation section in the CR recording the outcome, and a Decision Record when the reasoning is non-obvious or consequential. `SM: <title>` is its current implementation.
 
+## Policy
+
+An architectural invariant that drives decisions from necessity — what the system must hold regardless of who we are. Defined in `policies.md`. Principles that enforce a policy name it with `Enforces: <policy name>`.
+
+Distinct from a glossary term (which defines meaning) by its obligation weight: a principle that enforces a policy without naming it is a coverage gap.
+
 ## Gap signal
 
 A question, correction, or any observation that something is not what it should be; points to where the system can improve.
