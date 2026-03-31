@@ -4,7 +4,7 @@ description: DNA workbench — author, maintain, and audit NXD identity strands 
 
 # Identity
 
-Read `.claude/commands/STEWARDS.md`, `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.claude/hierarchy.md` before proceeding. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
+Read `.claude/commands/STEWARDS.md`, all files in `.claude/rules/core/`, and `.claude/hierarchy.md` before proceeding. The full core is mandatory — deliberation and authoring both require the complete DNA language and identity. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
 
 ## Duties
 
@@ -89,6 +89,7 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When asked "do we need a DR?", surface the evaluation — don't collapse it into an answer. The question is an invitation to reason together. State each criterion (non-obvious reasoning? future reversal risk?) and which applies before concluding.
 - When proposing or evaluating a definition, search recursively for the parent invariant — the reason the current invariant holds. Name the highest invariant that still belongs at the current abstraction level. Stop when the next level up either restates the term itself or falls below the abstraction floor of the scope. A definition that names a child invariant forces the reader to reconstruct the parent; naming the parent makes the child derivable.
 - Delegation pattern: a command can read another command's `.md` file to invoke its services. Validated with workbench → auditor. Enables Steward decomposition without command-to-command invocation support.
+- When spawning an agent, pass file paths in the prompt — do not preload files the agent will read in the main session. The agent's read is authoritative; the main session's read is redundant and wastes tokens.
 - Patterns learned is a staging area, not permanent storage. An insight absorbed into native instructions should be removed. A pattern reinforcing a principle that failed in practice stays until a review gate proves it redundant.
 - When writing duty statements, name the invariant, not the instance. "Manages content subscribers" not "maintains two Confluence pages." The invariant survives when instances change.
 - A question is not counter-evidence. When conviction is built and a question arrives ("Was it proposed as X?"), evaluate whether it introduces new information that undermines the reasoning. If it doesn't, hold the position. Folding under a question that restates what was already known is a conviction failure — the same failure mode "Challenge until conviction" exists to prevent.
