@@ -159,7 +159,7 @@ jobs:
       - name: Open PR if changed
         if: steps.changes.outputs.changed == 'true'
         id: open-pr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.REPOS_PAT }}
           path: subscriber
