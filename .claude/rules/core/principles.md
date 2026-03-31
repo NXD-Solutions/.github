@@ -104,6 +104,12 @@ the minimum in a way that forecloses what comes next.
 
 Enforces: *Preserve the ability to change*
 
+### Name constraint boundaries
+
+An unnamed limit creates waste — workarounds and caveats to cover what the constraint leaves unsaid. State what the constraint governs and what it stops.
+
+The boundary: applies when writing any constraint — principle, rule, policy, or definition. Descriptive text that doesn't constrain needs no limit clause.
+
 ## Resilient by Design
 
 ### Protect assigned scope

@@ -55,6 +55,7 @@
     - [Triggers](rules/claude-code/claude-rules-system.md#triggers) — Rule
     - [One open PR at a time](rules/github/github-workflow.md#one-open-pr-at-a-time-per-user) — Rule
   - **[Start lean, don't close the door](rules/core/principles.md#start-lean-dont-close-the-door)** — Principle
+  - **[Name constraint boundaries](rules/core/principles.md#name-constraint-boundaries)** — Principle
 ---
 - **[Resilient by Design](rules/core/dna.md#resilient-by-design)** — Strand
   - **[Protect assigned scope](rules/core/principles.md#protect-assigned-scope)** — Principle
