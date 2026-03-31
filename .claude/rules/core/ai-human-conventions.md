@@ -33,6 +33,26 @@ Conviction can drop at any point — not only at decision gates. Evaluate contin
 
 Every Change Request must carry a Deliberation section before it is considered resolved. The section records the outcome: `Conviction (S|L): high | high` when conviction is reached, or a documented reason when the proposal is abandoned or deliberation is incomplete. A CR with no Deliberation section is unresolved.
 
+## CR execution gate — deliberation package travels to implementation
+
+A CR does not proceed to implementation until deliberation is complete and conviction is declared (see *Conviction gate* and *Deliberation required for every CR*). Conviction is the gate to producing the post-deliberation package; no package means no implementation.
+
+**Post-deliberation package** — the named artefact that carries deliberation to implementation. It is the CR document itself with two additions appended:
+
+1. **Deliberation section** — records the conviction declaration or documented abandonment
+2. **Implementation notes block** — records what the implementor must hold during execution
+
+Both parts are required; neither is optional even when one is thin. The package is the CR file itself — not a separate document.
+
+**Implementation notes minimum schema** — each entry carries:
+- **Constraint** — what must hold during implementation
+- **Origin** — the deliberation exchange or challenge that produced it
+- **Nature** — `binding` (cannot deviate without re-deliberation) or `preferred` (default unless justified)
+
+The implementation agent receives the post-deliberation package — not the original CR. This is the current implementation for agent-assisted CR execution; the invariant (deliberation produces a continuity artefact that travels to implementation) holds regardless of whether agents are involved.
+
+If conviction is not reached, the CR is revised and re-deliberated, or abandoned with documented reason. Implementation does not proceed.
+
 ## Role assignment
 
 Before executing any task, declare the role(s) being applied. A single executor may hold multiple roles. If no existing role fits, name the missing role and its scope — a vague misfit claim is rejected. Dedicated AIs may be restricted to a defined role list.

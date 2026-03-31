@@ -70,6 +70,7 @@
     - [Conviction gate](rules/core/ai-human-conventions.md#conviction-gate) — Rule
     - [Conviction at task transitions](rules/claude-code/task-management.md#conviction-at-task-transitions) — Rule
     - [Deliberation required for every CR](rules/core/ai-human-conventions.md#deliberation-required-for-every-cr) — Rule
+    - [CR execution gate — deliberation package travels to implementation](rules/core/ai-human-conventions.md#cr-execution-gate--deliberation-package-travels-to-implementation) — Rule
   - **[Every gap signal is an improvement trigger](rules/core/principles.md#every-gap-signal-is-an-improvement-trigger)** — Principle
     - [Every question is an opportunity to improve the artefact](rules/core/communication.md#every-question-is-an-opportunity-to-improve-the-artefact) — Rule
     - [Every correction is an opportunity to improve the process](rules/core/ai-human-conventions.md#every-correction-is-an-opportunity-to-improve-the-process) — Rule
