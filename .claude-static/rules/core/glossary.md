@@ -86,6 +86,10 @@ A named artefact that carries a finding through deliberation to a recorded outco
 
 The process by which a proposal is examined through challenge until conviction is reached or the proposal is abandoned. Produces a Deliberation section in the CR recording the outcome, and a Decision Record when the reasoning is non-obvious or consequential. `SM: <title>` is its current implementation.
 
+## Gap signal
+
+A question, correction, or any observation that something is not what it should be; points to where the system can improve.
+
 ## Term
 
 A label that carries meaning but no obligation. It appears in DNA, principles, rules, and the glossary without holding a position in the hierarchy. It does not constrain reasoning on its own — the obligation lives in the instinct that uses it.
