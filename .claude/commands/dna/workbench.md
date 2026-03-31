@@ -19,13 +19,14 @@ Maintains the DNA, its hierarchy, and their integrity. Manages content subscribe
 
 ## Services
 
-This skill offers five modes — state which you want, or ask and Claude will clarify:
+This skill offers six modes — state which you want, or ask and Claude will clarify:
 
 - **Author** — identify, challenge, draft, and lock in a new DNA strand or derived principle
 - **Audit** — delegate to the auditor: read `.claude/commands/dna/auditor.md` and execute its audit
 - **Rework** — revise a specific existing rule; reads decision record and test file as constraints before any changes are proposed
 - **Fix** — repair a failing PR; resolves broken hierarchy references and commits the fix to the PR branch
 - **Sync** — update Confluence pages to reflect the current state of managed content; run after the PR has been reviewed, or at any time on explicit request
+- **Self-maintain** — apply the DNA fitness lens to `workbench.md` itself; scan for stale, absorbed, or drifted content and present findings for approval
 
 ---
 
@@ -112,6 +113,7 @@ Before closing a session, ask:
 
 1. **Was self-improvement needed this session?** — Did the session produce a new insight, pattern, mistake, or DR-worthy decision?
 2. **If yes — was it conducted?** — Was the insight captured (patterns learned, DR, glossary) or left unrecorded?
+3. **Was a self-maintenance scan indicated this session?** — Was an Author or Rework session completed, making a Self-maintain scan appropriate?
 
 If needed but not conducted, surface the gap. Write only on approval.
 
@@ -327,3 +329,52 @@ Every explanation page follows:
 ## Trigger
 
 Fires as part of the Author work package, after the item is committed to the branch.
+
+---
+
+# Self-maintain
+
+Applies the DNA fitness lens to `workbench.md` itself. Triggered after any Author or Rework session, or on explicit request.
+
+**Scope:** `workbench.md` only. `dna:command-workbench` owns form; this duty owns content fitness.
+
+**Output:** findings list presented to user. No edits without approval.
+
+## Scan areas
+
+### 1. Patterns learned
+
+For each entry in `## Patterns learned`: is the substance absent from all native sections (Identity, Foundation, and H1 duty sections)?
+
+- **Pass:** the entry adds something not present verbatim or by close paraphrase elsewhere in the file.
+- **Fail:** the entry has been absorbed into native instructions. Flag for removal.
+
+Comparison is semantic — close paraphrase counts as absorbed even when wording differs.
+
+### 2. Authoring lenses
+
+For each entry in `## Authoring lenses`: does it map to at least one named principle in `principles.md`?
+
+- **Pass:** a named principle covers the lens.
+- **Fail:** no named principle covers it. Flag — route to principles or remove.
+
+### 3. Mandatory read list
+
+Does the startup read list in `# Identity` cover every service mode listed in `## Services`?
+
+- **Pass:** every mode is represented by at least one file the startup read enables.
+- **Fail:** a mode requires knowledge not covered by the startup read list. Flag — update the read list.
+
+### 4. Duties list
+
+For each duty listed under `## Duties`: does a corresponding H1 section exist in this file?
+
+- **Pass:** the H1 section exists.
+- **Fail:** the duty has no H1 section and no H1 section covers it. Flag — add the section or remove the duty.
+
+### 5. Foundation invariants
+
+For each invariant in `## Invariants`: does it contradict or has it been superseded by a current principle in `principles.md`?
+
+- **Pass:** the invariant is consistent with current principles.
+- **Fail:** contradiction or supersession detected. Flag for deliberation — do not remove without bilateral conviction.
