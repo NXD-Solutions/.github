@@ -14,6 +14,7 @@ Rules for Claude Code tools and meta-behaviour.
 | `claude-code/labels.md` | | Confluence page needed |
 | `claude-code/task-management.md` | | Confluence page needed |
 | `claude-code/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
+| `claude-code/corrections.md` | | Confluence page needed |
 
 ## confluence/
 
