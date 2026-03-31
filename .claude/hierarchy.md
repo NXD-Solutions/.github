@@ -54,6 +54,7 @@
   - **[Prefer enforcement over documentation](rules/core/principles.md#prefer-enforcement-over-documentation)** — Principle
     - [Triggers](rules/claude-code/claude-rules-system.md#triggers) — Rule
     - [One open PR at a time](rules/github/github-workflow.md#one-open-pr-at-a-time-per-user) — Rule
+  - **[Start lean, don't close the door](rules/core/principles.md#start-lean-dont-close-the-door)** — Principle
 ---
 - **[Resilient by Design](rules/core/dna.md#resilient-by-design)** — Strand
   - **[Protect assigned scope](rules/core/principles.md#protect-assigned-scope)** — Principle
@@ -122,6 +123,7 @@
 - **[Preserve the ability to change](rules/core/policies.md#preserve-the-ability-to-change)** — Policy
   - [No vendor lock-in](rules/core/principles.md#no-vendor-lock-in) — enforcing principle
   - [Prefer reversible decisions](rules/core/principles.md#prefer-reversible-decisions) — enforcing principle
+  - [Start lean, don't close the door](rules/core/principles.md#start-lean-dont-close-the-door) — enforcing principle
 
 ---
 

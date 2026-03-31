@@ -97,6 +97,13 @@ Enforcement has levels — prefer the strongest that is feasible:
 
 Always apply the highest feasible level. Challenge any proposal that doesn't.
 
+### Start lean, don't close the door
+
+Begin with the minimum that serves the current need. Do not design
+the minimum in a way that forecloses what comes next.
+
+Enforces: *Preserve the ability to change*
+
 ## Resilient by Design
 
 ### Protect assigned scope
