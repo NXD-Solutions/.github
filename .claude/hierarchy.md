@@ -72,6 +72,7 @@
   - **[Every gap signal is an improvement trigger](rules/core/principles.md#every-gap-signal-is-an-improvement-trigger)** — Principle
     - [Every question is an opportunity to improve the artefact](rules/core/communication.md#every-question-is-an-opportunity-to-improve-the-artefact) — Rule
     - [Every correction is an opportunity to improve the process](rules/core/ai-human-conventions.md#every-correction-is-an-opportunity-to-improve-the-process) — Rule
+      - [Corrections](rules/claude-code/corrections.md) — Rule
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[What holds for one holds for many — uniqueness requires justification](rules/core/principles.md#what-holds-for-one-holds-for-many--uniqueness-requires-justification)** — Principle
