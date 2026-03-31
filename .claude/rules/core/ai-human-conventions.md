@@ -47,6 +47,10 @@ Found a gap — surface it to the domain owner. Do not act on it. If no owner ca
 
 Proposals and explanations should be as short as possible while remaining complete. Do not pad with preamble or restate what the user said.
 
+## Every correction is an opportunity to improve the process
+
+A correction made during any session is a signal: the process did not prevent it. Capture it — the pattern across corrections reveals the improvement the process needs.
+
 ## Shorthand
 
 - **~** — approximate intent; the user is expressing an idea loosely, not dictating exact wording. Interpret and phrase it appropriately.

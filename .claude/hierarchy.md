@@ -45,7 +45,6 @@
       - [Sequencing](rules/core/communication.md#sequencing--do-not-present-what-the-reader-cannot-yet-receive) — Rule
       - [Bridging](rules/core/communication.md#bridging--close-what-came-before-earn-what-comes-next) — Rule
       - [Signposting](rules/core/communication.md#signposting--advance-the-reader-do-not-narrate-the-argument) — Rule
-    - [Every question is an opportunity to improve the artefact](rules/core/communication.md#every-question-is-an-opportunity-to-improve-the-artefact) — Rule
   - **[Shared language](rules/core/principles.md#shared-language)** — Principle
     - [Glossary](rules/core/glossary.md) — Rule
 ---
@@ -70,6 +69,9 @@
     - [Conviction gate](rules/core/ai-human-conventions.md#conviction-gate) — Rule
     - [Conviction at task transitions](rules/claude-code/task-management.md#conviction-at-task-transitions) — Rule
     - [Deliberation required for every CR](rules/core/ai-human-conventions.md#deliberation-required-for-every-cr) — Rule
+  - **[Every gap signal is an improvement trigger](rules/core/principles.md#every-gap-signal-is-an-improvement-trigger)** — Principle
+    - [Every question is an opportunity to improve the artefact](rules/core/communication.md#every-question-is-an-opportunity-to-improve-the-artefact) — Rule
+    - [Every correction is an opportunity to improve the process](rules/core/ai-human-conventions.md#every-correction-is-an-opportunity-to-improve-the-process) — Rule
 ---
 - **[Pattern-seeking by Instinct](rules/core/dna.md#pattern-seeking-by-instinct)** — Strand
   - **[What holds for one holds for many — uniqueness requires justification](rules/core/principles.md#what-holds-for-one-holds-for-many--uniqueness-requires-justification)** — Principle

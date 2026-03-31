@@ -129,6 +129,10 @@ Applied to:
 
 We challenge before we commit — not after. The work of challenge ends at conviction: short and long term. What follows is execution.
 
+### Every gap signal is an improvement trigger
+
+A gap signal — a question, a correction, or any observation that something is not what it should be — points to where the system can improve. Route each signal to where the gap lives. If no home exists, that absence is itself a gap: create the home.
+
 ## Pattern-seeking by Instinct
 
 ### What holds for one holds for many — uniqueness requires justification
