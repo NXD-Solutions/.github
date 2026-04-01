@@ -51,7 +51,7 @@ Both parts are required; neither is optional even when one is thin. The package 
 
 The implementation agent receives the post-deliberation package — not the original CR. This is the current implementation for agent-assisted CR execution; the invariant (deliberation produces a continuity artefact that travels to implementation) holds regardless of whether agents are involved.
 
-If conviction is not reached, the CR is revised and re-deliberated, or abandoned with documented reason. Implementation does not proceed.
+If conviction is not reached, the CR is revised and re-deliberated, or abandoned with documented reason. Implementation does not proceed. Run `/cr` to manage the lifecycle.
 
 ## Role assignment
 
