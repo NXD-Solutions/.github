@@ -29,7 +29,7 @@ Any written output whose primary purpose is to convey meaning to a human reader,
 
 ## Decision record
 
-A written record of a significant decision: what triggered it, what was decided, why, and with what conviction. Stored in `.claude-decision-records/`. The artefact produced by a `Decision:` label.
+A written record of a significant decision: what triggered it, what was decided, why, and with what conviction. Stored in `.claude-decision-records/`. The artefact produced by a `Decision:` label. When writing a DR, invoke `/dr`.
 
 ## Framework
 
