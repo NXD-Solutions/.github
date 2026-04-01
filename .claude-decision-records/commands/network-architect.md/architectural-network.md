@@ -19,6 +19,13 @@ files directly but are not required to.
 **Alternatives considered:** JSON/YAML schema (rejected — tooling overhead outweighs
 benefit at this stage; format is volatile early); human-authored markdown without a skill
 gate (rejected — no vocabulary enforcement, humans would be required to know the format)
+**Update (2026-04-01):** The initial vocabulary (Process, Trigger, DataFetch) was
+revised through use. DataFetch was replaced by two contract nodes — DataFetchAdapter
+and HandoverAdapter — reflecting the core insight that Fetch and Handover are
+pluggable interfaces, not implementations. The Process is the invariant framework
+logic; customer repos implement the adapters. The network declares contracts, not
+data sources. Network invariants were added to enable correctness validation.
+
 **Conviction:** Peter: high | Claude: high (S|L)
 **Value:** Correctness — AI derives code from structure, not interpretation; waste
 eliminated — no ambiguity gap between business intent and BE implementation;
