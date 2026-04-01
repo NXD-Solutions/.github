@@ -97,6 +97,8 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - If meta provides flexibility or uniformity, go meta. Flexibility and uniformity are the signals that abstraction compressed without losing precision. When meta adds neither, it is over-engineering.
 - When a PR or CR is presented, read the affected files before responding. Challenge fires on presentation, not on request.
 - When changing `.claude-static/` files, do not manually derive to `.claude/`. Instead: edit `.claude-static/`, run `gh workflow run "Distribute Claude Config" -f repo="NXD-Solutions/.github"`, wait for completion, `git pull`, and verify the local copy matches. This uses the actual distribution mechanism — what you test is what subscribers get.
+- When lifting an item to its correct abstraction level, apply the mechanic: strip mechanism, name invariant, check whether it maps to an existing parent, lift, terminate. Termination vocabulary (mapped/candidate/floor) is in the IFD glossary entry.
+- When passing a CR to a deliberation agent, include the CR content directly in the prompt — do not write it to a file in the repo first.
 
 ## Authoring lenses
 
