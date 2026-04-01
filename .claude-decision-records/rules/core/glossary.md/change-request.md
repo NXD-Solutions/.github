@@ -37,3 +37,24 @@ A goal that cannot generate any solution alternative is a signal the goal isn't 
 ## Name survival
 
 "Change Request" names the category of artefact — something that requests a change be considered — not the content of the proposal. The name holds even though the specific change is no longer a mandatory field. The tension is real but acceptable; the name is established vocabulary and renaming it would cost more than it resolves.
+
+---
+
+# Decision — Glossary entry reduction (2026-04-01)
+
+**Change:** Reduced the entry to a compact field list; moved the `/cr` pointer to `ai-human-conventions.md`.
+**Conviction:** `Conviction (S|L): high | high`
+
+## What was decided
+
+**Kept:** opening sentence, field names as compact list (finding, trigger, consequence, goal, Deliberation section), liveness clause ("A CR is live until the post-deliberation package is complete"), "Distinct from a Decision Record" distinction.
+
+**Dropped:** parenthetical explanations for each field (procedural — the `/cr` skill owns these), "solution alternatives in working notes" note.
+
+**Moved:** pointer to `/cr` placed in `ai-human-conventions.md` under the CR execution gate rule.
+
+## Key deliberation decisions
+
+**Field names are definitional; parentheticals are procedural** — The field names tell the reader what a CR *is*. Parenthetical explanations tell the reader how to fill them — that is the `/cr` skill's job.
+
+**Tool pointer belongs in the rule, not the definition** — A tool pointer in a glossary definition binds the term to a current implementation. Moved to the CR execution gate rule, where a rule can reference its operationalization without the definition becoming fragile.
