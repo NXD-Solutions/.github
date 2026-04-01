@@ -27,38 +27,78 @@ as the first line. This signals intent; it does not prevent direct edits.
 
 ## Node vocabulary
 
-The vocabulary is a living artefact. Start with these three types; add via `/network-architect expand`.
+The vocabulary is a living artefact. Start with these four types; add via `/network-architect expand`.
 
 ### Process
 
-A unit of work with three phases, triggered by an external event.
+The invariant logic of the service. Customer-blind — it does not know which customer
+it serves. Declares the adapters it requires by name.
 
 ```
 **Trigger:** <TriggerName>
-**Gather:** <what data is collected and from where>
+**FetchAdapter:** <AdapterName> : DataFetchAdapter
 **Process:** <what transformation or decision is made>
-**Handover:** <what is produced and where it goes>
+**HandoverAdapter:** <AdapterName> : HandoverAdapter
 ```
+
+All three phases are always present — the empty set is still a set. A process that receives
+everything from the trigger still has a FetchAdapter; a process that returns directly still
+has a HandoverAdapter. No phase is skipped or omitted when its payload is minimal.
 
 ### Trigger
 
-Describes a process to be invoked. May carry data directly or a route to data that must be fetched.
+Describes a process to be invoked. May carry data directly.
 
 ```
 **Invokes:** <ProcessName>
 **Data:** <description of payload, or "empty">
-**Route:** <optional — pointer to data source if payload is a reference>
 ```
 
-### DataFetch
+A Trigger fires a Process from outside. Internal phase transitions are sequential
+execution — not Triggers. Adding Triggers between phases is a modelling error.
 
-A named data retrieval operation used inside a Process's Gather phase.
+A Trigger may or may not carry data — both are valid. An empty Trigger is still a Trigger;
+it always routes to a process — routing is the invariant, data is optional.
+
+If the Trigger carries a reference (such as an ID), the Process owns the logic to fetch
+additional data from it — via the DataFetchAdapter. The Trigger does not own or express routing.
+
+### DataFetchAdapter
+
+A contract for data retrieval. Declares what the adapter receives and what it must
+return. How it retrieves data — one source, many sources, chained — is its internal
+concern, invisible to the network.
 
 ```
-**Source:** <service, table, or external API>
-**Query:** <what is requested — key, filter, or description>
-**Output:** <what is returned>
+**Input:** <what the adapter receives>
+**Output:** <what the adapter must return to the Process>
 ```
+
+### HandoverAdapter
+
+A contract for data delivery. Declares what the adapter receives from the Process
+and what it must deliver to the consumer. A NOP HandoverAdapter has Output = Input.
+
+```
+**Input:** <what the adapter receives from the Process>
+**Output:** <what the adapter delivers to the consumer, or "same as Input">
+```
+
+## Network invariants
+
+A valid network must satisfy all of the following. Checked per Process node:
+
+1. Every Process declares exactly one Trigger
+2. Every Process declares exactly one FetchAdapter
+3. Every Process declares exactly one HandoverAdapter
+4. Every adapter referenced by a Process exists as a node in the same network
+5. Every Trigger references a Process that exists in the network
+
+## Network constraint
+
+Specs fed to the network contain no customer-specific content. Sources, systems,
+and data locations are the adapter's internal concern — they do not appear in
+Process nodes or adapter contracts.
 
 ## Network file location
 
@@ -77,16 +117,17 @@ One network file per scope. The file lives at the root of the scope it describes
 
 # Network — <Scope Name>
 
-## <NodeName> [<NodeType>]
+## <NodeName> : <NodeType>
 
 <fields for this node type>
 
-## <NodeName> [<NodeType>]
+## <NodeName> : <NodeType>
 
 <fields for this node type>
 ```
 
-Node names are PascalCase. Node type is one of the vocabulary types in square brackets.
+Node names are PascalCase. `<NodeName>` is the instance; `<NodeType>` is the type it instantiates.
+References use the same notation: `→ <NodeName> : <NodeType>`.
 
 ---
 
@@ -106,6 +147,20 @@ Steps:
 If the requirement implies a node type not in the vocabulary, pause and run `/network-architect expand` for that type before drafting.
 
 If the network file for the target scope does not exist, create it with the header marker and an empty node list. Confirm the scope path with the user before creating.
+
+After writing, prompt the user to add or update the corresponding test case in `<same-path>/network.test.md`. The test case format:
+
+```
+User story: <the requirement as stated>
+
+Expected nodes:
+- <NodeName> : <NodeType> — <one-line description of its role>
+
+Validation:
+- <question about correctness> ✓/✗ <answer>
+```
+
+Test cases live in `network.test.md` alongside the network file — not inside it.
 
 ---
 
@@ -137,4 +192,5 @@ Steps:
 4. **Present** — show the draft Confluence content to the user
 5. **Write** — after explicit user approval, update or create the Confluence page using the AI-managed marker pattern
 
-The Confluence page is derived — it is not the source. Any discrepancy between the network file and the Confluence page is resolved by re-running derive, not by editing Confluence directly.
+The Confluence page is derived — it is not the source. Any discrepancy between the network file
+and the Confluence page is resolved by re-running derive, not by editing Confluence directly.
