@@ -50,6 +50,7 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dev:figma` | `.claude/scripts/figma-index.cjs` | content |
 | `review-issue` | — | read-only (no owned scope) |
 | `claude-librarian` | Confluence page 46661650 + children | structure, standards, quality reviews |
+| `claude-librarian` | `.claude-static/commands/dr.md`, `.claude/commands/dr.md` | content |
 | `spec-workbench` | `**/spec-functional.md` | content |
 | `spec-workbench` | `**/README.md` (component roots) | lifecycle state |
 | `waste` | `.claude-waste/**` | content, lifecycle |
