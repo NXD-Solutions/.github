@@ -6,6 +6,7 @@ Claude Code slash commands. Invoked by typing `/` in Claude Code — commands wi
 
 | Command | Description |
 |---|---|
+| `/cr` | CR lifecycle — receive, deliberate, package, and delegate change requests |
 | `/dev:audit` | Full codebase audit against code-standards.md |
 | `/dev:figma` | Register the repo-to-Figma project link |
 | `/review-issue` | Review a Jira issue against NXD rules and flag gaps |
