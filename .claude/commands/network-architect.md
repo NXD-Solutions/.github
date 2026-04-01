@@ -93,6 +93,7 @@ A valid network must satisfy all of the following. Checked per Process node:
 3. Every Process declares exactly one HandoverAdapter
 4. Every adapter referenced by a Process exists as a node in the same network
 5. Every Trigger references a Process that exists in the network
+6. The network contains no technology-specific references — no language, framework, or platform assumptions. It must be implementable against any tech stack.
 
 ## Network constraint
 
