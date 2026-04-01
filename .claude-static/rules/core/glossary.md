@@ -80,7 +80,7 @@ The individual principles exist independently. This term names the discipline of
 
 ## Change Request
 
-A named artefact that carries a finding through deliberation to a recorded outcome. Contains: a **finding** (what problem was encountered), the **trigger** (what situation surfaced it), the **consequence** (what goes wrong if nothing changes), a **goal** (the state the system must reach after the change), and a **Deliberation section** recording conviction or documented abandonment. Solution alternatives may appear in working notes but are explicitly non-binding. Distinct from a Decision Record, which captures the full reasoning for future editors.
+A named artefact that carries a finding through deliberation to a recorded outcome. Contains: a **finding** (what problem was encountered), the **trigger** (what situation surfaced it), the **consequence** (what goes wrong if nothing changes), a **goal** (the state the system must reach after the change), and a **Deliberation section** recording conviction or documented abandonment. Solution alternatives may appear in working notes but are explicitly non-binding. Distinct from a Decision Record, which captures the full reasoning for future editors. A CR is live until the post-deliberation package is complete.
 
 ## Deliberation
 
