@@ -76,6 +76,8 @@ Fitness dimensions — what "evaluate fitness" evaluates against:
 
 A problem-solving method that chains existing principles into a sequence: name the need before the solution (*Goal before solution*), state invariants before exploring options, test every candidate against all invariants simultaneously, distinguish invariants from what they are not — choices, and attributes of the invariant set itself, change abstraction level when stuck (*Find the pattern, not the instance*), and treat failed candidates as teachers — each failure narrows the space or surfaces a missing invariant (*Challenge until conviction*), and evolve the method after each application — compare against the IFD description and update when conviction is reached.
 
+When lifting an item to its correct abstraction level, terminate with a named state: mapped (parent found and confirmed), candidate (parent proposed, conviction pending), or floor (the strand is the parent — highest valid level reached).
+
 The individual principles exist independently. This term names the discipline of applying them as a connected sequence rather than in isolation.
 
 ## Change Request
