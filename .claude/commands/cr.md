@@ -73,6 +73,8 @@ Both sections are required; neither is optional even when one is thin.
 
 Hand the post-deliberation package to the implementation agent.
 
+**Content delivery** — Pass the post-deliberation package inline in the agent prompt. Do not create a file solely to deliver content to an agent — an input with no independent consumer is waste. If content already exists on disk as a committed artefact, pass the file path instead.
+
 **Before each handover** — present the package to the user and confirm it is ready before proceeding. On subsequent handovers, underline changes to the previous version so the user can identify what changed without re-reading the full package. No handover proceeds without confirmation.
 
 **During execution** — relay the agent's output verbatim — challenges, counter-arguments, and findings included. Do not summarise, filter, or resolve agent output on the user's behalf. The user engages with the agent's actual words.
