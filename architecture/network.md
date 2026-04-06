@@ -1,8 +1,12 @@
 <!-- AI managed — edit via /network-architect when possible -->
 # Network — NXD Platform Architecture
 
+# Definitions
+
 ## Caller
 The entity that triggers an InboundEvent.
+
+# Network
 
 ## InboundEvent : Trigger
 **Invokes:** ProcessData
