@@ -36,10 +36,10 @@
   - **[Write for the widest audience first](rules/core/principles.md#write-for-the-widest-audience-first)** — Principle
     - [Proposals and options](rules/core/ai-human-conventions.md#proposals-and-options) — Rule
   - **[Every communicative artefact serves the reader's context — not the system's structure](rules/core/principles.md#every-communicative-artefact-serves-the-readers-context--not-the-systems-structure)** — Principle
-    - [Define Audience before writing](rules/core/communication.md#define-audience-before-writing) — Rule
-    - [Define Topic before writing](rules/core/communication.md#define-topic-before-writing) — Rule
-    - [Define Trigger before writing](rules/core/communication.md#define-trigger-before-writing) — Rule
-    - [Reader-need filter](rules/core/communication.md#reader-need-filter) — Rule
+    - [Define Audience before writing](rules/core/communicative-artefact.md#define-audience-before-writing) — Rule
+    - [Define Topic before writing](rules/core/communicative-artefact.md#define-topic-before-writing) — Rule
+    - [Define Trigger before writing](rules/core/communicative-artefact.md#define-trigger-before-writing) — Rule
+    - [Reader-need filter](rules/core/communicative-artefact.md#reader-need-filter) — Rule
     - [Evidence serves the reader, not the author](rules/core/communication.md#evidence-serves-the-reader-not-the-author) — Rule
     - **[Every element earns its place by serving the reader's current position in the document](rules/core/principles.md#every-element-earns-its-place-by-serving-the-readers-current-position-in-the-document)** — Sub-principle
       - [Sequencing](rules/core/communication.md#sequencing--do-not-present-what-the-reader-cannot-yet-receive) — Rule
