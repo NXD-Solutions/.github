@@ -56,14 +56,6 @@ and still leave informed.
 
 Templates enforce this — every written artefact template must be structured widest-to-narrowest.
 
-### Every communicative artefact serves the reader's context — not the system's structure
-
-Every communicative artefact serves the reader's context — not the system's structure. Audience, trigger, and topic boundary are the organising inputs — not the system's modules, categories, or output order.
-
-### Every element earns its place by serving the reader's current position in the document
-
-Does this element belong, and is the reader ready for it? An element in the right position that doesn't belong is noise. An element that belongs but arrives before the reader can receive it is a sequencing failure.
-
 ### Shared language
 
 Build and actively use a shared glossary. Terms that carry specific meaning are defined once and used as working vocabulary — not reference material. A term left undefined is interpreted differently by every reader. A term defined but not actively used is decoration.
@@ -135,6 +127,10 @@ Applied to:
 - Rules — gates that block when violated
 - Integrations — stable identifiers (IDs, not names), not fragile references
 - Completion criteria — verifiable conditions, not snapshot sign-offs
+
+### Reference the authority to prevent drift
+
+A fact has one home — the authority that owns it. All other occurrences reference the authority rather than restating the fact. A copy that drifts from its source is a defect that compounds silently.
 
 ## Evolving by Instinct
 
