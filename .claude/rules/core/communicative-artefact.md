@@ -23,3 +23,7 @@ Before publishing any paragraph: does this paragraph exist because the reader ne
 Quality patterns that enhance a communicative artefact. Applied during writing. The list grows as new patterns are identified.
 
 - **Action examples** — when the artefact expects the reader to act, include an example. The example lets the reader test their understanding of the preceding text.
+
+## Inlining authority-owned facts
+
+A communicative artefact may inline a fact owned by another authority when the reader would otherwise need to leave the document to understand the current paragraph. The inline copy must be recognisably a convenience, not a replacement — reference the authority alongside it. Accept the drift risk only when the reader value is clear; when it is not, reference alone.
