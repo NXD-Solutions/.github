@@ -18,11 +18,19 @@ Split into two files:
 
 The split follows from the rules having different parent nodes in the hierarchy. The artefact production rules are children of a specific principle about communicative artefacts. The communication rules apply more broadly — they govern how any information is delivered, not only formal communicative artefacts. Keeping them in one file forced a single parent reference that misrepresented the scope of half the rules.
 
+The split must be earned — structural cleanliness alone does not justify it. What earns this split is reusability: communication rules apply to presentations, design reviews, and verbal communication — contexts where the artefact production gates do not apply. A reader in those contexts should not wade through pre-writing gates for written artefacts.
+
 ## Assignment reasoning
 
 Sequencing, Bridging, and Signposting govern information flow mechanics — they apply to any delivery of information. Evidence serves the reader sizes evidence for comprehension and challenge — a general communication concern. Every question is an opportunity applies to any communication that receives feedback — not just written artefacts. All five are communication concerns, not artefact production gates.
 
 Audience, Topic, Trigger, and Reader-need filter are pre-writing gates that fire before a communicative artefact is written. They define what the artefact is for — who reads it, what domain it covers, what brought the reader here, and whether each paragraph earns its place. These are production rules specific to communicative artefacts.
+
+## Parent strand reasoning
+
+Communication derives from *Transparent by Nature* — making information visible and understandable to the observer, not just the author. The general communication rules (sequencing, bridging, signposting, evidence) are direct derivations: each serves the observer's ability to receive what is being communicated.
+
+The communicative artefact file derives from both: it uses communication (how to structure) and applies it to written artefacts under its own parent principle. The relationship is: communicative artefact implements communication — it produces artefacts using communication rules.
 
 ## Glossary update
 
