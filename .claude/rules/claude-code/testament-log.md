@@ -4,6 +4,18 @@ Local log of recurring problems and non-obvious workarounds.
 
 ---
 
+## Global `~/.claude/rules/` appeared with unknown origin — caused double-loading
+
+**Symptom:** Agent startup took minutes in some sessions. Slow cases coincided with `~/.claude/rules/` existing alongside `.claude/rules/` — Claude Code loaded both, sending identical distributed rules twice into every agent's system context. Additionally, agents receive DNA via two channels: system context (loaded files) and prompt context (rules content inline). The global duplication compounded both channels.
+
+**Unknown:** How `~/.claude/rules/` came to be populated. The distribution workflow does not copy there. Its origin is unexplained.
+
+**Solution:** Deleted `~/.claude/rules/`. Confirmed absent via `/context` — only the local `.claude/rules/` copy now loads.
+
+**Permanent fix candidate:** Monitor for recurrence. If `~/.claude/rules/` reappears, investigate what created it before deleting again.
+
+---
+
 ## /plan clears context — prior work becomes invisible
 
 **Symptom:** After `/plan` is run mid-session, Claude loses awareness of files it created or modified earlier in the session. On resuming, it treats those files as pre-existing modifications of unknown origin — leaving them out of commits or flagging them as "changed before this session."

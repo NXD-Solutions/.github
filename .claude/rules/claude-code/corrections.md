@@ -4,9 +4,17 @@ Implements *Every gap signal is an improvement trigger* for process gaps.
 
 When either party identifies a correction, add an entry to `memory/corrections.md`:
 
-| date | type | session context | what was corrected | what triggered it | resolved by | resolution date |
+| date | type | session context | what was corrected | triggered by | resolved by | resolution date |
 
-The trigger column is required. Types: `process` | `implementation` | `artefact` | `discovery`
+The `triggered by` column names who or what surfaced the correction — a specific steward (e.g. "Peter", "Claude Code", "Claude.ai") or an external signal. Required on every entry.
+
+Types: `process` | `implementation` | `artefact` | `discovery`
+
+## Prevention layer
+
+`corrections.triggers.md` collects triggers extracted from corrections — patterns that, when recognised early, prevent the correction from recurring. The trigger list is volatile: entries are promoted to rules or deleted when they lose value.
+
+## Session lifecycle
 
 At end of session, if ≥1 correction was added: summarise and ask "Worth a retrospective now?"
 
