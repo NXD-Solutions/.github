@@ -1,17 +1,16 @@
 <!-- AI managed — edit via /network-architect when possible -->
 # Network — NXD Platform Architecture
 
+---
+
 # Definitions
 
----
-
 ## Caller
-
 The entity that triggers an InboundEvent.
 
-# Network
-
 ---
+
+# Network
 
 ## InboundEvent : Trigger
 
@@ -29,7 +28,6 @@ The entity that triggers an InboundEvent.
 
 **HandoverAdapter:** ResultHandover : HandoverAdapter
 
-
 ## InboundDataFetch : DataFetchAdapter
 
 **Input:** Inbound payload from InboundEvent
@@ -41,8 +39,10 @@ The entity that triggers an InboundEvent.
 **Input:** Processed result from ProcessData
 
 **Output:**
-- **PassThrough** — result is returned to the Caller; no write to any external system. 
+
+- **PassThrough** — result is returned to the Caller; no write to any external system.
   - **Example**: a read event — data is fetched and returned to the Caller
+
 - **ActiveWrite** — result is written to one or more external systems; HandoverResult { status, data?, error? } is returned to ProcessData as the Caller
 
 **Note:** The mode is determined by adapter configuration. ProcessData has no knowledge of which mode is active.
