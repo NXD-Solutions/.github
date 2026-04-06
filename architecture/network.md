@@ -17,10 +17,12 @@
 ## InboundDataFetch : DataFetchAdapter
 
 **Input:** Inbound payload from InboundEvent
+
 **Output:** Data required for processing
 
 ## ResultHandover : HandoverAdapter
 **Input:** Processed result from ProcessData
+
 **Output:**
 - **PassThrough** — result is returned to InboundEvent; no write to any external system. Example: a read event — data is fetched and returned to the caller
 - **ActiveWrite** — result is written to one or more external systems; HandoverResult { status, data?, error? } is returned to ProcessData
