@@ -29,3 +29,9 @@ Lifecycle: entries are promoted to rules when they prove durable, or deleted whe
 **Pattern:** About to create a new DR file under `.claude-decision-records/` when a file already exists for that node (the H2 heading the decision belongs to).
 **Prevention:** Before creating a DR file, check whether one already exists at the target path. If it does, append to the existing file — do not create a second file.
 **Origin:** Recurring violation across multiple sessions — created one DR file per change instead of one per node (H2).
+
+### Communicative artefact pre-writing gates
+
+**Pattern:** A communicative artefact has been drafted or created.
+**Prevention:** After the artefact is produced, check: were the pre-writing gates in `communicative-artefact.md` satisfied before the first draft? If not, log a correction.
+**Origin:** Corrections page created without satisfying pre-writing gates — rewritten after the gap was caught mid-session (2026-04-06).
