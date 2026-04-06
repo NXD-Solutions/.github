@@ -140,8 +140,6 @@ Applied to:
 
 A fact has one home — the authority that owns it. All other occurrences reference the authority rather than restating the fact. A copy that drifts from its source is a defect that compounds silently.
 
-The boundary: communicative artefacts may inline a fact when the reader value justifies the drift risk — governed by `communicative-artefact.md`.
-
 ## Evolving by Instinct
 
 ### Challenge until conviction
