@@ -19,11 +19,13 @@ Acts as meta-input for all read, write, and processing operations.
 - **Transform rules** — conversion logic between canonical and foreign representations
 - **Sensitivity** — classification of PII, salary data, and other regulated fields
 
-**Loading strategy:** All levels compiled to an immutable artefact at build time; never read from file at runtime
+**Loading strategy:** YAML source compiled to TypeScript at build time via code generator; backends import `@nxd-solutions/data-dictionary` — never read from file at runtime
 
 **Security:** Build-time compilation eliminates runtime file system access and YAML parsing on the hot path, removing the injection attack surface entirely in v1
 
 **Repository:** NXD-Solutions/data-dictionary
+
+**Package:** @nxd-solutions/data-dictionary
 
 **Steward:** Information Architect
 
