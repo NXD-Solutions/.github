@@ -27,6 +27,12 @@ Acts as meta-input for all read, write, and processing operations.
 
 **Steward:** Information Architect
 
+## ProcessDataObject : Invariant
+The canonical data exchange object between the process layer and the data layer.
+Derived from DataDictionary : Registry. Both layers are bound to this contract.
+
+**Invariant:** The process layer has no knowledge of foreign data structures. The data layer has no knowledge of process logic.
+
 ---
 
 # Network
@@ -72,4 +78,10 @@ Acts as meta-input for all read, write, and processing operations.
 - **PassThrough** — result is returned to the Caller; no write to any external system.
   - **Example**: a read event — data is fetched and returned to the Caller
 
-- **ActiveWrite** — r
+- **ActiveWrite** — result is written to one or more external systems; HandoverResult { status, data?, error? } is returned to ProcessData as the Caller
+
+**Consumes:** DataDictionary : Registry — maps canonical fields to the target system
+
+**Consumes:** ProcessDataObject — maps ProcessDataObject to the target system
+
+**Note:** The mode is determined by adapter configuration. ProcessData has no knowledge of which mode is active.
