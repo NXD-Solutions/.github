@@ -28,7 +28,7 @@ The entity that triggers an InboundEvent.
 **Input:** Processed result from ProcessData
 **Output:**
 - **PassThrough** — result is returned to the Caller; no write to any external system. 
--- **Example**: a read event — data is fetched and returned to the Caller
+  - **Example**: a read event — data is fetched and returned to the Caller
 - **ActiveWrite** — result is written to one or more external systems; HandoverResult { status, data?, error? } is returned to ProcessData as the Caller
 
 **Note:** The mode is determined by adapter configuration. ProcessData has no knowledge of which mode is active.
