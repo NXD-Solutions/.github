@@ -1,4 +1,7 @@
-# Split communication.md into communication and communicative artefact concerns
+## Split communication.md into communication and communicative artefact concerns
+
+**Date:** 2026-04-06
+**Authors:** Peter Sixhøj & Claude Sonnet 4.6
 
 ## Trigger
 
@@ -17,7 +20,7 @@ The split follows from the rules having different parent nodes in the hierarchy.
 
 ## Assignment reasoning
 
-Sequencing, Bridging, and Signposting govern information flow mechanics — they apply to any delivery of information. Evidence serves the reader sizes evidence for comprehension and challenge — a general communication concern. Every question is an opportunity is a reactive rule that applies to any artefact. All five are communication concerns, not artefact production gates.
+Sequencing, Bridging, and Signposting govern information flow mechanics — they apply to any delivery of information. Evidence serves the reader sizes evidence for comprehension and challenge — a general communication concern. Every question is an opportunity applies to any communication that receives feedback — not just written artefacts. All five are communication concerns, not artefact production gates.
 
 Audience, Topic, Trigger, and Reader-need filter are pre-writing gates that fire before a communicative artefact is written. They define what the artefact is for — who reads it, what domain it covers, what brought the reader here, and whether each paragraph earns its place. These are production rules specific to communicative artefacts.
 
@@ -27,4 +30,4 @@ The glossary entry for "Communicative artefact" was updated to reference the rel
 
 ## Conviction
 
-Conviction (S|L): high | high — both parties, 2026-04-02.
+Conviction (S|L): high | high — both parties, 2026-04-06.
