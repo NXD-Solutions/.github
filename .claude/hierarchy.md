@@ -41,7 +41,7 @@
     - [Define Trigger before writing](rules/core/communicative-artefact.md#define-trigger-before-writing) — Rule
     - [Reader-need filter](rules/core/communicative-artefact.md#reader-need-filter) — Rule
     - [Evidence serves the reader, not the author](rules/core/communication.md#evidence-serves-the-reader-not-the-author) — Rule
-    - **[Every element earns its place by serving the reader's current position in the document](rules/core/communication.md#every-element-earns-its-place-by-serving-the-readers-current-position-in-the-document)** — Sub-principle
+    - **[Every element earns its place](rules/core/communication.md#every-element-earns-its-place-by-serving-the-readers-current-position-in-the-document)** — Sub-principle
       - [Sequencing](rules/core/communication.md#sequencing--do-not-present-what-the-reader-cannot-yet-receive) — Rule
       - [Bridging](rules/core/communication.md#bridging--close-what-came-before-earn-what-comes-next) — Rule
       - [Signposting](rules/core/communication.md#signposting--advance-the-reader-do-not-narrate-the-argument) — Rule
