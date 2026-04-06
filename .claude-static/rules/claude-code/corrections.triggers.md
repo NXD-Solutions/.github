@@ -23,3 +23,9 @@ Lifecycle: entries are promoted to rules when they prove durable, or deleted whe
 **Pattern:** A proposed action writes, deletes, or modifies a file outside the current repo's working tree — including user home directories, global configs, and other repos.
 **Prevention:** Before executing any file-system write, verify the target path is inside the repo root. If it is not, surface the side-effect to the user and get explicit approval before proceeding.
 **Origin:** Corrections where Claude Code wrote to paths outside the repo without flagging the side-effect.
+
+### DR file per change instead of per node
+
+**Pattern:** About to create a new DR file under `.claude-decision-records/` when a file already exists for that node (the H2 heading the decision belongs to).
+**Prevention:** Before creating a DR file, check whether one already exists at the target path. If it does, append to the existing file — do not create a second file.
+**Origin:** Recurring violation across multiple sessions — created one DR file per change instead of one per node (H2).
