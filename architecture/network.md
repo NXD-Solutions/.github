@@ -19,13 +19,13 @@ Acts as meta-input for all read, write, and processing operations.
 - **Transform rules** — conversion logic between canonical and foreign representations
 - **Sensitivity** — classification of PII, salary data, and other regulated fields
 
+**Loading strategy:** All levels compiled to an immutable artefact at build time; never read from file at runtime
+
+**Security:** Build-time compilation eliminates runtime file system access and YAML parsing on the hot path, removing the injection attack surface entirely in v1
+
+**Repository:** NXD-Solutions/data-dictionary
+
 **Steward:** Information Architect
-
-## ProcessDataObject : Invariant
-The canonical data exchange object between the process layer and the data layer.
-Derived from DataDictionary : Registry. Both layers are bound to this contract.
-
-**Invariant:** The process layer has no knowledge of foreign data structures. The data layer has no knowledge of process logic.
 
 ---
 
