@@ -3,17 +3,24 @@
 
 # Definitions
 
+---
+
 ## Caller
+
 The entity that triggers an InboundEvent.
 
 # Network
 
+---
+
 ## InboundEvent : Trigger
+
 **Invokes:** ProcessData
 
 **Data:** Inbound payload — may be direct data or a reference
 
 ## ProcessData : Process
+
 **Trigger:** InboundEvent
 
 **FetchAdapter:** InboundDataFetch : DataFetchAdapter
@@ -24,12 +31,15 @@ The entity that triggers an InboundEvent.
 
 
 ## InboundDataFetch : DataFetchAdapter
+
 **Input:** Inbound payload from InboundEvent
 
 **Output:** Data required for processing
 
 ## ResultHandover : HandoverAdapter
+
 **Input:** Processed result from ProcessData
+
 **Output:**
 - **PassThrough** — result is returned to the Caller; no write to any external system. 
   - **Example**: a read event — data is fetched and returned to the Caller
