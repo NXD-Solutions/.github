@@ -18,6 +18,10 @@ What situation brought this reader here right now? The trigger determines what c
 
 Before publishing any paragraph: does this paragraph exist because the reader needs it, or because the system produces it? If the latter — exclude it.
 
+## Every element earns its place
+
+Does this element belong, and is the reader ready for it? An element in the right position that doesn't belong is noise. An element that belongs but arrives before the reader can receive it is a sequencing failure.
+
 ## Facets
 
 Quality patterns that enhance a communicative artefact. Applied during writing. The list grows as new patterns are identified.
