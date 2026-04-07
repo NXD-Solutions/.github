@@ -31,14 +31,14 @@ jobs:
       - name: Check version header change
         id: diff
         run: |
-          OLD=$(git show HEAD~1:architecture/service-architecture.md 2>/dev/null | grep -oP '^\*\*Version:\*\* v\K\d+' || echo "0")
-          NEW=$(grep -oP '^\*\*Version:\*\* v\K\d+' architecture/service-architecture.md || echo "0")
+          OLD=$(git show HEAD~1:architecture/service-architecture.md 2>/dev/null | grep -oP '^\*\*Version:\*\* \K[0-9]+\.[0-9]+\.[0-9]+' || echo "0.0.0")
+          NEW=$(grep -oP '^\*\*Version:\*\* \K[0-9]+\.[0-9]+\.[0-9]+' architecture/service-architecture.md || echo "0.0.0")
           if [ "$OLD" != "$NEW" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Version changed: v${OLD} → v${NEW}" >> "$GITHUB_STEP_SUMMARY"
+            echo "Version changed: ${OLD} → ${NEW}" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "Version unchanged (v${NEW}) — skipping publish" >> "$GITHUB_STEP_SUMMARY"
+            echo "Version unchanged (${NEW}) — skipping publish" >> "$GITHUB_STEP_SUMMARY"
           fi
 
   publish:
@@ -59,8 +59,8 @@ jobs:
       - name: Sync npm version from header
         working-directory: architecture
         run: |
-          VERSION=$(grep -oP '^\*\*Version:\*\* v\K\d+' service-architecture.md)
-          npm version "${VERSION}.0.0" --no-git-tag-version --allow-same-version
+          VERSION=$(grep -oP '^\*\*Version:\*\* \K[0-9]+\.[0-9]+\.[0-9]+' service-architecture.md)
+          npm version "${VERSION}" --no-git-tag-version --allow-same-version
 
       - name: Publish
         working-directory: architecture
