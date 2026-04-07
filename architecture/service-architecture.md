@@ -1,5 +1,5 @@
-<!-- AI managed — edit via /network-architect when possible -->
-# Network — NXD Platform Architecture
+<!-- AI managed — edit via /service-architect when possible -->
+# Service Architecture — NXD Platform
 
 ---
 
