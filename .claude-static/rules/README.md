@@ -50,6 +50,14 @@ Identity and cross-cutting rules — universal, applies to everyone.
 | `core/roles.md` | | |
 | `core/spec-lifecycle.md` | | |
 
+## configuration/
+
+Project-level vendored contracts — repo-owned, not distributed. Container is org-wide; contents are local.
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `configuration/README.md` | | Container contract |
+
 ## dev/
 
 Developer-scoped rules — applies to engineers working on code.

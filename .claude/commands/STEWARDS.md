@@ -37,6 +37,7 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dna:workbench` | `.claude/hierarchy.md` | content | — | — |
 | `dna:workbench` | `.claude-decision-records/**` | content | — | — |
 | `dna:workbench` | `.claude/commands/dna/memory.md` | content | — | — |
+| `dna:workbench` | `.claude/rules/configuration/` | structure, README content | — | — |
 | `dna:workbench` | Confluence pages 46661643, 45121554 | content | — | — |
 | `cr` | — | read-only (no owned scope) | — | — |
 | `dna:auditor` | — | read-only (no owned scope) | — | — |
