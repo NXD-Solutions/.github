@@ -9,7 +9,8 @@ tracking), or don't reference it at all.
 
 **Decision:** Distribute service-architecture.md as an npm package (`@nxd-solutions/service-architecture`)
 published from .github to GitHub Packages — symmetric with how `@nxd-solutions/data-dictionary`
-is already distributed. Integer versioning (v1, v2). Version gate lives in `/service-architect`:
+is already distributed. Semver versioning with major-only bumps (1.0.0, 2.0.0) — same format
+in the file header and in package.json, no mapping step. Version gate lives in `/service-architect`:
 after writing changes, the command asks the designer "Does this change earn a new version and
 distribution?" On approval, the version header is bumped in the same commit. A GitHub Actions
 workflow publishes automatically on merge to main when the version header changes. Consuming repos
