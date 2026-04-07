@@ -23,6 +23,8 @@ Before publishing any paragraph: does this paragraph exist because the reader ne
 Quality patterns that enhance a communicative artefact. Applied during writing. The list grows as new patterns are identified.
 
 - **Action examples** — when the artefact expects the reader to act, include an example. The example lets the reader test their understanding of the preceding text.
+- **Reader's vocabulary** — when the audience includes non-specialists, use the reader's vocabulary. Where a simpler word carries equal precision, use it. Where no simpler word does, define the term at first use.
+- **Visible consequences** — when the reader needs to act on or decide from the content, state consequences explicitly — do not leave the reader to infer what they need in order to act. Framing follows from what is true, not from a preference.
 
 ## Inlining authority-owned facts
 
