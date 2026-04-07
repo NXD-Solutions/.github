@@ -57,6 +57,12 @@ const sql = postgres(url, {
 
 This ensures DB column names (snake_case) are converted to camelCase before data reaches TypeScript — consistently across all repos. Omitting this transform violates the naming conventions rule.
 
+## Versioning
+
+All versioned artefacts use [Semantic Versioning 2.0.0](https://semver.org/). The version number communicates the nature of change — breaking, additive, or corrective.
+
+Applies to: npm packages, GitHub releases/tags, API versions.
+
 ## Audit skill responsibilities
 A `/audit` skill must:
 1. Flag violations of the rules above (tier placement, structure, extraction threshold, export style, naming conventions).

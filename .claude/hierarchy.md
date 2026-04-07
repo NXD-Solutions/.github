@@ -30,6 +30,7 @@
     - [Task visibility in Claude Code](rules/claude-code/task-management.md#task-visibility-in-claude-code) — Rule
   - **[Communicate consequences of change](rules/core/principles.md#communicate-consequences-of-change)** — Principle
     - [Blast radius](rules/claude-code/claude-rules-system.md#blast-radius) — Rule
+    - [Versioning](rules/dev/code-standards.md#versioning) — Rule
   - **[Names for all artefacts](rules/core/principles.md#names-for-all-artefacts)** — Principle
     - [Branch naming](rules/github/github-workflow.md#branch-naming) — Rule
     - [Repo references](rules/github/github-workflow.md#repo-references) — Rule
