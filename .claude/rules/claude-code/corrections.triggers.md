@@ -18,6 +18,12 @@ Lifecycle: entries are promoted to rules when they prove durable, or deleted whe
 
 ## Triggers
 
+### DR intake before PR
+
+**Pattern:** About to propose creating a PR for a change that introduced a new command, rule, principle, or structural decision.
+**Prevention:** Before proposing the PR, run DR intake: does this change warrant a decision record? If yes, draft and commit the DR before raising the PR — not after.
+**Origin:** 2026-04-07 correction — DR for data-dictionary-workbench distribution strategy added only after user asked, despite the PR already being raised.
+
 ### Side-effect outside working tree
 
 **Pattern:** A proposed action writes, deletes, or modifies a file outside the current repo's working tree — including user home directories, global configs, and other repos.
