@@ -47,7 +47,7 @@ Both README files (`.claude/commands/README.md` and `.claude-static/commands/REA
 
 ## Steward network contract
 
-`STEWARDS.md` is the scope registry — it maps every command steward to the scope it owns. The format is a table with three columns: Steward (command name), Scope (path or path pattern), Property (what aspect is owned: content, structure, lifecycle).
+`STEWARDS.md` is the scope and authority registry — it maps every command steward to the scope it owns and the authority it holds. The format is a table with five columns: Steward (command name), Scope (path or path pattern), Property (what aspect is owned: content, structure, lifecycle, format), Authority (unilateral vs. requires sign-off — `—` when no split), Escalation (where contested or structural decisions travel — `—` when none).
 
 **Self-registration duty:** every steward is responsible for updating its own entry when its scope changes. The command workbench defines the format and audits accuracy — it does not write entries for other stewards.
 

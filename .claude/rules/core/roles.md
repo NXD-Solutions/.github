@@ -67,3 +67,4 @@ Declared for a unit of work. No standing ownership — any executor may claim th
 | Behavioral or process decision | Designer | Return question |
 | Platform, technology, or structure | Architect | Flag to architecture |
 | Technical interface or implementation | Technician | Solve it |
+| DataDictionary structural change | Architect | Information Architect recommends, Architect accepts |
