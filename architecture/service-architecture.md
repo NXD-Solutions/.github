@@ -1,7 +1,7 @@
 <!-- AI managed — edit via /service-architect when possible -->
 # Service Architecture — NXD Platform
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 
 ---
 
