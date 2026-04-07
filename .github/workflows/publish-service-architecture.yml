@@ -1,0 +1,69 @@
+name: Publish service-architecture
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'architecture/service-architecture.md'
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Write step summary
+        run: |
+          {
+            echo "## Publish service-architecture"
+            echo ""
+            echo "**Purpose**: Publish @nxd-solutions/service-architecture to GitHub Packages when the version header changes"
+            echo ""
+            echo "**Process**:"
+            echo "- *Check version change* — compare version header between commits"
+            echo "- *Publish* — run npm publish from architecture/"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check version header change
+        id: diff
+        run: |
+          OLD=$(git show HEAD~1:architecture/service-architecture.md 2>/dev/null | grep -oP '^\*\*Version:\*\* v\K\d+' || echo "0")
+          NEW=$(grep -oP '^\*\*Version:\*\* v\K\d+' architecture/service-architecture.md || echo "0")
+          if [ "$OLD" != "$NEW" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Version changed: v${OLD} → v${NEW}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Version unchanged (v${NEW}) — skipping publish" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  publish:
+    needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Sync npm version from header
+        working-directory: architecture
+        run: |
+          VERSION=$(grep -oP '^\*\*Version:\*\* v\K\d+' service-architecture.md)
+          npm version "${VERSION}.0.0" --no-git-tag-version --allow-same-version
+
+      - name: Publish
+        working-directory: architecture
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

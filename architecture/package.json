@@ -1,0 +1,10 @@
+{
+  "name": "@nxd-solutions/service-architecture",
+  "version": "1.0.0",
+  "private": false,
+  "description": "NXD service architecture contract — machine-readable source of truth for BE code structure",
+  "files": ["service-architecture.md"],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

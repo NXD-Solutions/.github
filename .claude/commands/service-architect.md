@@ -144,10 +144,11 @@ Steps:
 3. **Draft** — produce the full set of node additions and changes as a markdown diff or full updated file section
 4. **Present** — show the draft to the user before writing; name each node and its type explicitly
 5. **Write** — after explicit user approval, write the changes to the architecture file
+6. **Version gate** — after writing, ask the designer: "Does this change earn a new version and distribution?" If yes, increment the `**Version:** vN` header in the same commit. The publish workflow handles the rest on merge.
 
 If the requirement implies a node type not in the vocabulary, pause and run `/service-architect expand` for that type before drafting.
 
-If the architecture file for the target scope does not exist, create it with the header marker and an empty node list. Confirm the scope path with the user before creating.
+If the architecture file for the target scope does not exist, create it with the header marker, a `**Version:** v1` header, and an empty node list. Confirm the scope path with the user before creating.
 
 After writing, prompt the user to add or update the corresponding test case in `<same-path>/service-architecture.test.md`. The test case format:
 
