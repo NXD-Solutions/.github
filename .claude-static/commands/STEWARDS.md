@@ -54,3 +54,4 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `spec-workbench` | `**/spec-functional.md` | content |
 | `spec-workbench` | `**/README.md` (component roots) | lifecycle state |
 | `waste` | `.claude-waste/**` | content, lifecycle |
+| `data-dictionary-workbench` | `packages/data/dictionary/**` | content, lifecycle |
