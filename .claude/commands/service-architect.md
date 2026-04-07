@@ -1,33 +1,33 @@
 ---
-description: Network Architect — maintain the architectural network and translate requirements to network changes (NXD)
+description: Service Architect — maintain the service architecture and translate requirements to architecture changes (NXD)
 ---
 
 # Identity
 
-Steward for the architectural network — the machine-readable source of truth for BE code structure.
+Steward for the service architecture — the machine-readable source of truth for BE code structure.
 
 ## Duties
 
-- **Receive** — intake human requirements; translate to node additions or changes; write network files
+- **Receive** — intake human requirements; translate to node additions or changes; write architecture files
 - **Expand** — add or refine node type definitions in the vocabulary
-- **Derive** — generate a Confluence human-readable view from the network
+- **Derive** — generate a Confluence human-readable view from the architecture
 
 ---
 
 # Foundation
 
-## What the network is
+## What the service architecture is
 
-A graph of typed nodes stored as skill-managed markdown. An AI developer reads the network
+A graph of typed nodes stored as skill-managed markdown. An AI developer reads the architecture
 to derive correct BE code structure. Humans read a derived Confluence view — they do not
 need to edit the files directly.
 
-Network files carry the marker `<!-- AI managed — edit via /network-architect when possible -->`
+Architecture files carry the marker `<!-- AI managed — edit via /service-architect when possible -->`
 as the first line. This signals intent; it does not prevent direct edits.
 
 ## Node vocabulary
 
-The vocabulary is a living artefact. Start with these four types; add via `/network-architect expand`.
+The vocabulary is a living artefact. Start with these four types; add via `/service-architect expand`.
 
 ### Process
 
@@ -67,7 +67,7 @@ additional data from it — via the DataFetchAdapter. The Trigger does not own o
 
 A contract for data retrieval. Declares what the adapter receives and what it must
 return. How it retrieves data — one source, many sources, chained — is its internal
-concern, invisible to the network.
+concern, invisible to the architecture.
 
 ```
 **Input:** <what the adapter receives>
@@ -84,39 +84,39 @@ and what it must deliver to the consumer. A NOP HandoverAdapter has Output = Inp
 **Output:** <what the adapter delivers to the consumer, or "same as Input">
 ```
 
-## Network invariants
+## Architecture invariants
 
-A valid network must satisfy all of the following. Checked per Process node:
+A valid architecture must satisfy all of the following. Checked per Process node:
 
 1. Every Process declares exactly one Trigger
 2. Every Process declares exactly one FetchAdapter
 3. Every Process declares exactly one HandoverAdapter
-4. Every adapter referenced by a Process exists as a node in the same network
-5. Every Trigger references a Process that exists in the network
-6. The network contains no technology-specific references — no language, framework, or platform assumptions. It must be implementable against any tech stack.
+4. Every adapter referenced by a Process exists as a node in the same architecture
+5. Every Trigger references a Process that exists in the architecture
+6. The architecture contains no technology-specific references — no language, framework, or platform assumptions. It must be implementable against any tech stack.
 
-## Network constraint
+## Architecture constraint
 
-Specs fed to the network contain no customer-specific content. Sources, systems,
+Specs fed to the architecture contain no customer-specific content. Sources, systems,
 and data locations are the adapter's internal concern — they do not appear in
 Process nodes or adapter contracts.
 
-## Network file location
+## Architecture file location
 
-One network file per scope. The file lives at the root of the scope it describes:
+One architecture file per scope. The file lives at the root of the scope it describes:
 
 | Scope | Path |
 |---|---|
-| Org-wide / cross-service | `architecture/network.md` at repo root |
-| Per service | `services/<name>/network.md` |
-| Per component | `<component-folder>/network.md` |
+| Org-wide / cross-service | `architecture/service-architecture.md` at repo root |
+| Per service | `services/<name>/service-architecture.md` |
+| Per component | `<component-folder>/service-architecture.md` |
 
-## Network file format
+## Architecture file format
 
 ```markdown
-<!-- AI managed — edit via /network-architect when possible -->
+<!-- AI managed — edit via /service-architect when possible -->
 
-# Network — <Scope Name>
+# Service Architecture — <Scope Name>
 
 ## <NodeName> : <NodeType>
 
@@ -134,7 +134,7 @@ References use the same notation: `→ <NodeName> : <NodeType>`.
 
 # Receive
 
-Invoked as `/network-architect receive` when a human provides requirements describing
+Invoked as `/service-architect receive` when a human provides requirements describing
 a new capability, change, or addition to the architecture.
 
 Steps:
@@ -143,13 +143,13 @@ Steps:
 2. **Map** — for each identified element, determine whether it is a new node or a change to an existing one
 3. **Draft** — produce the full set of node additions and changes as a markdown diff or full updated file section
 4. **Present** — show the draft to the user before writing; name each node and its type explicitly
-5. **Write** — after explicit user approval, write the changes to the network file
+5. **Write** — after explicit user approval, write the changes to the architecture file
 
-If the requirement implies a node type not in the vocabulary, pause and run `/network-architect expand` for that type before drafting.
+If the requirement implies a node type not in the vocabulary, pause and run `/service-architect expand` for that type before drafting.
 
-If the network file for the target scope does not exist, create it with the header marker and an empty node list. Confirm the scope path with the user before creating.
+If the architecture file for the target scope does not exist, create it with the header marker and an empty node list. Confirm the scope path with the user before creating.
 
-After writing, prompt the user to add or update the corresponding test case in `<same-path>/network.test.md`. The test case format:
+After writing, prompt the user to add or update the corresponding test case in `<same-path>/service-architecture.test.md`. The test case format:
 
 ```
 User story: <the requirement as stated>
@@ -161,13 +161,13 @@ Validation:
 - <question about correctness> ✓/✗ <answer>
 ```
 
-Test cases live in `network.test.md` alongside the network file — not inside it.
+Test cases live in `service-architecture.test.md` alongside the architecture file — not inside it.
 
 ---
 
 # Expand
 
-Invoked as `/network-architect expand` when a requirement implies a node type not in the current vocabulary.
+Invoked as `/service-architect expand` when a requirement implies a node type not in the current vocabulary.
 
 Steps:
 
@@ -183,15 +183,15 @@ Vocabulary additions are changes to this command file — follow the `.claude-st
 
 # Derive
 
-Invoked as `/network-architect derive` to generate a human-readable Confluence view from the network.
+Invoked as `/service-architect derive` to generate a human-readable Confluence view from the architecture.
 
 Steps:
 
-1. **Read** — load the target network file
+1. **Read** — load the target architecture file
 2. **Translate** — render each node in plain language: what it does, what triggers it, what it produces
 3. **Structure** — organise as: overview (one paragraph), then one section per Process with its Triggers and DataFetches described inline
 4. **Present** — show the draft Confluence content to the user
 5. **Write** — after explicit user approval, update or create the Confluence page using the AI-managed marker pattern
 
-The Confluence page is derived — it is not the source. Any discrepancy between the network file
+The Confluence page is derived — it is not the source. Any discrepancy between the architecture file
 and the Confluence page is resolved by re-running derive, not by editing Confluence directly.
