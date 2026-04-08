@@ -104,6 +104,11 @@ Reusable quality tests applied when constructing or reviewing principles and rul
 
 - **Predict the next question and answer it** — if the reader's next question is predictable, the answer is already present. Applied when sizing evidence, ordering content, and testing whether a rule leaves gaps.
 - **Test the insight, not the mechanism** — a counter-argument that identifies real weaknesses in a mechanism but uses them to discard the underlying insight is a failure mode. The test: does the insight survive the flaws being fixed?
+
+### Draft-and-compare lenses
+
+When an authoring decision stalls in the abstract, draft concrete alternatives and let the comparison resolve it. The answer may be one contestant, or a synthesis.
+
 - **Consequence inclusion test** — when drafting a principle that asks for judgment, write it with and without a compressed consequence pattern. If the version with the consequence helps the reader decide correctly, keep it. If it adds words without changing behavior, discard.
 
 ## Self-improvement gate
