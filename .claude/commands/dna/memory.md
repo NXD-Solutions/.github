@@ -48,6 +48,16 @@ Findings from principle and strand tests. One entry per tested item. Untested pr
 
 ---
 
+# Draft-and-compare lens candidates
+
+Candidates for the draft-and-compare lens family. Graduate to `workbench.md` when validated in a real authoring session.
+
+- **Abstraction level test** — draft at the specific level and the general level. Compare: does the specific break when one detail changes? Does the general lose precision the reader needs?
+- **Boundary placement test** — draft with a narrow boundary and a wide boundary. Compare: does the narrow miss valid cases? Does the wide over-constrain?
+- **Naming test** — draft 2-3 candidate names. Compare which carries meaning without needing the body text.
+
+---
+
 # Anthropic Skills Registry
 
 Tracks skills from `anthropics/skills` — reviewed, adopted, deferred, or rejected.
