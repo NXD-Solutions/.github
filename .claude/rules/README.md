@@ -70,3 +70,4 @@ Developer-scoped rules — applies to engineers working on code.
 | `dev/bootstrap.md` | | |
 | `dev/code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
 | `dev/framework-standards.md` | | |
+| `dev/service-architecture-decisions.md` | | Lifecycle rules for repo-owned decision entries |
