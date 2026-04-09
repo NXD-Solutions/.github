@@ -2,9 +2,17 @@
 
 Terms used in NXD DNA, principles, and rules. If a term carries specific meaning that rules depend on, it belongs here. Definitions only — rationale lives in decision records.
 
+## Editorial policy — load-bearing terms
+
+A term is load-bearing when other definitions depend on it. Its stability is a precondition for the glossary functioning as a network — not a goal to pursue, but a constraint to protect.
+
+Load-bearing terms are annotated below. When a term acquires dependants, apply the annotation at that time. To modify a load-bearing term: search for all uses of the term in this file before renaming or restructuring.
+
 ---
 
 ## Unit of work
+
+*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
 
 A change and everything — inherent or declared — required for it to be understood, verified, and used by its consumer, delivered as one. An incomplete unit creates rework.
 
@@ -29,6 +37,8 @@ A principal's declaration about a bounded entity — what was commissioned, what
 
 ## Principal
 
+*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
+
 Any party with authority over a bounded entity.
 
 ## Communicative artefact
@@ -51,11 +61,15 @@ The complete hierarchy of DNA strands, principles, and rules that govern NXD dev
 
 ## Primitive
 
+*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
+
 The smallest meaningful unit at a given level of abstraction — the form that holds
 across instances. Finding the right primitive is the goal of pattern-seeking;
 compression is the signal it was found.
 
 ## Invariant
+
+*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
 
 What holds regardless of what is substituted beneath it. The primitive of a perspective — stable across all instances.
 
@@ -115,6 +129,8 @@ A label that carries meaning but no obligation. It appears in DNA, principles, r
 A term becomes a hierarchy item when it acquires an obligation — when its meaning affects how a principle is applied.
 
 ## Perspective
+
+*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
 
 A lens applied at a single abstraction level that defines the units of a
 system and what happens between them. An invariant in one perspective can be
