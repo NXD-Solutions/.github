@@ -65,3 +65,14 @@ The CR draft said "open with the problem." Challenge B identified this as positi
 ### Conviction
 
 Conviction (S|L): high | high — both parties, 2026-04-09.
+
+### Post-conviction refinements — 2026-04-09
+
+Two further challenges refined the wording after initial conviction was declared.
+
+**Consequence clause — from motivation to connection.** "Understands why they are reading" names the motivation effect (reader knows why to read). The deeper effect is cognitive priming: when the reader holds the problem before the solution arrives, they can connect the two — the solution lands in context rather than as isolated content. "Can connect the solution to a problem they already hold in mind" names the mechanism that saves the reader time. Motivation is upstream of connection; connection is the effect that matters.
+
+**Scope condition — from type enumeration to reader state.** "When an artefact presents a process, rule, or reference" is a fragile enumeration. A counter-example (API reference documentation: `getCustomerInfo()`) showed that artefact type is the wrong discriminator: the reader of a reference lookup arrives with the problem already in mind — problem introduction adds nothing. The correct discriminator is reader state on arrival: lookup-intent readers hold the problem; discovery/learning-intent readers may not. Final condition: "when the reader may not arrive with the problem already in mind." This correctly gates the facet on reader state, not artefact type, and generalises to any new artefact form.
+
+Final wording:
+> **Problem introduction** — when the reader may not arrive with the problem already in mind, establish the problem the artefact solves before presenting the solution — so the reader can connect the solution to a problem they already hold in mind.
