@@ -88,6 +88,10 @@
   - **[A misfit is a signal — redesign the container or create one](rules/core/principles.md#a-misfit-is-a-signal--redesign-the-container-or-create-one)** — Principle
   - **[Find the pattern, not the instance](rules/core/principles.md#find-the-pattern-not-the-instance)** — Principle
   - **[Scope fitness (Architectural Thinking)](rules/core/principles.md#scope-fitness-architectural-thinking)** — Principle
+  - **[Invariants before options](rules/core/principles.md#invariants-before-options)** — Principle
+  - **[Test simultaneously, not serially](rules/core/principles.md#test-simultaneously-not-serially)** — Principle
+  - **[Invariants are not choices](rules/core/principles.md#invariants-are-not-choices)** — Principle
+  - **[Failed candidates are teachers](rules/core/principles.md#failed-candidates-are-teachers)** — Principle
 
 ---
 
