@@ -16,6 +16,7 @@ Rules for Claude Code tools and meta-behaviour.
 | `claude-code/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
 | `claude-code/corrections.md` | [corrections.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSGlobal/pages/75563009) | |
 | `claude-code/corrections.triggers.md` | | Covered by corrections.md page |
+| `claude-code/component-declaration.md` | | Confluence page needed |
 
 ## confluence/
 

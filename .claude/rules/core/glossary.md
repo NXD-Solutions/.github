@@ -23,6 +23,14 @@ The declared list of artefacts a unit of work comprises — whether consumed or 
 
 A discrete, named item that is part of a scope of work — as input, output, or both. Examples: a spec, a component file, a decision record, a migration.
 
+## Charter
+
+A principal's declaration about a bounded entity — what was commissioned, what falls within scope and what does not, and what must hold.
+
+## Principal
+
+Any party with authority over a bounded entity.
+
 ## Communicative artefact
 
 Any written output whose primary purpose is to convey meaning to a human reader, where the organisation is not overridden by formal structural constraints (e.g. compiler, runtime, or schema requirements). Includes pages, blog posts, ADRs, specifications, PR descriptions, comments, and emails. Excludes code files.
