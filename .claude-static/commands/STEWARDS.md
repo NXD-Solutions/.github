@@ -25,6 +25,10 @@ Fix simple errors that can be resolved without context — do not route them bac
 
 Post review findings as a comment on the affected Confluence page — not in a separate channel. Findings stay where the content lives.
 
+## Decision records
+
+When a DR is warranted, invoke `/dr` — do not author decision records inline.
+
 ## Governance
 
 Format governed by the command workbench. Audited for accuracy alongside command structure (check #6).
