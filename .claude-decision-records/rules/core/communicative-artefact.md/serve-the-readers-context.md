@@ -41,38 +41,3 @@ The strand prevents exclusion (don't write only for insiders). The principle dri
 ## Conviction
 
 Conviction (S|L): high | high — both parties, 2026-03-26.
-
----
-
-## Add Problem introduction facet
-
-**Date:** 2026-04-09
-
-### What was decided
-
-Add *Problem introduction* as a fourth facet in `communicative-artefact.md`:
-
-> **Problem introduction** — when an artefact presents a process, rule, or reference, establish the problem it solves before presenting the solution — so the reader understands why they are reading before the content begins.
-
-### Why the latent-need qualifier was removed
-
-The CR draft scoped the facet to artefacts "the reader may not yet know they need." Challenge A surfaced that this qualifier restricts the facet to latent-need cases — readers who arrived by discovery. A reader who arrived with intent still benefits from seeing the problem stated before the solution: it confirms they are in the right place and frames the content before it arrives. The value of problem introduction does not depend on the reader's awareness. The qualifier was removed; the condition is now solely that the artefact presents a solution (process, rule, or reference).
-
-### Why "establish before" was chosen over "open with"
-
-The CR draft said "open with the problem." Challenge B identified this as positionally prescriptive: some artefacts require brief framing (audience declaration, scope boundary) before the problem. An artefact that opens with a one-sentence scope statement and then states the problem would be non-compliant under the positional form. The intent is sequencing — the problem precedes the solution — not that the problem is the literal first sentence. "Establish the problem before presenting the solution" captures the sequencing intent without prescribing position.
-
-### Conviction
-
-Conviction (S|L): high | high — both parties, 2026-04-09.
-
-### Post-conviction refinements — 2026-04-09
-
-Two further challenges refined the wording after initial conviction was declared.
-
-**Consequence clause — from motivation to connection.** "Understands why they are reading" names the motivation effect (reader knows why to read). The deeper effect is cognitive priming: when the reader holds the problem before the solution arrives, they can connect the two — the solution lands in context rather than as isolated content. "Can connect the solution to a problem they already hold in mind" names the mechanism that saves the reader time. Motivation is upstream of connection; connection is the effect that matters.
-
-**Scope condition — from type enumeration to reader state.** "When an artefact presents a process, rule, or reference" is a fragile enumeration. A counter-example (API reference documentation: `getCustomerInfo()`) showed that artefact type is the wrong discriminator: the reader of a reference lookup arrives with the problem already in mind — problem introduction adds nothing. The correct discriminator is reader state on arrival: lookup-intent readers hold the problem; discovery/learning-intent readers may not. Final condition: "when the reader may not arrive with the problem already in mind." This correctly gates the facet on reader state, not artefact type, and generalises to any new artefact form.
-
-Final wording:
-> **Problem introduction** — when the reader may not arrive with the problem already in mind, establish the problem the artefact solves before presenting the solution — so the reader can connect the solution to a problem they already hold in mind.
