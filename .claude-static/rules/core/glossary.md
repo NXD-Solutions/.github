@@ -65,9 +65,9 @@ The complete hierarchy of DNA strands, principles, and rules that govern NXD dev
 
 *Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
 
-The smallest meaningful unit at a given level of abstraction — the form that holds
-across instances. Finding the right primitive is the goal of pattern-seeking;
-compression is the signal it was found.
+The smallest meaningful unit at a given level of abstraction — the form that holds across instances. Recognising a primitive is the goal of pattern-seeking; compression is the signal it was found.
+
+See: Perspective.
 
 ## Invariant
 
