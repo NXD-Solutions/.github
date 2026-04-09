@@ -28,6 +28,7 @@ Rules for Claude Code tools and meta-behaviour.
 | File | Confluence page | Notes |
 | --- | --- | --- |
 | `figma/figma-integration.md` | | |
+| `figma/figma-translation.md` | [figma-translation.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSGlobal/pages/80674817/figma-translation.md) | |
 
 ## github/
 
