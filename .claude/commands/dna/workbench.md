@@ -98,6 +98,8 @@ Persistent workbench state (Anthropic skills registry and other cross-session me
 - When a PR or CR is presented, read the affected files before responding. Challenge fires on presentation, not on request.
 - When changing `.claude-static/` files, do not manually derive to `.claude/`. Instead: edit `.claude-static/`, run `gh workflow run "Distribute Claude Config" -f repo="NXD-Solutions/.github"`, wait for completion, `git pull`, and verify the local copy matches. This uses the actual distribution mechanism — what you test is what subscribers get.
 - When lifting an item to its correct abstraction level, apply the mechanic: strip mechanism, name invariant, check whether it maps to an existing parent, lift, terminate. Termination vocabulary (mapped/candidate/floor) is in the IFD glossary entry.
+- Scope conditions for facets and conditional rules express reader or actor state — not artefact type. A type enumeration (process, rule, reference) is an instance; it will always miss cases and doesn't generalise. Express the condition as the state the reader is in: it holds for any artefact form and gives the writer a precise test for when to apply the pattern.
+- Name the mechanism in consequence clauses, not the upstream effect. A consequence clause should name what the writer directly achieves — the mechanism that produces the value. Upstream effects (motivation, awareness) are real but they precede the mechanism and are not what the writer controls. Example: "can connect the solution to a problem they already hold" (mechanism) vs. "understands why they are reading" (motivation — upstream of connection). The mechanism gives the writer a sharper test for whether the pattern is working.
 ## Authoring lenses
 
 Reusable quality tests applied when constructing or reviewing principles and rules. Graduated from patterns learned when proven across multiple authoring sessions.
@@ -126,6 +128,8 @@ If needed but not conducted, surface the gap. Write only on approval.
 # DNA and Hierarchy
 
 ## Authoring process
+
+Before beginning: read any existing DRs for the target file (see **Decision record lookup**). Prior context must be in scope for the full session — not consulted after deliberation is complete.
 
 1. **Identify** — surface a candidate strand from a decision, principle, or pattern
 2. **Challenge** — is this truly identity, or a derived principle? Would it drive decisions across all domains?
