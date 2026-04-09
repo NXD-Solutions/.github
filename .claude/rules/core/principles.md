@@ -176,6 +176,24 @@ Apply by:
 3. Test fitness — does one unit hold this cleanly, current and foreseeable?
 4. If not — decompose — name the lower-level Stewards and what they must own
 
+### Invariants before options
+
+Name the invariants before exploring solutions. An option evaluated before the invariants are stated cannot be rejected on principle — only on preference. The invariants are the fixed points that make evaluation possible. The goal names intent; invariants name constraints. Both precede options, for different reasons.
+
+The boundary: where the solution is self-evident, stating invariants first is overkill.
+
+### Test simultaneously, not serially
+
+Test every candidate against all invariants at once. Serial testing lets a candidate survive by avoiding the invariant that would eliminate it. Simultaneous testing is the only form that guarantees a passing candidate holds across the full constraint set.
+
+### Invariants are not choices
+
+Distinguish invariants from choices and from attributes of the invariant set itself. A constraint that can be traded away is a preference. An attribute of the set — its size, its completeness — describes the invariants but does not constrain the solution. Conflating these produces false constraints and premature closure.
+
+### Failed candidates are teachers
+
+A candidate that fails against an invariant is not wasted — it narrows the solution space or surfaces an invariant that was missing. Treat each failure as evidence. The space converges through elimination; conviction follows from exhaustion of alternatives.
+
 ---
 
 # Architecture
