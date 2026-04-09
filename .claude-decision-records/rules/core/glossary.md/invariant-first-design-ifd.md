@@ -47,3 +47,7 @@ The original CR wording used "a specific" as a standalone noun — shorthand fro
 ## Conviction
 
 `Conviction (S|L): high | high`
+
+---
+
+**Update (2026-04-09):** The termination states recorded here were removed from the IFD glossary entry as part of the IFD entry rewrite (see `ifd-entry-form.md`). They are deferred — not dropped — to an IFD workbench skill when one exists. This record preserves the reasoning for the states themselves; `ifd-entry-form.md` records why they were removed from the glossary.

@@ -8,6 +8,8 @@ A term is load-bearing when other definitions depend on it. Its stability is a p
 
 Load-bearing terms are annotated below. When a term acquires dependants, apply the annotation at that time. To modify a load-bearing term: search for all uses of the term in this file before renaming or restructuring.
 
+Entries that depend on load-bearing terms carry a `See:` line naming those terms. When adding a new entry that depends on a load-bearing term, add the `See:` line at the end of the entry.
+
 ---
 
 ## Unit of work
@@ -98,11 +100,11 @@ Fitness dimensions — what "evaluate fitness" evaluates against:
 
 ## Invariant-first design (IFD)
 
-A problem-solving method that chains existing principles into a sequence: name the need before the solution (*Goal before solution*), state invariants before exploring options, test every candidate against all invariants simultaneously, distinguish invariants from what they are not — choices, and attributes of the invariant set itself, change abstraction level when stuck (*Find the pattern, not the instance*), and treat failed candidates as teachers — each failure narrows the space or surfaces a missing invariant (*Challenge until conviction*), and evolve the method after each application — compare against the IFD description and update when conviction is reached.
+A thinking discipline for finding the abstraction level at which a problem compresses — where the solution holds across instances, not just the current one.
 
-When lifting an item to its correct abstraction level, terminate with a named state: mapped (parent found and confirmed), candidate (parent proposed, conviction pending), or floor (the strand is the parent — highest valid level reached).
+Operates through four principles acting in concert: Invariants before options, Test simultaneously, Invariants are not choices, and Failed candidates are teachers. The individual principles exist independently; IFD names the practice of applying them together toward a single goal.
 
-The individual principles exist independently. This term names the discipline of applying them as a connected sequence rather than in isolation.
+See: Primitive, Invariant, Perspective.
 
 ## Change Request
 
