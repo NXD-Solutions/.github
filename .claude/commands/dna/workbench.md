@@ -324,6 +324,8 @@ Before creating: check descendants of (64913411) for an existing `<folder>` page
 
 Known folder pages:
 - `core/` → (65798145)
+- `figma/` → (80642049)
+- `dev/` → (79626241)
 
 ## Page structure
 

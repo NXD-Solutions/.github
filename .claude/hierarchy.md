@@ -148,3 +148,5 @@ Rules not yet assigned to a parent principle — workbench to resolve.
 - [Screen index](rules/figma/figma-integration.md#screen-index)
 - [Owned artefacts](rules/figma/figma-integration.md#owned-artefacts)
 - [Fixed-frame centering padding invariant](rules/figma/figma-translation.md#invariants)
+- [Component Declaration](rules/claude-code/component-declaration.md)
+- [Principal](rules/core/glossary.md#principal)
