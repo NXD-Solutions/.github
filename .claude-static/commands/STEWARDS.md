@@ -25,6 +25,10 @@ Fix simple errors that can be resolved without context — do not route them bac
 
 Post review findings as a comment on the affected Confluence page — not in a separate channel. Findings stay where the content lives.
 
+## Decision records
+
+When a DR is warranted, invoke `/dr` — do not author decision records inline.
+
 ## Governance
 
 Format governed by the command workbench. Audited for accuracy alongside command structure (check #6).
@@ -43,7 +47,7 @@ Format governed by the command workbench. Audited for accuracy alongside command
 | `dna:auditor` | — | read-only (no owned scope) | — | — |
 | `dna:command-workbench` | `.claude/commands/**` | structure, frontmatter | — | — |
 | `dna:command-workbench` | `.claude/commands/README.md`, `.claude-static/commands/README.md` | content | — | — |
-| `dna:command-workbench` | `.claude/commands/STEWARDS.md` | format | — | — |
+| `dna:command-workbench` | `.claude/commands/STEWARDS.md` | format, network behavior content | — | — |
 | `dev:bootstrap` | `**/package.json` (scripts) | correctness — all declared scripts must pass on first clone | — | — |
 | `dev:bootstrap` | `.claude-static/rules/dev/bootstrap.md`, `.claude/rules/dev/bootstrap.md` | content | — | — |
 | `dev:audit` | — | read-only (no owned scope) | — | — |
