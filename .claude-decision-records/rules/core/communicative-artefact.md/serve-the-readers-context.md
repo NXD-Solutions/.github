@@ -41,3 +41,27 @@ The strand prevents exclusion (don't write only for insiders). The principle dri
 ## Conviction
 
 Conviction (S|L): high | high — both parties, 2026-03-26.
+
+---
+
+## Add Problem introduction facet
+
+**Date:** 2026-04-09
+
+### What was decided
+
+Add *Problem introduction* as a fourth facet in `communicative-artefact.md`:
+
+> **Problem introduction** — when an artefact presents a process, rule, or reference, establish the problem it solves before presenting the solution — so the reader understands why they are reading before the content begins.
+
+### Why the latent-need qualifier was removed
+
+The CR draft scoped the facet to artefacts "the reader may not yet know they need." Challenge A surfaced that this qualifier restricts the facet to latent-need cases — readers who arrived by discovery. A reader who arrived with intent still benefits from seeing the problem stated before the solution: it confirms they are in the right place and frames the content before it arrives. The value of problem introduction does not depend on the reader's awareness. The qualifier was removed; the condition is now solely that the artefact presents a solution (process, rule, or reference).
+
+### Why "establish before" was chosen over "open with"
+
+The CR draft said "open with the problem." Challenge B identified this as positionally prescriptive: some artefacts require brief framing (audience declaration, scope boundary) before the problem. An artefact that opens with a one-sentence scope statement and then states the problem would be non-compliant under the positional form. The intent is sequencing — the problem precedes the solution — not that the problem is the literal first sentence. "Establish the problem before presenting the solution" captures the sequencing intent without prescribing position.
+
+### Conviction
+
+Conviction (S|L): high | high — both parties, 2026-04-09.

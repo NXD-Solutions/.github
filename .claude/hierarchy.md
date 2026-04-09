@@ -42,6 +42,7 @@
     - [Define Topic before writing](rules/core/communicative-artefact.md#define-topic-before-writing) — Rule
     - [Define Trigger before writing](rules/core/communicative-artefact.md#define-trigger-before-writing) — Rule
     - [Reader-need filter](rules/core/communicative-artefact.md#reader-need-filter) — Rule
+    - [Problem introduction](rules/core/communicative-artefact.md#facets) — Facet
     - [Visible consequences](rules/core/communicative-artefact.md#facets) — Facet
     - [Evidence serves the reader, not the author](rules/core/communication.md#evidence-serves-the-reader-not-the-author) — Rule
     - **[Every element earns its place](rules/core/communication.md#every-element-earns-its-place-by-serving-the-readers-current-position-in-the-document)** — Sub-principle
