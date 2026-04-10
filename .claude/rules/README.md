@@ -50,6 +50,14 @@ Portable, timeless thinking principles — independent of NXD, software developm
 | `thinking-core/communicative-artefact.md` | | Confluence page needed |
 | `thinking-core/glossary.md` | | |
 
+## governance/
+
+Universal processes for maintaining thinking-core — change, deprecation, annotation, and recoverability. Usable standalone alongside thinking-core/; no NXD dependency.
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `governance/CLAUDE.md` | | Placement gate and invariants |
+
 ## nxd-practices/
 
 NXD-specific practices — organisation-scoped content.
