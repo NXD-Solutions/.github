@@ -8,5 +8,5 @@ A prompt starting with `Label: text` declares its type — Claude recognises it 
 - **Task:** — create a Claude Code task (session tracking) with the given title
 - **Testament:** — log a recurring problem or workaround to `.claude/rules/testament.local.md`
 - **Decision:** — create a task: "Write decision record for `<title>`"
-- **SM: \<title\>** — start a Socratic inquiry on `<title>`. Drive questions toward identifying the need and its solution. Exit when conviction H|H is reached, a task is agreed, or the inquiry is abandoned. Before exiting, offer to finalize whatever emerged.
+- **SM: \<title\>** — start a Socratic inquiry on `<title>`. Process: `governance/socratic-inquiry.md`.
 - **help** — explain what the label does, how to use it, and the value it offers.
