@@ -57,6 +57,7 @@ Universal processes for maintaining thinking-core — change, deprecation, annot
 | `governance/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
 | `governance/component-declaration.md` | | Confluence page needed |
 | `governance/socratic-inquiry.md` | | |
+| `governance/invariant-storage.md` | | |
 
 ## nxd-practices/
 
@@ -69,7 +70,6 @@ NXD-specific practices — organisation-scoped content.
 | `nxd-practices/debug.md` | | |
 | `nxd-practices/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
 | `nxd-practices/glossary.md` | | Confluence page needed |
-| `nxd-practices/invariant-storage.md` | | |
 | `nxd-practices/policies.md` | | |
 | `nxd-practices/principles.md` | | |
 | `nxd-practices/roles.md` | | |
