@@ -53,6 +53,8 @@ Universal processes for maintaining thinking-core — change, deprecation, annot
 | File | Confluence page | Notes |
 | --- | --- | --- |
 | `governance/CLAUDE.md` | | Placement gate and invariants |
+| `governance/corrections.md` | [corrections.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSGlobal/pages/75563009) | |
+| `governance/corrections.triggers.md` | | Covered by corrections.md page |
 
 ## nxd-practices/
 

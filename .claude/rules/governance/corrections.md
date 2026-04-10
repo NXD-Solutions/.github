@@ -6,7 +6,7 @@ When either party identifies a correction, add an entry to `memory/corrections.m
 
 | date | type | session context | what was corrected | triggered by | resolved by | resolution date |
 
-The `triggered by` column names who or what surfaced the correction — a specific steward (e.g. "Peter", "Claude Code", "Claude.ai") or an external signal. Required on every entry.
+The `triggered by` column names who or what surfaced the correction — a named party or an external signal. Required on every entry.
 
 Types: `process` | `implementation` | `artefact` | `discovery`
 
@@ -18,6 +18,6 @@ Types: `process` | `implementation` | `artefact` | `discovery`
 
 At end of session, if ≥1 correction was added: summarise and ask "Worth a retrospective now?"
 
-At retrospective: compress entries to the pattern that, known earlier, would have prevented the most. Route the output — instinct or principle to `dna:workbench`, behavioural to feedback memory, recurring workaround to testament, waste pattern to `/waste`.
+At retrospective: compress entries to the pattern that, known earlier, would have prevented the most. Route the output — instinct or principle to the principle store, behavioural to the feedback store, recurring workaround to the workaround log, waste pattern to the waste log.
 
 Entry lifecycle: resolved entries carry a `resolved by` and `resolution date` — delete if resolution date is more than one month old with no reuse, or update the date when reused.
