@@ -79,13 +79,11 @@ A rule that can be silently violated is not a rule. If something matters, make i
 
 Enforcement has levels — prefer the strongest that is feasible:
 
-| Level | Form | Example |
-|---|---|---|
-| 1 | Silent automation | `toCamel` transform, ESLint auto-fix, code generation |
-| 2 | Hard block | CI fails, PR cannot merge, required field |
-| 3 | Explicit acknowledgement | Reviewer gate, override that is visible and logged |
-| 4 | Reminder | Lint warning, PR checklist, notification |
-| 5 | Documentation | Written rule, human must remember unaided |
+1. Silent automation
+2. Hard block
+3. Explicit acknowledgement
+4. Reminder
+5. Documentation
 
 Always apply the highest feasible level. Challenge any proposal that doesn't.
 
