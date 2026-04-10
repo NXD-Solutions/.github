@@ -42,3 +42,41 @@ All three must hold. Failing any one places the file outside `thinking-core/`.
 Known debt at time of decision: `dna.md` contains NXD branding and "We are..." phrasing. Five principles in `principles.md` contain NXD/software language. All travel as-is pending a dedicated reword CR.
 
 `Conviction (S|L): high | high`
+
+---
+
+## Core/ migration complete — classification of remaining files (D8)
+
+**Trigger:** PR #299 merged — `thinking-core/` and `nxd-practices/` established, making the remaining `core/` files structurally misplaced. This CR completes the migration and deletes `core/`.
+
+**Classification: `thinking-core/`**
+
+`communication.md` and `communicative-artefact.md` are classified as universal by the D4 gate:
+
+- **Universal** — neither file names NXD, any software platform, or AI tooling. Both address how any writer structures and delivers information to a human reader.
+- **Timeless** — the principles (evidence thresholds, sequencing, bridging, signposting, pre-writing gates) are independent of tool or platform change.
+- **No domain dependency** — no named tools, org terms, or platform references appear as load-bearing content.
+
+Both satisfy all three invariants simultaneously. They move to `thinking-core/`.
+
+**Classification: `nxd-practices/`**
+
+The following files are NXD-specific and do not satisfy the universality gate — they reference NXD processes, tooling, or organisational structure as load-bearing content:
+
+- `ai-human-conventions.md` — governs the NXD AI–human working relationship; references Claude Code, CRs, deliberation process, and NXD-specific labels
+- `constitution.md` — states the constitutional clause for how the NXD DNA network governs
+- `debug.md` — scoped to NXD rule validation and the rule network
+- `decision-log-extract.gen.md` — auto-generated NXD decision log; organisation-scoped by definition
+- `glossary.md` — defines terms used in NXD DNA, principles, and rules; NXD-scoped by charter
+- `invariant-storage.md` — governs artefact placement in the NXD rules network
+- `policies.md` — states NXD architectural policies
+- `roles.md` — defines NXD standing and task roles
+- `spec-lifecycle.md` — governs NXD component spec delivery
+
+All nine move to `nxd-practices/`.
+
+**`core/` deletion**
+
+`core/` is deleted from both `.claude/rules/` and `.claude-static/rules/` after all files are moved. The structural separation introduced in D1 is now complete — no files remain in the ambiguous container.
+
+`Conviction (S|L): high | high`

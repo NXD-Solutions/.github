@@ -37,7 +37,7 @@ Format governed by the command workbench. Audited for accuracy alongside command
 
 | Steward | Scope | Property | Authority | Escalation |
 |---|---|---|---|---|
-| `dna:workbench` | `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, `.claude/rules/core/glossary.md` | content | — | — |
+| `dna:workbench` | `.claude/rules/thinking-core/dna.md`, `.claude/rules/thinking-core/principles.md`, `.claude/rules/nxd-practices/glossary.md` | content | — | — |
 | `dna:workbench` | `.claude/hierarchy.md` | content | — | — |
 | `dna:workbench` | `.claude-decision-records/**` | content | — | — |
 | `dna:workbench` | `.claude/commands/dna/memory.md` | content | — | — |
