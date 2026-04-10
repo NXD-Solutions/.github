@@ -12,9 +12,6 @@ Rules for Claude Code tools and meta-behaviour.
 | --- | --- | --- |
 | `claude-code/claude-rules-system.md` | | |
 | `claude-code/labels.md` | | Confluence page needed |
-| `claude-code/task-management.md` | | Confluence page needed |
-| `claude-code/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
-| `claude-code/component-declaration.md` | | Confluence page needed |
 
 ## confluence/
 
@@ -57,6 +54,9 @@ Universal processes for maintaining thinking-core — change, deprecation, annot
 | `governance/CLAUDE.md` | | Placement gate and invariants |
 | `governance/corrections.md` | [corrections.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSGlobal/pages/75563009) | |
 | `governance/corrections.triggers.md` | | Covered by corrections.md page |
+| `governance/task-management.md` | | Confluence page needed |
+| `governance/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
+| `governance/component-declaration.md` | | Confluence page needed |
 
 ## nxd-practices/
 
