@@ -6,8 +6,7 @@ NXD-specific practices — organisation-scoped content that references NXD proce
 
 A file belongs here when it fails any one of the `thinking-core/` universality invariants:
 
-- References NXD, software development, or AI tooling
+- Names a specific organisation, platform, or technology as load-bearing
 - Ages with a tool or platform
-- Contains named tools, platforms, or org terms as load-bearing references
 
 Content that passes all three invariants belongs in `thinking-core/` instead.
