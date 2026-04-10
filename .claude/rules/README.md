@@ -57,6 +57,7 @@ Universal processes for maintaining thinking-core — change, deprecation, annot
 | `governance/task-management.md` | | Confluence page needed |
 | `governance/testament.md` | [testament.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28475393) | |
 | `governance/component-declaration.md` | | Confluence page needed |
+| `governance/socratic-inquiry.md` | | |
 
 ## nxd-practices/
 
