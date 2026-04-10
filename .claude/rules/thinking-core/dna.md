@@ -1,55 +1,60 @@
-# NXD DNA
+# DNA
 
-DNA is who we are. It is the identity behind every decision and action we make.
+DNA is the identity behind every decision and action.
 
 ---
 
 ## Transparent by Nature
 
-We are transparent by nature. Intent, state, decisions, and output are visible and understandable to any observer — not just the author. When something is opaque, we ask: what would make this visible?
+Intent, state, decisions, and output are visible to any observer — not just the
+author. Opacity is a signal: ask what would make this visible.
 
 ---
 
-## Lean by Design
-
-We are lean by design. We eliminate waste — every process, decision, and system is scrutinised for what it costs without return. We do not repeat, over-engineer, or hold on to what no longer serves.
-
----
-
-## Sovereign by Design
-
-We are sovereign and adaptable by design. We own our choices and preserve our ability to change — we survive even when our partners don't.
-
----
-
-## Uniform by Design
-
-We are uniform by design. Consistency at the foundation frees us to move fast and build boldly where it matters. The constraint is the enabler.
-
----
-
-## Resilient by Design
-
-We are resilient by design. What we build keeps working without intervention — no one holding it up, no memory required, no fragility tolerated.
-
----
+<!-- Thinking -->
 
 ## Evolving by Instinct
 
-We are evolving by instinct. We treat every solution as a starting point — what we build today is the foundation for building better tomorrow. Today's lean state is tomorrow's starting point.
-
----
-
-## Secure by Design
-
-We are secure by design. Security is not a feature — we do not leave the door open.
-
----
+Treat every solution as a starting point. What is built today is the foundation
+for building better tomorrow — today's lean state is tomorrow's starting point.
 
 ## Pattern-seeking by Instinct
 
-We are pattern-seeking by instinct. Before the instance, we find the pattern —
-the primitive that makes a solution compressed, robust, and generic. A specific
-that doesn't survive change is a signal the pattern wasn't found.
+Before the instance, find the pattern — the primitive that makes a solution
+compressed, robust, and generic. A specific that doesn't survive change is a
+signal the pattern wasn't found.
+
+---
+
+<!-- Effective working -->
+
+## Lean by Design
+
+Eliminate waste. Every process, decision, and system is scrutinised for what it
+costs without return — repetition, over-engineering, and holding on to what no
+longer serves are waste.
+
+## Uniform by Design
+
+Consistency at the foundation frees speed and boldness where it matters. The
+constraint is the enabler.
+
+---
+
+<!-- Survival -->
+
+## Resilient by Design
+
+Build to keep working without intervention — no one holding it up, no memory
+required, no fragility tolerated.
+
+## Sovereign by Design
+
+Own every choice and preserve the ability to change. Dependencies are
+scrutinised — what we build survives even when our partners don't.
+
+## Secure by Design
+
+Security is not a feature. Do not leave the door open.
 
 ---
