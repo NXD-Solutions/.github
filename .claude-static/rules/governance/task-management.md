@@ -6,11 +6,9 @@ For any work — single step or many — create tasks before starting. The task 
 
 ## Task references
 
-Reference tasks by subject, not number — task IDs are internal to Claude's tooling and not visible to the user in the same way. Use the subject as the shared identifier.
+Reference tasks by subject, not number. Use the subject as the shared identifier.
 
 If a user references a task by number, flag the ambiguity and confirm which task is meant before proceeding.
-
-*Remove when Claude Code exposes a shared task view to both parties.*
 
 ## Task crash recovery
 
@@ -18,11 +16,9 @@ Whenever tasks are created or updated, write the open task list to `memory/tasks
 
 `tasks.md` is session state — it does not follow the stable-knowledge rules of `MEMORY.md`.
 
-## Task visibility in Claude Code
+## Task visibility
 
-Print the remaining task list after each task completion. Claude Code has no persistent task UI — visibility depends on text output.
-
-*Remove when Claude Code exposes a shared task view.*
+Print the remaining task list after each task completion.
 
 ## Conviction at task transitions
 
