@@ -4,13 +4,13 @@ description: DNA workbench — author, maintain, and audit NXD identity strands 
 
 # Identity
 
-Read `.claude/commands/STEWARDS.md`, all files in `.claude/rules/core/`, and `.claude/hierarchy.md` before proceeding. The full core is mandatory — deliberation and authoring both require the complete DNA language and identity. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
+Read `.claude/commands/STEWARDS.md`, all files in `.claude/rules/thinking-core/` and `.claude/rules/nxd-practices/`, and `.claude/hierarchy.md` before proceeding. The full DNA layer is mandatory — deliberation and authoring both require the complete DNA language and identity. The hierarchy file is the source of truth for the strand → principle → rule chain — consult it before any Author, Audit, Fix, or Rework operation.
 
 ## Duties
 
 Maintains the DNA, its hierarchy, and their integrity. Manages content subscribers.
 
-- **DNA content** — `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, `.claude/rules/core/glossary.md`
+- **DNA content** — `.claude/rules/thinking-core/dna.md`, `.claude/rules/thinking-core/principles.md`, `.claude/rules/nxd-practices/glossary.md`
 - **Hierarchy** — `.claude/hierarchy.md` (strand → principle → rule tree, source of truth)
 - **Decision records** — `.claude-decision-records/<rules-path>/<item-name>.md` for any strand or principle change
 - **Cross-session state** — `.claude/commands/dna/memory.md`
@@ -68,7 +68,7 @@ When any heading is added to a DNA rules file during any mode, add it to `.claud
 
 ## Decision record lookup
 
-Records mirror the rules path — `.claude-decision-records/<rules-path>/<item-name>.md`. Example: the record for "Design for durability" lives at `.claude-decision-records/rules/core/principles.md/design-for-durability.md`. Direct file lookup, no scanning.
+Records mirror the rules path — `.claude-decision-records/<rules-path>/<item-name>.md`. Example: the record for "Design for durability" lives at `.claude-decision-records/rules/thinking-core/principles.md/design-for-durability.md`. Direct file lookup, no scanning.
 
 ## Cross-session state
 
@@ -281,22 +281,22 @@ Invoked as `/dna:workbench sync` or triggered after any Author, Rework, or Fix o
 
 ### Target 2 — DNA Extract for claude.ai (page 45121554)
 
-**Subscription:** `rules/core/*.md` — page subscribes to the core folder. Any change to a file in `rules/core/` triggers a sync.
+**Subscription:** `rules/thinking-core/*.md` and `rules/nxd-practices/*.md` — page subscribes to both folders. Any change to a file in either triggers a sync.
 
 **Section mapping** (current contributors and their target sections):
-- `core/constitution.md` → `# Constitution`
-- `core/dna.md` → `# DNA Strands`
-- `core/principles.md` → `# Principles`
-- `core/glossary.md` → `# Glossary`
-- `core/roles.md` → `# Roles`
-- `core/ai-human-conventions.md` → `# AI-Human Conventions`
-- `core/communication.md` → `# Communication`
-- `core/decision-log-extract.gen.md` → `# Binding Architectural Decisions`
+- `nxd-practices/constitution.md` → `# Constitution`
+- `thinking-core/dna.md` → `# DNA Strands`
+- `thinking-core/principles.md` → `# Principles`
+- `nxd-practices/glossary.md` → `# Glossary`
+- `nxd-practices/roles.md` → `# Roles`
+- `nxd-practices/ai-human-conventions.md` → `# AI-Human Conventions`
+- `thinking-core/communication.md` → `# Communication`
+- `nxd-practices/decision-log-extract.gen.md` → `# Binding Architectural Decisions`
 
-**Trigger:** any file under `rules/core/` changes.
+**Trigger:** any file under `rules/thinking-core/` or `rules/nxd-practices/` changes.
 
 **Steps:**
-1. Read all files matching `rules/core/*.md`
+1. Read all files matching `rules/thinking-core/*.md` and `rules/nxd-practices/*.md`
 2. Fetch Confluence page 45121554 (markdown format) — apply Page Format principle from page 24313857
 3. For each file with a section mapping: replace the corresponding section body with the current source content
 4. Preserve the intro paragraph and AI-managed marker as the first line
@@ -323,7 +323,8 @@ Creates a human-readable explanation sub-page whenever a new item is added to th
 Before creating: check descendants of (64913411) for an existing `<folder>` page. If absent, create it first (empty body, title = folder name capitalised).
 
 Known folder pages:
-- `core/` → (65798145)
+- `thinking-core/` → (65798145)
+- `nxd-practices/` → (to be confirmed — was `core/`)
 - `figma/` → (80642049)
 - `dev/` → (79626241)
 

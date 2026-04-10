@@ -46,25 +46,24 @@ Portable, timeless thinking principles — independent of NXD, software developm
 | --- | --- | --- |
 | `thinking-core/dna.md` | | |
 | `thinking-core/principles.md` | | |
+| `thinking-core/communication.md` | | Confluence page needed |
+| `thinking-core/communicative-artefact.md` | | Confluence page needed |
 
 ## nxd-practices/
 
-NXD-specific practices — organisation-scoped content. Migration from `core/` is a subsequent CR.
-
-## core/
-
-Cross-cutting rules — applies to all NXD contexts.
+NXD-specific practices — organisation-scoped content.
 
 | File | Confluence page | Notes |
 | --- | --- | --- |
-| `core/ai-human-conventions.md` | | |
-| `core/communication.md` | | Confluence page needed |
-| `core/communicative-artefact.md` | | Confluence page needed |
-| `core/constitution.md` | | Confluence page needed |
-| `core/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
-| `core/glossary.md` | | Confluence page needed |
-| `core/roles.md` | | |
-| `core/spec-lifecycle.md` | | |
+| `nxd-practices/ai-human-conventions.md` | | |
+| `nxd-practices/constitution.md` | | Confluence page needed |
+| `nxd-practices/debug.md` | | |
+| `nxd-practices/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
+| `nxd-practices/glossary.md` | | Confluence page needed |
+| `nxd-practices/invariant-storage.md` | | |
+| `nxd-practices/policies.md` | | |
+| `nxd-practices/roles.md` | | |
+| `nxd-practices/spec-lifecycle.md` | | |
 
 ## configuration/
 

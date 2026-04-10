@@ -41,7 +41,7 @@ Steward for decision record authoring across all `.claude-decision-records/` nod
 
 DR paths mirror `.claude/`:
 
-- A change to `.claude/rules/core/principles.md` → record in `.claude-decision-records/rules/core/principles.md/<decision-name>.md`
+- A change to `.claude/rules/thinking-core/principles.md` → record in `.claude-decision-records/rules/thinking-core/principles.md/<decision-name>.md`
 - A change to `.claude/commands/cr.md` → record in `.claude-decision-records/commands/cr.md/<decision-name>.md`
 
 **Filename:** lowercase-kebab-case, names the principle or concept decided — not the action taken. `challenge-until-conviction.md` is correct. `add-challenge-principle.md` is not.

@@ -23,8 +23,8 @@ Parse $ARGUMENTS as `<issueKey> [mode]` where mode is `full` or omitted (default
 ## Review sources
 
 **Light (default)** — highest-level binding sources:
-- `.claude/rules/core/principles.md` — cross-cutting principles (Culture, Architecture, Engineering)
-- `.claude/rules/core/decision-log-extract.gen.md` — binding architectural and standards decisions
+- `.claude/rules/thinking-core/principles.md` — cross-cutting principles (Culture, Architecture, Engineering)
+- `.claude/rules/nxd-practices/decision-log-extract.gen.md` — binding architectural and standards decisions
 - `.claude/rules/claude-code/testament.local.md` — recurring problems and known workarounds (if file exists)
 
 **Full** — all of the above plus:

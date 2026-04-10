@@ -18,11 +18,11 @@ Assesses the rule network for fitness, drift, and consistency. Read-only — doe
 
 # Foundation
 
-Read `.claude/rules/core/dna.md`, `.claude/rules/core/principles.md`, and `.claude/hierarchy.md` before proceeding.
+Read `.claude/rules/thinking-core/dna.md`, `.claude/rules/thinking-core/principles.md`, and `.claude/hierarchy.md` before proceeding.
 
 ## Decision record lookup
 
-Records mirror the rules path — `.claude-decision-records/<rules-path>/<item-name>.md`. Example: the record for "Design for durability" lives at `.claude-decision-records/rules/core/principles.md/design-for-durability.md`. Direct file lookup, no scanning.
+Records mirror the rules path — `.claude-decision-records/<rules-path>/<item-name>.md`. Example: the record for "Design for durability" lives at `.claude-decision-records/rules/thinking-core/principles.md/design-for-durability.md`. Direct file lookup, no scanning.
 
 ## Prerequisites
 
