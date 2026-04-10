@@ -48,6 +48,7 @@ Portable, timeless thinking principles — independent of NXD, software developm
 | `thinking-core/principles.md` | | |
 | `thinking-core/communication.md` | | Confluence page needed |
 | `thinking-core/communicative-artefact.md` | | Confluence page needed |
+| `thinking-core/glossary.md` | | |
 
 ## nxd-practices/
 
