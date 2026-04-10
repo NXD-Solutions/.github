@@ -1,0 +1,11 @@
+# Governance Configuration — Template
+
+Copy to `rules/configuration/governance.config.md` and fill in values for this deployment.
+Declares environment-specific values that governance processes depend on.
+
+## Testament
+
+The testament is auto-loaded into system context — it is the memory store for this
+environment. Governance processes that inject behavioral changes reference this location.
+
+testament-location: .claude/rules/configuration/testament-log.md

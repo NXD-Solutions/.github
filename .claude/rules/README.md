@@ -59,7 +59,7 @@ Universal processes for maintaining thinking-core — change, deprecation, annot
 | `governance/component-declaration.md` | | Confluence page needed |
 | `governance/socratic-inquiry.md` | | |
 | `governance/invariant-storage.md` | | |
-| `governance/testament-log.md` | | Local only |
+| `governance/governance.config.md.template` | | Distributed config template |
 
 ## nxd-practices/
 
@@ -84,6 +84,8 @@ Project-level vendored contracts — repo-owned, not distributed. Container is o
 | File | Confluence page | Notes |
 | --- | --- | --- |
 | `configuration/README.md` | | Container contract |
+| `configuration/governance.config.md` | | Local only |
+| `configuration/testament-log.md` | | Local only |
 
 ## dev/
 
