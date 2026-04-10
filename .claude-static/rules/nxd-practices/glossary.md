@@ -29,10 +29,6 @@ The declared list of artefacts a unit of work comprises — whether consumed or 
 
 ---
 
-## Artefact
-
-A discrete, named item that is part of a scope of work — as input, output, or both. Examples: a spec, a component file, a decision record, a migration.
-
 ## Charter
 
 A principal's declaration about a bounded entity — what was commissioned, what falls within scope and what does not, and what must hold.
@@ -61,28 +57,6 @@ An authoritative, decided direction for how a problem must be solved. Mandatory 
 
 The complete hierarchy of DNA strands, principles, and rules that govern NXD development. Maintained in `.claude/rules/` with `.claude/hierarchy.md` as its map.
 
-## Primitive
-
-*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
-
-The smallest meaningful unit at a given level of abstraction — the form that holds across instances. Recognising a primitive is the goal of pattern-seeking; compression is the signal it was found.
-
-See: Perspective.
-
-## Invariant
-
-*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
-
-What holds regardless of what is substituted beneath it. The primitive of a perspective — stable across all instances.
-
-## Invariant Owner
-
-The authority that defines an invariant's scope and when it applies. May be external (regulatory body, legal requirement) or internal. Non-negotiable — the owner sets the constraint, not the implementer.
-
-## Role
-
-A named lens applied to a unit of work; defines what must be seen and what falls outside scope. Not a job title.
-
 ## Steward
 
 Any named unit — person, system, role, or process — that holds duties at a given abstraction level. A microservice, a team, a workbench, and a developer are all Stewards; what distinguishes them is the abstraction level at which their duties are defined.
@@ -98,14 +72,6 @@ Fitness dimensions — what "evaluate fitness" evaluates against:
 - **Captured knowledge** — insights survive beyond the session?
 - **Scope integration** — boundaries meet adjacent Stewards?
 
-## Invariant-first design (IFD)
-
-A thinking discipline for finding the abstraction level at which a problem compresses — where the solution holds across instances, not just the current one.
-
-Operates through four principles acting in concert: Invariants before options, Test simultaneously, Invariants are not choices, and Failed candidates are teachers. The individual principles exist independently; IFD names the practice of applying them together toward a single goal.
-
-See: Primitive, Invariant, Perspective.
-
 ## Change Request
 
 A named artefact that carries a finding through deliberation to a recorded outcome. Contains: **finding**, **trigger**, **consequence**, **goal**, and a **Deliberation section**. Distinct from a Decision Record, which captures the full reasoning for future editors. A CR is live until the post-deliberation package is complete.
@@ -120,23 +86,9 @@ An architectural invariant that drives decisions from necessity — what the sys
 
 Distinct from a glossary term (which defines meaning) by its obligation weight: a principle that enforces a policy without naming it is a coverage gap.
 
-## Gap signal
-
-A question, correction, or any observation that something is not what it should be; points to where the system can improve.
-
 ## Term
 
 A label that carries meaning but no obligation. It appears in DNA, principles, rules, and the glossary without holding a position in the hierarchy. It does not constrain reasoning on its own — the obligation lives in the instinct that uses it.
 
 A term becomes a hierarchy item when it acquires an obligation — when its meaning affects how a principle is applied.
 
-## Perspective
-
-*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
-
-A lens applied at a single abstraction level that defines the units of a
-system and what happens between them. An invariant in one perspective can be
-the parent for many invariants one level down — each perspective reveals its
-own set. Only invariants at the current level belong in the perspective —
-pulling from levels above or below pollutes the view. The dataflow perspective
-defines nodes and the data moving between them.
