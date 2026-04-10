@@ -34,21 +34,33 @@ Rules for Claude Code tools and meta-behaviour.
 | `github/github-actions.md` | | |
 | `github/github-workflow.md` | [git-workflow.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/30081025) | Renamed from git-workflow.md |
 
-## core/
+## thinking-core/
 
-Identity and cross-cutting rules — universal, applies to everyone.
+Portable, timeless thinking principles — independent of NXD, software development, or AI tooling.
 
 | File | Confluence page | Notes |
 | --- | --- | --- |
-| `core/ai-human-conventions.md` | | |
-| `core/communication.md` | | Confluence page needed |
-| `core/constitution.md` | | Confluence page needed |
-| `core/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
-| `core/dna.md` | | |
-| `core/glossary.md` | | Confluence page needed |
-| `core/principles.md` | | |
-| `core/roles.md` | | |
-| `core/spec-lifecycle.md` | | |
+| `thinking-core/dna.md` | | |
+| `thinking-core/principles.md` | | |
+| `thinking-core/communication.md` | | Confluence page needed |
+| `thinking-core/communicative-artefact.md` | | Confluence page needed |
+
+## nxd-practices/
+
+NXD-specific practices — organisation-scoped content.
+
+| File | Confluence page | Notes |
+| --- | --- | --- |
+| `nxd-practices/ai-human-conventions.md` | | |
+| `nxd-practices/constitution.md` | | Confluence page needed |
+| `nxd-practices/debug.md` | | |
+| `nxd-practices/decision-log-extract.gen.md` | [decisions-developer.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/28508161) | Auto-generated — do not edit by hand |
+| `nxd-practices/glossary.md` | | Confluence page needed |
+| `nxd-practices/invariant-storage.md` | | |
+| `nxd-practices/policies.md` | | |
+| `nxd-practices/principles.md` | | |
+| `nxd-practices/roles.md` | | |
+| `nxd-practices/spec-lifecycle.md` | | |
 
 ## configuration/
 

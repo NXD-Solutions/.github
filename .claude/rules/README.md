@@ -62,6 +62,7 @@ NXD-specific practices — organisation-scoped content.
 | `nxd-practices/glossary.md` | | Confluence page needed |
 | `nxd-practices/invariant-storage.md` | | |
 | `nxd-practices/policies.md` | | |
+| `nxd-practices/principles.md` | | |
 | `nxd-practices/roles.md` | | |
 | `nxd-practices/spec-lifecycle.md` | | |
 
