@@ -59,6 +59,7 @@ Universal processes for maintaining thinking-core — change, deprecation, annot
 | `governance/component-declaration.md` | | Confluence page needed |
 | `governance/socratic-inquiry.md` | | |
 | `governance/invariant-storage.md` | | |
+| `governance/testament-log.md` | | Local only |
 
 ## nxd-practices/
 
