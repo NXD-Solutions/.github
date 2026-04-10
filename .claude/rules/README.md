@@ -84,7 +84,7 @@ Project-level vendored contracts — repo-owned, not distributed. Container is o
 | File | Confluence page | Notes |
 | --- | --- | --- |
 | `configuration/README.md` | | Container contract |
-| `configuration/governance.config.md` | | Local only |
+| `configuration/governance.config.md` | | Distributed — transitional exception |
 | `configuration/testament-log.md` | | Local only |
 
 ## dev/
