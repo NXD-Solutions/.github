@@ -167,6 +167,12 @@ choice. Name the primitive, not the specific advantage.
 Intentional specifics (page IDs, file paths, named owners) are not failures —
 they are the primitives of their scope.
 
+### Compression signals understanding
+
+When a solution compresses — fewer parts, less special-casing, broader applicability — understanding has deepened. The compression may arrive through any path: pattern-seeking, experience, deliberation, failed implementation, evidence from a new context. The path is incidental; the signal is not.
+
+Absence of compression is not failure — it may signal honest scope or irreducible complexity. But compression that survives testing is evidence the problem is better understood.
+
 ### Scope fitness (Architectural Thinking)
 
 Evaluating whether a solution is fit for the full scope of a Steward's duties: current and foreseeable.
