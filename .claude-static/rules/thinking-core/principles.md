@@ -156,7 +156,7 @@ A misfit is a signal — redesign the container or create one.
 
 ### Find the pattern, not the instance
 
-Before writing, designing, or choosing, find the most general form that holds.
+Find the most general form that holds.
 A solution built from the right primitive is naturally compressed, robust, and generic.
 A specific that breaks when one detail changes — a count, a tool name, an assumption —
 is a signal the pattern wasn't found.
