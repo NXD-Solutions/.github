@@ -18,7 +18,14 @@ Whenever tasks are created or updated, write the open task list to `memory/tasks
 
 ## Task visibility
 
-Print the remaining task list after each task completion.
+Print the remaining task list after each task completion. Format:
+
+```
+N tasks (X done, Y open)
+  ✔ #N <subject>
+  ◻ #N <subject>
+  ◻ #N <subject> › blocked by #M[, #M...]
+```
 
 ## Conviction at task transitions
 
