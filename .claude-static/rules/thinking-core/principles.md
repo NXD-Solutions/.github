@@ -68,6 +68,10 @@ Before the first change is made, the full set of affected artefacts is known —
 
 Incomplete scope discovered mid-execution is waste.
 
+### Validate preconditions before proceeding
+
+Beginning on a broken foundation is waste — work that cannot produce usable output. A failure must surface immediately to whoever can resolve it, with enough context to self-serve the fix.
+
 ### Shared scope, shared lifecycle
 
 Artefacts that belong together live together. Delete the scope, nothing is orphaned, nothing is left behind.

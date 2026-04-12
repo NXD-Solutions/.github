@@ -36,6 +36,7 @@ mindmap
       Shared language
         Glossary
     Lean by Design
+      Validate preconditions before proceeding
       Shared scope, shared lifecycle
       Prefer enforcement over documentation
         Triggers
