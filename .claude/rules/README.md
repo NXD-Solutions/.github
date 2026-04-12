@@ -97,3 +97,4 @@ Developer-scoped rules — applies to engineers working on code.
 | `dev/code-standards.md` | [code-standards.md](https://nordicexperiencedesign.atlassian.net/wiki/spaces/NSME/pages/39256065) | |
 | `dev/framework-standards.md` | | |
 | `dev/service-architecture-decisions.md` | | Lifecycle rules for repo-owned decision entries |
+| `dev/platform-contracts.md` | | Platform package mandate registry |
