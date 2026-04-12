@@ -54,6 +54,7 @@
 ---
 - **[Lean by Design](rules/thinking-core/dna.md#lean-by-design)** — Strand
   - **[Impact precedes action](rules/thinking-core/principles.md#impact-precedes-action)** — Principle
+  - **[Validate preconditions before proceeding](rules/thinking-core/principles.md#validate-preconditions-before-proceeding)** — Principle
   - **[Shared scope, shared lifecycle](rules/thinking-core/principles.md#shared-scope-shared-lifecycle)** — Principle
   - **[Prefer enforcement over documentation](rules/thinking-core/principles.md#prefer-enforcement-over-documentation)** — Principle
     - [Triggers](rules/claude-code/claude-rules-system.md#triggers) — Rule
