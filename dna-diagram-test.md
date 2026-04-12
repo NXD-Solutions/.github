@@ -69,4 +69,5 @@ mindmap
       Security is baseline
     Pattern-seeking by Instinct
       Find the pattern not the instance
+      Compression signals understanding
 ```

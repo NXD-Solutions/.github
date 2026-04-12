@@ -88,6 +88,7 @@
   - **[What holds for one holds for many — uniqueness requires justification](rules/thinking-core/principles.md#what-holds-for-one-holds-for-many--uniqueness-requires-justification)** — Principle
   - **[A misfit is a signal — redesign the container or create one](rules/thinking-core/principles.md#a-misfit-is-a-signal--redesign-the-container-or-create-one)** — Principle
   - **[Find the pattern, not the instance](rules/thinking-core/principles.md#find-the-pattern-not-the-instance)** — Principle
+  - **[Compression signals understanding](rules/thinking-core/principles.md#compression-signals-understanding)** — Principle
   - **[Scope fitness (Architectural Thinking)](rules/thinking-core/principles.md#scope-fitness-architectural-thinking)** — Principle
   - **[Invariants before options](rules/thinking-core/principles.md#invariants-before-options)** — Principle
   - **[Test simultaneously, not serially](rules/thinking-core/principles.md#test-simultaneously-not-serially)** — Principle
