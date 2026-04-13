@@ -21,12 +21,12 @@ jobs:
           {
             echo "## Distribute Claude Config"
             echo ""
-            echo "**Purpose**: Distribute \`.claude-static/**/*.md\` files to all subscribing repos."
+            echo "**Purpose**: Distribute DNA rules and commands from \`NXD-Solutions/dna\` to all subscribing repos."
             echo ""
             echo "**Process**:"
             echo "- *Preflight* — GitHub validates the workflow and prepares runners"
             echo "- *Load subscribers* — discovers all org repos, applies overrides, builds the sync matrix"
-            echo "- *Sync* — runs in parallel per repo: updates decision-log extract, static rules, and PR template, opens a PR if anything changed"
+            echo "- *Sync* — runs in parallel per repo: updates decision-log extract, copies DNA rules/commands to \`.claude/rules/dna/\` and \`.claude/commands/dna/\`, removes old distribution paths, opens a PR if anything changed"
             echo ""
             echo "✅ Preflight passed."
           } >> "$GITHUB_STEP_SUMMARY"
@@ -97,8 +97,15 @@ jobs:
       matrix: ${{ fromJSON(needs.load-subscribers.outputs.matrix) }}
       fail-fast: false
     steps:
-      - name: Checkout NXD-Solutions/.github (scripts)
+      - name: Checkout NXD-Solutions/.github (scripts and registry)
         uses: actions/checkout@v5
+
+      - name: Checkout NXD-Solutions/dna (DNA source)
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/dna
+          token: ${{ secrets.REPOS_PAT }}
+          path: dna
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -122,24 +129,62 @@ jobs:
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
         run: $GITHUB_WORKSPACE/node_modules/.bin/tsx $GITHUB_WORKSPACE/scripts/sync-decisions.ts --role ${{ matrix.role }}
 
-      - name: Copy static Claude rules
+      - name: Remove old DNA distribution paths from subscriber
         run: |
-          mkdir -p subscriber/.claude/rules/
-          cp -r $GITHUB_WORKSPACE/.claude-static/rules/. subscriber/.claude/rules/
+          # Rules: remove fully-distributed subdirectories from old locations
+          for dir in thinking-core nxd-practices governance claude-code dev figma github confluence; do
+            rm -rf "subscriber/.claude/rules/$dir"
+          done
+          # Rules/configuration: remove only previously-distributed files (preserve local files)
+          while IFS= read -r -d '' f; do
+            relative="${f#$GITHUB_WORKSPACE/dna/.claude-static/rules/configuration/}"
+            rm -f "subscriber/.claude/rules/configuration/${relative}"
+          done < <(find $GITHUB_WORKSPACE/dna/.claude-static/rules/configuration -type f -print0 2>/dev/null || true)
+          # Commands: remove previously-distributed command files from old locations
+          while IFS= read -r -d '' f; do
+            relative="${f#$GITHUB_WORKSPACE/dna/.claude-static/commands/}"
+            # Skip entries that belong to the new dna/ subfolder (no old location to remove)
+            [[ "$relative" == dna/* ]] && continue
+            rm -f "subscriber/.claude/commands/${relative}"
+          done < <(find $GITHUB_WORKSPACE/dna/.claude-static/commands -type f -print0 2>/dev/null || true)
+          # Remove empty dev/ directory if all distributed files were removed
+          rmdir subscriber/.claude/commands/dev/ 2>/dev/null || true
 
-      - name: Copy static Claude commands
+      - name: Copy DNA rules to subscriber
         run: |
-          mkdir -p subscriber/.claude/commands/
-          if compgen -G "$GITHUB_WORKSPACE/.claude-static/commands/*" > /dev/null 2>&1; then
-            cp -r $GITHUB_WORKSPACE/.claude-static/commands/. subscriber/.claude/commands/
+          mkdir -p subscriber/.claude/rules/dna/
+          cp -r $GITHUB_WORKSPACE/dna/.claude-static/rules/. subscriber/.claude/rules/dna/
+
+      - name: Copy DNA commands to subscriber
+        run: |
+          mkdir -p subscriber/.claude/commands/dna/
+          if compgen -G "$GITHUB_WORKSPACE/dna/.claude-static/commands/*" > /dev/null 2>&1; then
+            cp -r $GITHUB_WORKSPACE/dna/.claude-static/commands/. subscriber/.claude/commands/dna/
           fi
 
-      - name: Copy static Claude scripts
+      - name: Copy DNA scripts to subscriber
         run: |
-          if compgen -G "$GITHUB_WORKSPACE/.claude-static/scripts/*" > /dev/null 2>&1; then
+          if compgen -G "$GITHUB_WORKSPACE/dna/.claude-static/scripts/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/scripts/
-            cp -r $GITHUB_WORKSPACE/.claude-static/scripts/. subscriber/.claude/scripts/
+            cp -r $GITHUB_WORKSPACE/dna/.claude-static/scripts/. subscriber/.claude/scripts/
           fi
+
+      - name: Write DNA distribution READMEs
+        run: |
+          cat > subscriber/.claude/rules/dna/README.md <<'READMEEOF'
+# DNA Rules — Distributed Package
+
+This folder is managed by [NXD-Solutions/dna](https://github.com/NXD-Solutions/dna).
+
+**Do not edit files here directly.** Changes made in this folder will be overwritten on the next distribution run. All changes must be made in `NXD-Solutions/dna` and distributed via the `Distribute Claude Config` workflow in `NXD-Solutions/.github`.
+READMEEOF
+          cat > subscriber/.claude/commands/dna/README.md <<'READMEEOF'
+# DNA Commands — Distributed Package
+
+This folder is managed by [NXD-Solutions/dna](https://github.com/NXD-Solutions/dna).
+
+**Do not edit files here directly.** Changes made in this folder will be overwritten on the next distribution run. All changes must be made in `NXD-Solutions/dna` and distributed via the `Distribute Claude Config` workflow in `NXD-Solutions/.github`.
+READMEEOF
 
       - name: Copy PR template
         run: |
@@ -171,12 +216,12 @@ jobs:
             .claude/commands/
             .claude/scripts/
             .github/PULL_REQUEST_TEMPLATE.md
-          commit-message: "Update AI coding rules from NXD Decision Log"
-          title: "automated: Update AI coding rules from NXD Decision Log"
+          commit-message: "Update AI coding rules from NXD-Solutions/dna"
+          title: "automated: Update AI coding rules from NXD-Solutions/dna"
           body: |
             Auto-generated by the **Distribute Claude Config** workflow in `NXD-Solutions/.github`.
 
-            Syncs `.claude/rules/`, `.claude/commands/`, and `.claude/scripts/` from `.claude-static/`, and `.github/PULL_REQUEST_TEMPLATE.md`.
+            Syncs `.claude/rules/dna/`, `.claude/commands/dna/`, and `.claude/scripts/` from `NXD-Solutions/dna`, removes old distribution paths, and updates `.github/PULL_REQUEST_TEMPLATE.md`.
 
             Review the diff and merge.
           labels: chore
