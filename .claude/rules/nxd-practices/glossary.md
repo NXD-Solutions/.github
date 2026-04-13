@@ -39,6 +39,12 @@ A principal's declaration about a bounded entity — what was commissioned, what
 
 Any party with authority over a bounded entity.
 
+## Contract surface
+
+*Load-bearing — other definitions depend on this term. Search for all uses in this file before renaming or restructuring.*
+
+A folder where consumers form expectations the producer must uphold. Declared via a `CLAUDE.md` at the folder's root stating what the surface upholds and what consumers must uphold.
+
 ## Communicative artefact
 
 Any written output whose primary purpose is to convey meaning to a human reader, where the organisation is not overridden by formal structural constraints (e.g. compiler, runtime, or schema requirements). Includes pages, blog posts, ADRs, specifications, PR descriptions, comments, and emails. Excludes code files.
