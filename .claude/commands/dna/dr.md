@@ -1,5 +1,5 @@
 ---
-description: Decision record authoring — intake, generate, and enforce (NXD)
+description: Decision record authoring — intake, generate, and enforce (DNA)
 ---
 
 # Identity

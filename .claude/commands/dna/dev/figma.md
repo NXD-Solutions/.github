@@ -1,5 +1,5 @@
 ---
-description: Figma steward — register, DoR, form creation, and screen index (NXD)
+description: Figma steward — register, DoR, form creation, and screen index (DNA)
 ---
 
 # Identity

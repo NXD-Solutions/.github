@@ -8,8 +8,8 @@ Scope registry and shared identity for all command stewards.
 
 Every command steward maintains their own entry in the registry below. When your scope changes — new files owned, files dropped, property changed — update your row before closing the session. If you are a new steward with no entry, add one.
 
-- **In `.github` repo:** update the row directly in `.claude-static/commands/STEWARDS.md` and derive to `.claude/commands/STEWARDS.md` in the same commit.
-- **In any other repo:** open a PR against `.github` with the updated row in `.claude-static/commands/STEWARDS.md` (derived copy in the same commit).
+- **In `NXD-Solutions/dna` repo:** update the row directly in `.claude-static/commands/STEWARDS.md` and derive to `.claude/commands/STEWARDS.md` in the same commit.
+- **In any other repo:** open a PR against `NXD-Solutions/dna` with the updated row in `.claude-static/commands/STEWARDS.md` (derived copy in the same commit).
 
 Format: Steward (command name), Scope (path or path pattern), Property (what aspect is owned: content, structure, lifecycle, format).
 
@@ -39,9 +39,9 @@ Format governed by the command workbench. Audited for accuracy alongside command
 |---|---|---|---|---|
 | `dna:workbench` | `.claude/rules/thinking-core/dna.md`, `.claude/rules/thinking-core/principles.md`, `.claude/rules/nxd-practices/glossary.md` | content | — | — |
 | `dna:workbench` | `.claude/hierarchy.md` | content | — | — |
-| `dna:workbench` | `.claude-decision-records/**` | content | — | — |
+| `dna:workbench` | `.claude-decision-records/rules/**`, `.claude-decision-records/commands/**` | content | — | — |
 | `dna:workbench` | `.claude/commands/dna/memory.md` | content | — | — |
-| `dna:workbench` | `.claude/rules/configuration/` | structure, README content | — | — |
+| `dna:workbench` | `.claude/rules/configuration/` | distributed container structure and README only — local configuration file contents are repo-owned | — | — |
 | `dna:workbench` | Confluence pages 46661643, 45121554 | content | — | — |
 | `cr` | — | read-only (no owned scope) | — | — |
 | `dna:auditor` | — | read-only (no owned scope) | — | — |

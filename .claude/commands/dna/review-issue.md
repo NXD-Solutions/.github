@@ -1,5 +1,5 @@
 ---
-description: Review a Jira issue against NXD rules and flag gaps — usage: /review-issue <KEY> [full] (NXD)
+description: Review a Jira issue against NXD rules and flag gaps — usage: /review-issue <KEY> [full] (DNA)
 ---
 
 # Identity

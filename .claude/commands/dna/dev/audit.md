@@ -1,6 +1,6 @@
 ---
 allowed-tools: Glob, Grep, Read
-description: Full codebase audit against code-standards.md (NXD)
+description: Full codebase audit against code-standards.md (DNA)
 ---
 
 # Identity
