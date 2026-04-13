@@ -27,6 +27,7 @@ N tasks (X done, Y open)
   ◻ #N <subject> › blocked by #M[, #M...]
 ```
 
+
 ## Conviction at task transitions
 
 Before marking a task in_progress or completed, evaluate conviction across intent, approach, data, and implementation. If any dimension is not high, surface it and resolve before proceeding.

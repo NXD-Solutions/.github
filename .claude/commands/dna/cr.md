@@ -1,5 +1,5 @@
 ---
-description: CR lifecycle — receive, deliberate, package, and delegate change requests (NXD)
+description: CR lifecycle — receive, deliberate, package, and delegate change requests (DNA)
 ---
 
 # Identity

@@ -1,5 +1,5 @@
 ---
-description: Data dictionary workbench — manage canonical field definitions, system mappings, and code-generation integrity (NXD)
+description: Data dictionary workbench — manage canonical field definitions, system mappings, and code-generation integrity (DNA)
 ---
 
 # Identity

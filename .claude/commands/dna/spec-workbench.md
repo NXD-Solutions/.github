@@ -1,5 +1,5 @@
 ---
-description: Spec workbench — receive, challenge, scan, transition, and query component specs (NXD)
+description: Spec workbench — receive, challenge, scan, transition, and query component specs (DNA)
 ---
 
 # Identity

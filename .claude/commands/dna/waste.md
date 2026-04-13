@@ -1,5 +1,5 @@
 ---
-description: Log and fix recurring waste patterns in .claude-waste/ (NXD)
+description: Log and fix recurring waste patterns in .claude-waste/ (DNA)
 ---
 
 # Identity
