@@ -170,21 +170,22 @@ jobs:
           fi
 
       - name: Write DNA distribution READMEs
+        env:
+          RULES_README: |
+            # DNA Rules — Distributed Package
+
+            This folder is managed by [NXD-Solutions/dna](https://github.com/NXD-Solutions/dna).
+
+            **Do not edit files here directly.** Changes made in this folder will be overwritten on the next distribution run. All changes must be made in `NXD-Solutions/dna` and distributed via the `Distribute Claude Config` workflow in `NXD-Solutions/.github`.
+          COMMANDS_README: |
+            # DNA Commands — Distributed Package
+
+            This folder is managed by [NXD-Solutions/dna](https://github.com/NXD-Solutions/dna).
+
+            **Do not edit files here directly.** Changes made in this folder will be overwritten on the next distribution run. All changes must be made in `NXD-Solutions/dna` and distributed via the `Distribute Claude Config` workflow in `NXD-Solutions/.github`.
         run: |
-          cat > subscriber/.claude/rules/dna/README.md <<'READMEEOF'
-# DNA Rules — Distributed Package
-
-This folder is managed by [NXD-Solutions/dna](https://github.com/NXD-Solutions/dna).
-
-**Do not edit files here directly.** Changes made in this folder will be overwritten on the next distribution run. All changes must be made in `NXD-Solutions/dna` and distributed via the `Distribute Claude Config` workflow in `NXD-Solutions/.github`.
-READMEEOF
-          cat > subscriber/.claude/commands/dna/README.md <<'READMEEOF'
-# DNA Commands — Distributed Package
-
-This folder is managed by [NXD-Solutions/dna](https://github.com/NXD-Solutions/dna).
-
-**Do not edit files here directly.** Changes made in this folder will be overwritten on the next distribution run. All changes must be made in `NXD-Solutions/dna` and distributed via the `Distribute Claude Config` workflow in `NXD-Solutions/.github`.
-READMEEOF
+          printf '%s' "$RULES_README" > subscriber/.claude/rules/dna/README.md
+          printf '%s' "$COMMANDS_README" > subscriber/.claude/commands/dna/README.md
 
       - name: Copy PR template
         run: |
