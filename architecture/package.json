@@ -1,6 +1,6 @@
 {
   "name": "@nxd-solutions/service-architecture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "NXD service architecture contract — machine-readable source of truth for BE code structure",
   "files": ["service-architecture.md"],
