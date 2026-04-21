@@ -9,6 +9,11 @@ on:
         description: 'Target repo (org/repo) — leave empty to sync all repos'
         required: false
         type: string
+      verbose:
+        description: 'Verbose output — set to false for minimal diagnostic output (header, errors, and PR URLs only)'
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   preflight:
@@ -18,18 +23,20 @@ jobs:
 
       - name: Preflight
         run: |
-          {
-            echo "## Distribute Claude Config"
-            echo ""
-            echo "**Purpose**: Distribute DNA rules and commands from \`NXD-Solutions/dna\` to all subscribing repos."
-            echo ""
-            echo "**Process**:"
-            echo "- *Preflight* — GitHub validates the workflow and prepares runners"
-            echo "- *Load subscribers* — discovers all org repos, applies overrides, builds the sync matrix"
-            echo "- *Sync* — runs in parallel per repo: updates decision-log extract, copies DNA rules/commands to \`.claude/rules/dna/\` and \`.claude/commands/dna/\`, removes old distribution paths, opens a PR if anything changed"
-            echo ""
-            echo "✅ Preflight passed."
-          } >> "$GITHUB_STEP_SUMMARY"
+          echo "## Distribute Claude Config" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "${{ inputs.verbose }}" != "false" ]]; then
+            {
+              echo ""
+              echo "**Purpose**: Distribute DNA rules and commands from \`NXD-Solutions/dna\` to all subscribing repos."
+              echo ""
+              echo "**Process**:"
+              echo "- *Preflight* — GitHub validates the workflow and prepares runners"
+              echo "- *Load subscribers* — discovers all org repos, applies overrides, builds the sync matrix"
+              echo "- *Sync* — runs in parallel per repo: updates decision-log extract, copies DNA rules/commands to \`.claude/rules/dna/\` and \`.claude/commands/dna/\`, removes old distribution paths, opens a PR if anything changed"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "✅ Preflight passed." >> "$GITHUB_STEP_SUMMARY"
 
   load-subscribers:
     needs: preflight
@@ -197,7 +204,9 @@ jobs:
         run: |
           if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .github/PULL_REQUEST_TEMPLATE.md)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "✅ \`${{ matrix.repo }}\` — already up to date." >> "$GITHUB_STEP_SUMMARY"
+            if [[ "${{ inputs.verbose }}" != "false" ]]; then
+              echo "✅ \`${{ matrix.repo }}\` — already up to date." >> "$GITHUB_STEP_SUMMARY"
+            fi
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
