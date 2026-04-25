@@ -160,20 +160,20 @@ jobs:
       - name: Copy DNA rules to subscriber
         run: |
           mkdir -p subscriber/.claude/rules/dna/
-          cp -r $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
+          rsync -a --exclude=".*" $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
 
       - name: Copy DNA commands to subscriber
         run: |
           mkdir -p subscriber/.claude/commands/dna/
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/commands/*" > /dev/null 2>&1; then
-            cp -r $GITHUB_WORKSPACE/dna-repo/dna/commands/. subscriber/.claude/commands/dna/
+            rsync -a --exclude=".*" $GITHUB_WORKSPACE/dna-repo/dna/commands/. subscriber/.claude/commands/dna/
           fi
 
       - name: Copy DNA scripts to subscriber
         run: |
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/scripts/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/scripts/
-            cp -r $GITHUB_WORKSPACE/dna-repo/dna/scripts/. subscriber/.claude/scripts/
+            rsync -a --exclude=".*" $GITHUB_WORKSPACE/dna-repo/dna/scripts/. subscriber/.claude/scripts/
           fi
 
       - name: Write DNA distribution READMEs
