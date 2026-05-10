@@ -156,7 +156,7 @@ jobs:
           done < <(find $GITHUB_WORKSPACE/dna-repo/dna/commands -type f -print0 2>/dev/null || true)
           # Remove empty dev/ directory if all distributed files were removed
           rmdir subscriber/.claude/commands/dev/ 2>/dev/null || true
-          # Remove CLAUDE.md and README.md — not for distribution
+          # Remove CLAUDE.md and README.md ï¿½ not for distribution
           find subscriber/.claude/rules/dna -name "CLAUDE.md" -delete 2>/dev/null || true
           find subscriber/.claude/rules/dna -name "README.md" -delete 2>/dev/null || true
           find subscriber/.claude/commands/dna -name "CLAUDE.md" -delete 2>/dev/null || true
@@ -165,13 +165,13 @@ jobs:
       - name: Copy DNA rules to subscriber
         run: |
           mkdir -p subscriber/.claude/rules/dna/
-          rsync -a --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
+          rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
 
       - name: Copy DNA commands to subscriber
         run: |
           mkdir -p subscriber/.claude/commands/dna/
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/commands/*" > /dev/null 2>&1; then
-            rsync -a --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" $GITHUB_WORKSPACE/dna-repo/dna/commands/. subscriber/.claude/commands/dna/
+            rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" $GITHUB_WORKSPACE/dna-repo/dna/commands/. subscriber/.claude/commands/dna/
           fi
 
       - name: Copy DNA scripts to subscriber
