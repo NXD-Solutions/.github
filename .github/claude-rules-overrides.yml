@@ -14,4 +14,6 @@
 
 overrides:
   NXD-Solutions/.github:
-    exclude: true  # source repo — manages its own .claude/ manually; parity enforced by validate-static-parity.yml
+    exclude: true  # source repo — manages its own .claude/ manually
+  NXD-Solutions/roadmap:
+    exclude: true
