@@ -163,6 +163,7 @@ jobs:
           find subscriber/.claude/commands/dna -name "README.md" -delete 2>/dev/null || true
           # Remove .governance/ directories - not for distribution
           find subscriber/.claude/rules/dna -type d -name ".governance" -exec rm -rf {} + 2>/dev/null || true
+          find subscriber/.claude/commands/dna -type d -name ".governance" -exec rm -rf {} + 2>/dev/null || true
 
       - name: Copy DNA rules to subscriber
         run: |
