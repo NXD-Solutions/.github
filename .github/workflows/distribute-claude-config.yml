@@ -147,14 +147,9 @@ jobs:
             relative="${f#$GITHUB_WORKSPACE/dna-repo/dna/rules/configuration/}"
             rm -f "subscriber/.claude/rules/configuration/${relative}"
           done < <(find $GITHUB_WORKSPACE/dna-repo/dna/rules/configuration -type f -print0 2>/dev/null || true)
-          # Commands: remove previously-distributed command files from old locations
-          while IFS= read -r -d '' f; do
-            relative="${f#$GITHUB_WORKSPACE/dna-repo/dna/commands/}"
-            # Skip entries that belong to the new dna/ subfolder (no old location to remove)
-            [[ "$relative" == dna/* ]] && continue
-            rm -f "subscriber/.claude/commands/${relative}"
-          done < <(find $GITHUB_WORKSPACE/dna-repo/dna/commands -type f -print0 2>/dev/null || true)
-          # Remove empty dev/ directory if all distributed files were removed
+          # Commands migration cleanup complete — all distributed commands now live under
+          # .claude/commands/dna/ and are managed by rsync --delete in the copy step.
+          # Files at .claude/commands/ root are local-only — must not be touched.
           rmdir subscriber/.claude/commands/dev/ 2>/dev/null || true
           # Remove CLAUDE.md and README.md � not for distribution
           find subscriber/.claude/rules/dna -name "CLAUDE.md" -delete 2>/dev/null || true
