@@ -1,16 +1,10 @@
-<!-- Multiple goals? Add a line here: "This PR contains multiple goals." Then repeat the Goal → Risks block for each one, numbered: ## Goal 1, ## Goal 2, etc. -->
-
-## Goal
-<!-- One sentence: what problem does this solve or what outcome does it achieve? -->
-
-## What
-
-## Why
-
-## Value
-
-## Risks
+## Summary
+<!-- What changed and why — one line is fine. High-blast-radius or rule-network
+     change? Expand into Goal / What / Why / Value / Risks. Multiple goals?
+     Repeat the block, numbered: ## Goal 1, ## Goal 2. -->
 
 ## Checklist
-
-- [ ] If `.claude-waste/` files were modified: all `**Related:**` links are bidirectional — both files reference each other
+- [ ] No absorbed contract violations — no code compensates for another component
+      failing its contract (would this code exist if it met its contract?), unless
+      the absorption carries a stated exemption and a tracking issue routed to the owner
+- [ ] If `.claude-waste/` files were modified: `**Related:**` links are bidirectional
