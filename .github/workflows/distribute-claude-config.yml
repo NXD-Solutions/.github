@@ -184,6 +184,18 @@ jobs:
             rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" $GITHUB_WORKSPACE/dna-repo/dna/appendix/. subscriber/.claude/dna/appendix/
           fi
 
+      - name: Guard — appendix must distribute when the source has it
+        run: |
+          # Hard block against the highest-impact failure mode: if dna/appendix/ has content
+          # but nothing landed in .claude/dna/appendix/ (copy step removed or broken), refuse
+          # to proceed — otherwise a shrunk rule ships with its operations spec silently dropped.
+          if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/appendix/*" > /dev/null 2>&1; then
+            if [ -z "$(find subscriber/.claude/dna/appendix -type f 2>/dev/null)" ]; then
+              echo "::error::dna/appendix/ has content but .claude/dna/appendix/ is empty after copy — appendix distribution is broken. Refusing to ship (would silently drop on-demand operational specs)."
+              exit 1
+            fi
+          fi
+
       - name: Copy PR template
         run: |
           mkdir -p subscriber/.github/
