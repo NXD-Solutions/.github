@@ -139,7 +139,7 @@ jobs:
       - name: Remove old DNA distribution paths from subscriber
         run: |
           # Rules: remove fully-distributed subdirectories from old locations
-          for dir in thinking-core nxd-practices governance claude-code dev figma github confluence; do
+          for dir in thinking-core governance claude-code dev figma github confluence; do
             rm -rf "subscriber/.claude/rules/$dir"
           done
           # Rules/configuration: remove only previously-distributed files (preserve local files)
@@ -161,6 +161,14 @@ jobs:
         run: |
           mkdir -p subscriber/.claude/rules/dna/
           rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" --exclude="meta.md" --exclude="*.meta.md" $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
+
+      - name: Copy NXD-practices rules to subscriber
+        run: |
+          # NXD instance layer — sibling product to the DNA; auto-loaded like the DNA rules.
+          if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/*" > /dev/null 2>&1; then
+            mkdir -p subscriber/.claude/rules/nxd-practices/
+            rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" --exclude="meta.md" --exclude="*.meta.md" $GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/. subscriber/.claude/rules/nxd-practices/
+          fi
 
       - name: Copy DNA commands to subscriber
         run: |
@@ -196,6 +204,14 @@ jobs:
             fi
           fi
 
+      - name: Copy NXD-practices appendix to subscriber
+        run: |
+          # On-demand reference for the NXD layer — outside .claude/rules/ so it is not auto-loaded.
+          if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/*" > /dev/null 2>&1; then
+            mkdir -p subscriber/.claude/nxd-practices/appendix/
+            rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" --exclude="meta.md" --exclude="*.meta.md" $GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/. subscriber/.claude/nxd-practices/appendix/
+          fi
+
       - name: Copy PR template
         run: |
           mkdir -p subscriber/.github/
@@ -204,7 +220,7 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .claude/dna/ .github/PULL_REQUEST_TEMPLATE.md)" ]; then
+          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .claude/dna/ .claude/nxd-practices/ .github/PULL_REQUEST_TEMPLATE.md)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             if [[ "${{ inputs.verbose }}" != "false" ]]; then
               echo "✅ \`${{ matrix.repo }}\` — already up to date." >> "$GITHUB_STEP_SUMMARY"
@@ -228,6 +244,7 @@ jobs:
             .claude/commands/
             .claude/scripts/
             .claude/dna/
+            .claude/nxd-practices/
             .github/PULL_REQUEST_TEMPLATE.md
           commit-message: "Update Claude config from NXD-Solutions/dna"
           title: "automated: Update Claude config from NXD-Solutions/dna"
