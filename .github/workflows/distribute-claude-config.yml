@@ -157,16 +157,30 @@ jobs:
           find subscriber/.claude/rules/dna -type d -name ".governance" -exec rm -rf {} + 2>/dev/null || true
           find subscriber/.claude/commands/dna -type d -name ".governance" -exec rm -rf {} + 2>/dev/null || true
 
+      - name: Prepare rsync exclude list
+        run: |
+          # Single home for the distribution levers (dna claude-rules-system.md: dot + name).
+          # One definition, sourced by every copy via --exclude-from — no per-step drift.
+          printf '%s\n' '.*' 'CLAUDE.md' 'README.md' 'meta.md' '*.meta.md' > "$RUNNER_TEMP/rsync-excludes.txt"
+
       - name: Copy DNA rules to subscriber
         run: |
           mkdir -p subscriber/.claude/rules/dna/
-          rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" --exclude="meta.md" --exclude="*.meta.md" $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
+          rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/dna/rules/. subscriber/.claude/rules/dna/
+
+      - name: Copy NXD-practices rules to subscriber
+        run: |
+          # NXD instance layer — sibling product to the DNA; auto-loaded like the DNA rules.
+          if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/*" > /dev/null 2>&1; then
+            mkdir -p subscriber/.claude/rules/nxd-practices/
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/. subscriber/.claude/rules/nxd-practices/
+          fi
 
       - name: Copy DNA commands to subscriber
         run: |
           mkdir -p subscriber/.claude/commands/dna/
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/commands/*" > /dev/null 2>&1; then
-            rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" --exclude="meta.md" --exclude="*.meta.md" $GITHUB_WORKSPACE/dna-repo/dna/commands/. subscriber/.claude/commands/dna/
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/dna/commands/. subscriber/.claude/commands/dna/
           fi
 
       - name: Copy DNA scripts to subscriber
@@ -181,7 +195,7 @@ jobs:
           # On-demand reference content — distributed OUTSIDE .claude/rules/ so it is not auto-loaded.
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/appendix/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/dna/appendix/
-            rsync -a --delete --exclude=".*" --exclude="CLAUDE.md" --exclude="README.md" --exclude="meta.md" --exclude="*.meta.md" $GITHUB_WORKSPACE/dna-repo/dna/appendix/. subscriber/.claude/dna/appendix/
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/dna/appendix/. subscriber/.claude/dna/appendix/
           fi
 
       - name: Guard — appendix must distribute when the source has it
@@ -196,6 +210,14 @@ jobs:
             fi
           fi
 
+      - name: Copy NXD-practices appendix to subscriber
+        run: |
+          # On-demand reference for the NXD layer — outside .claude/rules/ so it is not auto-loaded.
+          if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/*" > /dev/null 2>&1; then
+            mkdir -p subscriber/.claude/nxd-practices/appendix/
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/. subscriber/.claude/nxd-practices/appendix/
+          fi
+
       - name: Copy PR template
         run: |
           mkdir -p subscriber/.github/
@@ -204,7 +226,7 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .claude/dna/ .github/PULL_REQUEST_TEMPLATE.md)" ]; then
+          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .claude/dna/ .claude/nxd-practices/ .github/PULL_REQUEST_TEMPLATE.md)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             if [[ "${{ inputs.verbose }}" != "false" ]]; then
               echo "✅ \`${{ matrix.repo }}\` — already up to date." >> "$GITHUB_STEP_SUMMARY"
@@ -228,6 +250,7 @@ jobs:
             .claude/commands/
             .claude/scripts/
             .claude/dna/
+            .claude/nxd-practices/
             .github/PULL_REQUEST_TEMPLATE.md
           commit-message: "Update Claude config from NXD-Solutions/dna"
           title: "automated: Update Claude config from NXD-Solutions/dna"
