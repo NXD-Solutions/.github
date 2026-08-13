@@ -122,6 +122,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # An empty subscriber has no `refs/heads/main` for the checkout below to
+      # find, and git reports that as `fatal: couldn't find remote ref
+      # refs/heads/main` + exit 128 — the symptom, not the cause. Onboarding a
+      # new repo is exactly when a subscriber is empty, so the dead end sits on
+      # the onboarding path. Name the cause and the command that fixes it
+      # (*Validate preconditions before proceeding*: a failure surfaces to
+      # whoever can resolve it, with enough context to self-serve the fix).
+      - name: Preflight — the subscriber must be initialised
+        env:
+          GH_TOKEN: ${{ secrets.REPOS_PAT }}
+        run: |
+          if ! gh api "repos/${{ matrix.repo }}/commits?per_page=1" >/dev/null 2>&1; then
+            echo "::error title=Subscriber not initialised::${{ matrix.repo }} has no commits, so refs/heads/main does not exist and the checkout cannot succeed. Run /dna:bootstrap create <repo-name> to scaffold and make the first commit, then re-run this workflow."
+            exit 1
+          fi
+
       - name: Checkout subscriber repo
         uses: actions/checkout@v5
         with:
