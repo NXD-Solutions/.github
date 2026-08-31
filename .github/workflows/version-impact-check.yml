@@ -1,0 +1,77 @@
+name: Version Impact Check
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Require a Version Impact line for every touched @nxd-solutions/* package
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          node --input-type=commonjs - <<'NODE'
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          const prNumber = process.env.PR_NUMBER;
+          const repo = process.env.REPO;
+
+          const files = JSON.parse(
+            execSync(`gh pr view ${prNumber} --repo ${repo} --json files --jq '[.files[].path]'`, { encoding: 'utf8' })
+          );
+
+          const touched = new Set();
+          for (const f of files) {
+            const m = f.match(/^packages\/([^/]+)\/([^/]+)\//);
+            if (!m) continue;
+            const pkgPath = `packages/${m[1]}/${m[2]}`;
+            const pkgJsonPath = `${pkgPath}/package.json`;
+            if (!fs.existsSync(pkgJsonPath)) continue;
+            const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+            if (pkg.name && pkg.name.startsWith('@nxd-solutions/')) touched.add(pkgPath);
+          }
+
+          if (touched.size === 0) {
+            console.log('No @nxd-solutions/* packages touched -- check does not apply.');
+            process.exit(0);
+          }
+
+          const body = execSync(`gh pr view ${prNumber} --repo ${repo} --json body --jq '.body // \"\"'`, { encoding: 'utf8' });
+          const lineRe = /^Version Impact: (.+?): (Major|Minor|Patch) — .+$/;
+          const levelRank = { Patch: 1, Minor: 2, Major: 3 };
+
+          const declared = {};
+          let maxLevel = null;
+          for (const line of body.split('\n')) {
+            const m = line.match(lineRe);
+            if (!m) continue;
+            declared[m[1]] = m[2];
+            if (!maxLevel || levelRank[m[2]] > levelRank[maxLevel]) maxLevel = m[2];
+          }
+
+          const missing = [...touched].filter((pkg) => !declared[pkg]);
+          if (missing.length > 0) {
+            console.error('Missing "Version Impact:" line for: ' + missing.join(', '));
+            console.error('Add one line per touched package to the PR body:');
+            console.error('Version Impact: <package-path>: Major|Minor|Patch — <one-sentence reason>');
+            process.exit(1);
+          }
+
+          const labelName = `semver:${maxLevel.toLowerCase()}`;
+          try {
+            execSync(`gh label create "${labelName}" --repo ${repo} --color ededed`, { stdio: 'ignore' });
+          } catch (e) {
+            // already exists -- fine
+          }
+          execSync(`gh pr edit ${prNumber} --repo ${repo} --add-label "${labelName}"`);
+          console.log(`All touched packages declared. Applied label: ${labelName}`);
+          NODE
