@@ -29,15 +29,33 @@ jobs:
             execSync(`gh pr view ${prNumber} --repo ${repo} --json files --jq '[.files[].path]'`, { encoding: 'utf8' })
           );
 
+          const path = require('path');
+
+          // packages/ shapes are not uniform (framework-standards.md: one-level
+          // is the default, e.g. packages/platform/package.json; two-level is
+          // grandfathered where grounded, e.g. packages/security/oauth-client/).
+          // Walk up from each touched file to the nearest ancestor carrying a
+          // package.json, rather than assume a fixed segment depth.
+          function findPackageRoot(filePath) {
+            let dir = path.posix.dirname(filePath);
+            while (dir.startsWith('packages') && dir !== '.') {
+              const pkgJsonPath = path.posix.join(dir, 'package.json');
+              if (fs.existsSync(pkgJsonPath)) {
+                const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+                return pkg.name && pkg.name.startsWith('@nxd-solutions/') ? dir : null;
+              }
+              const parent = path.posix.dirname(dir);
+              if (parent === dir) break;
+              dir = parent;
+            }
+            return null;
+          }
+
           const touched = new Set();
           for (const f of files) {
-            const m = f.match(/^packages\/([^/]+)\/([^/]+)\//);
-            if (!m) continue;
-            const pkgPath = `packages/${m[1]}/${m[2]}`;
-            const pkgJsonPath = `${pkgPath}/package.json`;
-            if (!fs.existsSync(pkgJsonPath)) continue;
-            const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
-            if (pkg.name && pkg.name.startsWith('@nxd-solutions/')) touched.add(pkgPath);
+            if (!f.startsWith('packages/')) continue;
+            const pkgPath = findPackageRoot(f);
+            if (pkgPath) touched.add(pkgPath);
           }
 
           if (touched.size === 0) {
