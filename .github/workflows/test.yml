@@ -1,0 +1,14 @@
+name: Test
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'verification/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node --test verification/*.test.mjs

@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "test": "node --test verification/*.test.mjs"
+  },
   "devDependencies": {
     "tsx": "^4.21.0"
   }
