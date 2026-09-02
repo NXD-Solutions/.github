@@ -10,6 +10,17 @@ function fakeReader(map) {
 
 const DICT_PKG = { name: '@nxd-solutions/data-dictionary', files: ['dist'] };
 const NO_FILES_PKG = { name: '@nxd-solutions/legacy', files: undefined };
+// Real files field, packages/security/oauth-client/package.json (dna#352 review).
+const OAUTH_PKG = {
+  name: '@nxd-solutions/oauth-client',
+  files: [
+    'dist',
+    'CLAUDE.md',
+    'promises',
+    'verification',
+    '!verification/the-keycloak-broker-provider-conforms-to-the-credential-seam',
+  ],
+};
 
 test('.governance/ touch on a files:["dist"] package -- no declaration required (the concrete #351 case)', () => {
   const reader = fakeReader({ 'packages/data/dictionary/package.json': DICT_PKG });
@@ -98,6 +109,32 @@ test('non-@nxd-solutions package under packages/ is never touched, even with a f
 
 test('isShipped: unit-level check for a non-listed file', () => {
   assert.equal(isShipped('packages/x', 'packages/x/README.md', { files: ['dist'] }), false);
+});
+
+test('negation entry: a file under the negated subfolder is not shipped, even though an earlier positive entry matches it too (real oauth-client case)', () => {
+  const file =
+    'packages/security/oauth-client/verification/the-keycloak-broker-provider-conforms-to-the-credential-seam/evidence.json';
+  assert.equal(isShipped('packages/security/oauth-client', file, OAUTH_PKG), false);
+});
+
+test('negation entry: a sibling file still under the same positive entry, but not the negated path, stays shipped', () => {
+  const file = 'packages/security/oauth-client/verification/some-other-promise/evidence.json';
+  assert.equal(isShipped('packages/security/oauth-client', file, OAUTH_PKG), true);
+});
+
+test('negation entry, end to end via classify: PR touching only the excluded verification subfolder needs no declaration', () => {
+  const reader = fakeReader({ 'packages/security/oauth-client/package.json': OAUTH_PKG });
+  const file =
+    'packages/security/oauth-client/verification/the-keycloak-broker-provider-conforms-to-the-credential-seam/evidence.json';
+  const { touched, missing, label } = classify([file], '', reader);
+  assert.deepEqual(touched, []);
+  assert.deepEqual(missing, []);
+  assert.equal(label, null);
+});
+
+test('order sensitivity: a negation before its positive entry does not spuriously exclude a later match', () => {
+  const pkg = { files: ['!dist/secret', 'dist'] };
+  assert.equal(isShipped('packages/x', 'packages/x/dist/secret', pkg), true);
 });
 
 test('findPackageRoot: walks up from a nested file to the package root', () => {

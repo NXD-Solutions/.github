@@ -51,11 +51,31 @@ export function findPackageRoot(filePath, readPkg = readPackageJson) {
 // `files` field means npm's own default (ship everything not gitignored) --
 // conservatively treat every touched file as shipped rather than risk a
 // false exclusion.
+//
+// npm's `files` entries are applied in array order, and a leading `!`
+// negates a preceding match (e.g. packages/security/oauth-client's real
+// `files` ships `verification` wholesale, then excludes one subfolder of
+// it: `['verification', '!verification/<subfolder>']`) -- a plain
+// first-match prefix check gets this case wrong (the earlier positive entry
+// still wins). This folds the array in order instead, so a later negation
+// overrides an earlier positive match, matching real usage. Boundary: only
+// prefix/directory-style entries (what every `files` array in the org
+// actually uses) -- not a full minimatch glob engine.
 export function isShipped(pkgDir, filePath, pkg) {
   const rel = path.posix.relative(pkgDir, filePath);
   if (rel === 'package.json') return true;
   if (!Array.isArray(pkg.files) || pkg.files.length === 0) return true;
-  return pkg.files.some((entry) => rel === entry || rel.startsWith(`${entry}/`));
+
+  const matches = (pattern) => rel === pattern || rel.startsWith(`${pattern}/`);
+  let shipped = false;
+  for (const entry of pkg.files) {
+    if (entry.startsWith('!')) {
+      if (matches(entry.slice(1))) shipped = false;
+    } else if (matches(entry)) {
+      shipped = true;
+    }
+  }
+  return shipped;
 }
 
 // classify -- given the PR's touched files and body, return which packages
