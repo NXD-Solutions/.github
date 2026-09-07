@@ -177,7 +177,7 @@ jobs:
         run: |
           # Single home for the distribution levers (dna claude-rules-system.md: dot + name).
           # One definition, sourced by every copy via --exclude-from — no per-step drift.
-          printf '%s\n' '.*' 'CLAUDE.md' 'README.md' 'meta.md' '*.meta.md' > "$RUNNER_TEMP/rsync-excludes.txt"
+          printf '%s\n' '.*' 'CLAUDE.md' 'README.md' 'meta.md' '*.meta.md' '*.confluence.md' > "$RUNNER_TEMP/rsync-excludes.txt"
 
       - name: Copy DNA rules to subscriber
         run: |
