@@ -1,7 +1,8 @@
 ## Summary
 <!-- What changed and why — one line is fine. High-blast-radius or rule-network
      change? Expand into Goal / What / Why / Value / Risks — Goal being a
-     black-box Vision statement. Multiple goals? Repeat the block, numbered:
+     black-box Vision statement, e.g. "We can state goals that even humans can
+     understand." Multiple goals? Repeat the block, numbered:
      ## Goal 1, ## Goal 2. -->
 
 ## Version impact
