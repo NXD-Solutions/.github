@@ -9,6 +9,14 @@ permissions:
 
 jobs:
   check:
+    # Drafts do not run CI. The `github` context inside a reusable workflow is the
+    # caller's, so this reads the caller's PR — the same inheritance `PR_NUMBER`
+    # below already relies on. Job level, never step level: billing is per job at a
+    # one-minute minimum, so a step-level guard pays in full and saves nothing.
+    # The caller still owns *when* this runs: a reusable workflow's only trigger is
+    # `workflow_call`, so each caller must carry `ready_for_review` in its own
+    # `types:` or a PR marked ready without a further push never reaches this job.
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout caller repo
