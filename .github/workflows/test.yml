@@ -5,10 +5,18 @@ on:
     paths:
       - 'scripts/**'
       - 'verification/**'
+      # Its own file: without this, a change to the runtime these tests run on
+      # -- or to the trigger itself -- merges unexercised.
+      - '.github/workflows/test.yml'
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      # Pinned, not left to the runner default: an unpinned runtime states no
+      # band at all, which is the one thing the admission record does not admit.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
       - run: node --test verification/*.test.mjs
