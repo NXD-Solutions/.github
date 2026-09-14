@@ -169,6 +169,13 @@ jobs:
           find subscriber/.claude/rules/dna -name "README.md" -delete 2>/dev/null || true
           find subscriber/.claude/commands/dna -name "CLAUDE.md" -delete 2>/dev/null || true
           find subscriber/.claude/commands/dna -name "README.md" -delete 2>/dev/null || true
+          # Scripts needs this too, and needs it even though the copy below now
+          # excludes these names: rsync --delete PROTECTS excluded files on the
+          # receiver rather than removing them, so an already-shipped copy would
+          # survive every future sync. That is why rules and commands carry both
+          # halves, and why scripts carrying neither leaked CLAUDE.md org-wide.
+          find subscriber/.claude/scripts -name "CLAUDE.md" -delete 2>/dev/null || true
+          find subscriber/.claude/scripts -name "README.md" -delete 2>/dev/null || true
           # Remove .governance/ directories - not for distribution
           find subscriber/.claude/rules/dna -type d -name ".governance" -exec rm -rf {} + 2>/dev/null || true
           find subscriber/.claude/commands/dna -type d -name ".governance" -exec rm -rf {} + 2>/dev/null || true
@@ -203,7 +210,11 @@ jobs:
         run: |
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/dna/scripts/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/scripts/
-            rsync -a --exclude=".*" $GITHUB_WORKSPACE/dna-repo/dna/scripts/. subscriber/.claude/scripts/
+            # --delete and the shared exclude list, matching every other copy step.
+            # Without --delete a moved or renamed script left its old path behind
+            # forever; without the shared list, only dotfiles were excluded, so
+            # CLAUDE.md shipped to every subscriber.
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/dna/scripts/. subscriber/.claude/scripts/
           fi
 
       - name: Copy DNA appendix to subscriber
