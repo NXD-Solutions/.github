@@ -14,3 +14,7 @@
 - [ ] No absorbed contract violations — no code compensates for another component
       failing its contract (would this code exist if it met its contract?), unless
       the absorption carries a stated exemption and a tracking issue routed to the owner
+- [ ] Settled must-holds moved, not copied — each candidate this PR accepts lives in
+      the Promise and the issue points at it; each it rejects carries its reasoning;
+      the rest stay candidates, untouched. An assigned invariant routes up, never
+      rejected here
