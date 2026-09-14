@@ -117,7 +117,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          # Inside the admitted band. Node 20's support ended 2026-04-30, and this
+          # repo's actions were already @v5, so no CI warning ever fired on it.
+          # NXD-Solutions/dna: nxd-practices/appendix/technology-admission/node/node-24.md
+          node-version: '24'
 
       - name: Install dependencies
         run: npm ci
