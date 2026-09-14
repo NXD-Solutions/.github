@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/**'
       - 'verification/**'
+      # Its own file: without this, a change to the runtime these tests run on
+      # -- or to the trigger itself -- merges unexercised.
+      - '.github/workflows/test.yml'
 
 jobs:
   test:
