@@ -14,3 +14,6 @@
 - [ ] No absorbed contract violations — no code compensates for another component
       failing its contract (would this code exist if it met its contract?), unless
       the absorption carries a stated exemption and a tracking issue routed to the owner
+- [ ] Must-holds moved, not copied — where the implemented issue stated candidate
+      invariants/guarantees, they now live in the Promise and the issue points at
+      it, not a second copy left to drift
