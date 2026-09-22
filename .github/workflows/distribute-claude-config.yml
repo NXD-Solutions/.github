@@ -327,6 +327,46 @@ jobs:
                   subprocess.run(['rsync', '-a', '--delete', '--exclude-from', excludes, src + '/', dst + '/'], check=True)
           "
 
+      - name: Guard — universal NXD-practices appendix must distribute when the source has it
+        run: |
+          # Same class of guard as "Guard — appendix must distribute when the source has it"
+          # above (dna/appendix/), for nxd-practices/appendix/ — pre-existing gap, not
+          # introduced by this PR, closed alongside the domain-gated guard below since both
+          # answer the same review finding (.github#367, comment 5778562456).
+          if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/*" > /dev/null 2>&1; then
+            if [ -z "$(find subscriber/.claude/nxd-practices/appendix -type f 2>/dev/null)" ]; then
+              echo "::error::nxd-practices/appendix/ has content but .claude/nxd-practices/appendix/ is empty after copy — appendix distribution is broken. Refusing to ship."
+              exit 1
+            fi
+          fi
+
+      - name: Guard — subscribed domain appendix must distribute when the source has it
+        env:
+          DOMAINS_JSON: ${{ toJSON(matrix.domains) }}
+        run: |
+          # Same failure class as the two guards above, for the domain-gated copy
+          # specifically: if this repo subscribes to a domain whose source appendix folder
+          # has content, but nothing landed at the destination, the copy step silently
+          # no-op'd (removed, broken, or misordered) — refuse rather than ship a green run
+          # with the subscribed practitioner appendix missing (review, .github#367, comment
+          # 5778562456). Per-domain, not a blanket "any content anywhere" check — the
+          # blanket form would miss a repo subscribed to A whose A-content silently failed
+          # to land while unrelated B-content elsewhere in source stayed irrelevant.
+          python3 -c "
+          import json, os, sys
+
+          domains = json.loads(os.environ.get('DOMAINS_JSON') or '[]')
+          src_root = os.path.join(os.environ['GITHUB_WORKSPACE'], 'dna-repo', 'nxd-practices', 'appendix', 'domains')
+          dst_root = os.path.join('subscriber', '.claude', 'nxd-practices', 'appendix', 'domains')
+
+          expected = [d for d in domains if os.path.isdir(os.path.join(src_root, d))]
+          for d in expected:
+              dst = os.path.join(dst_root, d)
+              if not os.path.isdir(dst) or not any(os.scandir(dst)):
+                  print(f\"::error::domain '{d}' has source appendix content but nothing landed at {dst} after copy — refusing to ship (would silently drop the subscribed practitioner appendix).\")
+                  sys.exit(1)
+          "
+
       - name: Copy PR template
         run: |
           mkdir -p subscriber/.github/
