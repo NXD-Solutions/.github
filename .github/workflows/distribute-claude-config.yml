@@ -285,10 +285,47 @@ jobs:
       - name: Copy NXD-practices appendix to subscriber
         run: |
           # On-demand reference for the NXD layer — outside .claude/rules/ so it is not auto-loaded.
+          # domains/*/ excluded — a domain's practitioner appendix is not universal (same
+          # reasoning, same pattern as the rules-side copy above); shipped by the next step,
+          # gated the same way.
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/nxd-practices/appendix/
-            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/. subscriber/.claude/nxd-practices/appendix/
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" --exclude='domains/*/' $GITHUB_WORKSPACE/dna-repo/nxd-practices/appendix/. subscriber/.claude/nxd-practices/appendix/
           fi
+
+      - name: Copy subscribed domains' practitioner appendix to subscriber
+        env:
+          DOMAINS_JSON: ${{ toJSON(matrix.domains) }}
+          EXCLUDES_FILE: ${{ runner.temp }}/rsync-excludes.txt
+        run: |
+          # Same gating as the rules-side copy, same slug convention, no removal logic here
+          # for the same reason: the earlier wipe step does not touch .claude/nxd-practices/,
+          # so this one carries its own prune loop, which IS reachable here — this
+          # destination is never blanket-wiped by anything else in this job.
+          mkdir -p subscriber/.claude/nxd-practices/appendix/domains
+          python3 -c "
+          import json, os, shutil, subprocess
+
+          domains = json.loads(os.environ.get('DOMAINS_JSON') or '[]')
+          slugs = set(domains)
+
+          src_root = os.path.join(os.environ['GITHUB_WORKSPACE'], 'dna-repo', 'nxd-practices', 'appendix', 'domains')
+          dst_root = os.path.join('subscriber', '.claude', 'nxd-practices', 'appendix', 'domains')
+          excludes = os.environ['EXCLUDES_FILE']
+
+          if os.path.isdir(dst_root):
+              for name in os.listdir(dst_root):
+                  path = os.path.join(dst_root, name)
+                  if os.path.isdir(path) and name not in slugs:
+                      shutil.rmtree(path)
+
+          for slug in sorted(slugs):
+              src = os.path.join(src_root, slug)
+              if os.path.isdir(src):
+                  dst = os.path.join(dst_root, slug)
+                  os.makedirs(dst, exist_ok=True)
+                  subprocess.run(['rsync', '-a', '--delete', '--exclude-from', excludes, src + '/', dst + '/'], check=True)
+          "
 
       - name: Copy PR template
         run: |
