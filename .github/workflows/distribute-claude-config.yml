@@ -64,7 +64,8 @@ jobs:
           if target:
             override = overrides.get(target, {})
             role = override.get('role', 'Developer')
-            include = [{'repo': target, 'role': role}]
+            domains = override.get('domains') or []
+            include = [{'repo': target, 'role': role, 'domains': domains}]
             print(json.dumps({'matrix': {'include': include}, 'total': 1, 'excluded': 0, 'targeted': True}))
           else:
             result = subprocess.run(
@@ -81,7 +82,8 @@ jobs:
                 excluded += 1
                 continue
               role = override.get('role', 'Developer')
-              include.append({'repo': repo, 'role': role})
+              domains = override.get('domains') or []
+              include.append({'repo': repo, 'role': role, 'domains': domains})
 
             print(json.dumps({'matrix': {'include': include}, 'total': len(repos), 'excluded': excluded, 'targeted': False}))
           ")
@@ -197,10 +199,50 @@ jobs:
       - name: Copy NXD-practices rules to subscriber
         run: |
           # NXD instance layer — sibling product to the DNA; auto-loaded like the DNA rules.
+          # A domain's own file (essence/coverage/qualities) is universal and ships here; a
+          # domain's practitioner folder beside it (domains/<slug>/) does not — excluded
+          # here, shipped separately and gated by subscription (next step).
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/rules/nxd-practices/
-            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/. subscriber/.claude/rules/nxd-practices/
+            rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" --exclude='domains/*/' $GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/. subscriber/.claude/rules/nxd-practices/
           fi
+
+      - name: Copy subscribed domains' practitioner content to subscriber
+        env:
+          DOMAINS_JSON: ${{ toJSON(matrix.domains) }}
+          EXCLUDES_FILE: ${{ runner.temp }}/rsync-excludes.txt
+        run: |
+          # domains: in .github/claude-rules-overrides.yml is a list of domain slugs — the
+          # domain file's own filename (nxd-practices/rules/domains/<slug>.md in the DNA
+          # repo), so there is no name transform here to drift
+          # (claude-code/claude-rules-system.md's "What distributes to whom"). A slug with
+          # no practitioner folder in the source is a no-op, not an error — most domains
+          # have none yet.
+          #
+          # No removal logic here for a domain the repo no longer subscribes to: the
+          # earlier "Remove old DNA distribution paths" step already rm -rf's the whole
+          # nxd-practices tree every run, before this step's own mkdir recreates it. This
+          # step only ever sees an empty domains/ to build on — removal is that step's
+          # doing, not this one's; a prune loop here would be dead code (review,
+          # .github#365, comment 5778298898).
+          mkdir -p subscriber/.claude/rules/nxd-practices/domains
+          python3 -c "
+          import json, os, subprocess
+
+          domains = json.loads(os.environ.get('DOMAINS_JSON') or '[]')
+          slugs = set(domains)
+
+          src_root = os.path.join(os.environ['GITHUB_WORKSPACE'], 'dna-repo', 'nxd-practices', 'rules', 'domains')
+          dst_root = os.path.join('subscriber', '.claude', 'rules', 'nxd-practices', 'domains')
+          excludes = os.environ['EXCLUDES_FILE']
+
+          for slug in sorted(slugs):
+              src = os.path.join(src_root, slug)
+              if os.path.isdir(src):
+                  dst = os.path.join(dst_root, slug)
+                  os.makedirs(dst, exist_ok=True)
+                  subprocess.run(['rsync', '-a', '--delete', '--exclude-from', excludes, src + '/', dst + '/'], check=True)
+          "
 
       - name: Copy DNA commands to subscriber
         run: |
