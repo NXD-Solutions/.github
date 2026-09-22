@@ -1,16 +1,21 @@
-# Opt-out and role overrides for Claude rules distribution.
+# Opt-out, role, and domain overrides for Claude rules distribution.
 #
 # By default, ALL repos in the NXD-Solutions org receive:
 #   - All static Claude rules from static-claude-rules/
 #   - decision-log-extract.md generated from the Developer role AI summaries
 #
-# Use this file to override or exclude specific repos:
+# Use this file to override or exclude specific repos, or to subscribe a repo
+# to a domain's practitioner content — nxd-practices/rules/domains/<slug>/ in
+# NXD-Solutions/dna, shipped only to repos that list the domain here:
 #
 # overrides:
 #   NXD-Solutions/some-design-repo:
 #     role: Designer          # use a different role for decision-log-extract.md
 #   NXD-Solutions/config-repo:
 #     exclude: true           # skip this repo entirely
+#   NXD-Solutions/data-dictionary:
+#     domains:
+#       - information          # domain slug — matches domains/<slug>.md in dna
 
 overrides:
   NXD-Solutions/.github:
