@@ -218,9 +218,16 @@ jobs:
           # (claude-code/claude-rules-system.md's "What distributes to whom"). A slug with
           # no practitioner folder in the source is a no-op, not an error — most domains
           # have none yet.
+          #
+          # No removal logic here for a domain the repo no longer subscribes to: the
+          # earlier "Remove old DNA distribution paths" step already rm -rf's the whole
+          # nxd-practices tree every run, before this step's own mkdir recreates it. This
+          # step only ever sees an empty domains/ to build on — removal is that step's
+          # doing, not this one's; a prune loop here would be dead code (review,
+          # .github#365, comment 5778298898).
           mkdir -p subscriber/.claude/rules/nxd-practices/domains
           python3 -c "
-          import json, os, shutil, subprocess
+          import json, os, subprocess
 
           domains = json.loads(os.environ.get('DOMAINS_JSON') or '[]')
           slugs = set(domains)
@@ -229,14 +236,6 @@ jobs:
           dst_root = os.path.join('subscriber', '.claude', 'rules', 'nxd-practices', 'domains')
           excludes = os.environ['EXCLUDES_FILE']
 
-          # Drop any previously-shipped domain folder this repo no longer subscribes to.
-          if os.path.isdir(dst_root):
-              for name in os.listdir(dst_root):
-                  path = os.path.join(dst_root, name)
-                  if os.path.isdir(path) and name not in slugs:
-                      shutil.rmtree(path)
-
-          # Ship each currently-subscribed domain's practitioner folder, where one exists.
           for slug in sorted(slugs):
               src = os.path.join(src_root, slug)
               if os.path.isdir(src):
