@@ -22,3 +22,6 @@ overrides:
     exclude: true  # source repo — manages its own .claude/ manually
   NXD-Solutions/roadmap:
     exclude: true
+  NXD-Solutions/data-dictionary:
+    domains:
+      - information
