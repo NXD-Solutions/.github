@@ -19,6 +19,6 @@
       the rest stay candidates, untouched. An assigned invariant routes up, never
       rejected here
 - [ ] No defect left as a note — every defect found here and not fixed is a sub-issue
-      of an open Feature, or carries a label a named sweep reads (link it). Unsure one
-      exists? Route it to the standing coordination hub, which places it. A line in
-      this PR is not one: it is archived on merge and no query returns it
+      of an open Feature (link it). No Feature fits? Route it to the standing
+      coordination hub, which places it. A line in this PR is not one: it is archived
+      on merge and no query returns it (*A hand-off lands where a query will find it*)
