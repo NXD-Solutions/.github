@@ -18,6 +18,6 @@
       the Promise and the issue points at it; each it rejects carries its reasoning;
       the rest stay candidates, untouched. An assigned invariant routes up, never
       rejected here
-- [ ] No defect left as a note — every defect found here and not fixed has a tracked
-      home with an owner (link it); a line in this PR is not one, it is archived on
-      merge and owns nothing
+- [ ] No defect left as a note — every defect found here and not fixed lands where a
+      query someone already runs will return it (link it); a line in this PR is not
+      one, it is archived on merge and no query returns it
