@@ -12,9 +12,10 @@
 // (the caller repo's own checkout is what package.json reads resolve
 // against; this file itself has to come from here).
 
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const LEVEL_RANK = { None: 0, Patch: 1, Minor: 2, Major: 3 };
 const LINE_RE = /^Version Impact: (.+?): (Major|Minor|Patch|None) — .+$/;
@@ -105,19 +106,28 @@ export function classify(files, body, readPkg = readPackageJson) {
   return { touched: [...touched], missing, label };
 }
 
+// gh calls go through execFileSync with an argument array -- never a shell-interpreted command
+// string. execSync's default shell on Windows is cmd.exe, which does not strip single quotes the
+// way a POSIX shell does, so a `--jq '[.files[].path]'`-style string reaches `gh` with the quote
+// characters still attached and jq fails to parse its own filter (.github#371).
 function main() {
   const prNumber = process.env.PR_NUMBER;
   const repo = process.env.REPO;
 
-  const files = JSON.parse(
-    execSync(`gh pr view ${prNumber} --repo ${repo} --json files --jq '[.files[].path]'`, { encoding: 'utf8' })
+  const filesOutput = execFileSync(
+    'gh', ['pr', 'view', prNumber, '--repo', repo, '--json', 'files', '--jq', '[.files[].path]'],
+    { encoding: 'utf8' },
   );
-  const body = execSync(`gh pr view ${prNumber} --repo ${repo} --json body --jq '.body // ""'`, { encoding: 'utf8' });
+  const files = JSON.parse(filesOutput);
+  const body = execFileSync(
+    'gh', ['pr', 'view', prNumber, '--repo', repo, '--json', 'body', '--jq', '.body // ""'],
+    { encoding: 'utf8' },
+  );
 
   const { touched, missing, label } = classify(files, body);
 
   if (touched.length === 0) {
-    console.log('No @nxd-solutions/* packages touched -- check does not apply.');
+    console.log('Checked -- no @nxd-solutions/* packages touched, check does not apply.');
     return;
   }
 
@@ -129,19 +139,25 @@ function main() {
   }
 
   if (!label) {
-    console.log('All touched packages declared None -- no version-impacting change, no label applied.');
+    console.log('Checked -- all touched packages declared None, no version-impacting change, no label applied.');
     return;
   }
 
   try {
-    execSync(`gh label create "${label}" --repo ${repo} --color ededed`, { stdio: 'ignore' });
+    execFileSync('gh', ['label', 'create', label, '--repo', repo, '--color', 'ededed'], { stdio: 'ignore' });
   } catch {
     // already exists -- fine
   }
-  execSync(`gh pr edit ${prNumber} --repo ${repo} --add-label "${label}"`);
-  console.log(`All touched packages declared. Applied label: ${label}`);
+  execFileSync('gh', ['pr', 'edit', prNumber, '--repo', repo, '--add-label', label]);
+  console.log(`Checked -- all touched packages declared. Applied label: ${label}`);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Platform-independent entry-point guard -- string-comparing `import.meta.url` against
+// `file://${process.argv[1]}` never matches on Windows: process.argv[1] is a backslashed,
+// no-leading-slash path (`C:\Users\...`), never equal to the `file:///C:/Users/...` URL form
+// import.meta.url actually takes. Resolving both to the same representation (a plain filesystem
+// path) before comparing works identically on every platform (.github#371).
+const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+if (isDirectRun) {
   main();
 }

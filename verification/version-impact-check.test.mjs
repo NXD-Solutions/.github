@@ -1,6 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { classify, isShipped, findPackageRoot } from '../scripts/version-impact-check.mjs';
+
+const SCRIPT_PATH = fileURLToPath(new URL('../scripts/version-impact-check.mjs', import.meta.url));
 
 // Fake package.json reader -- maps a path to a parsed package.json object,
 // no real filesystem or gh calls anywhere in this suite.
@@ -141,4 +145,25 @@ test('findPackageRoot: walks up from a nested file to the package root', () => {
   const reader = fakeReader({ 'packages/data/dictionary/package.json': DICT_PKG });
   const found = findPackageRoot('packages/data/dictionary/.governance/decision-records/x.md', reader);
   assert.equal(found.dir, 'packages/data/dictionary');
+});
+
+// Regression for .github#371: every test above imports classify()/isShipped()/findPackageRoot()
+// directly, so none of them ever execute the file's own entry-point guard -- a silent no-op and a
+// clean pass look identical from in here. This test runs the file the way a caller actually does
+// (`node version-impact-check.mjs`), so the guard itself is what's under test, on whatever
+// platform this suite runs on.
+test('subprocess: running the file directly enters main() on this platform (the file:// guard must match, not silently no-op)', () => {
+  // Deliberately invalid PR_NUMBER/REPO -- main() reaches its first gh call and gh itself refuses
+  // this input immediately, offline, before any network or auth is needed. That failure is the
+  // signal: it only happens if main() was actually entered. The .github#371 defect's signature is
+  // the opposite -- exit 0, empty stdout and stderr, because main() was never called at all.
+  const result = spawnSync(process.execPath, [SCRIPT_PATH], {
+    encoding: 'utf8',
+    env: { ...process.env, PR_NUMBER: '', REPO: '' },
+  });
+  assert.notEqual(result.status, 0, 'expected a non-zero exit from main() failing on bad input -- status 0 means the entry-point guard silently skipped main() entirely (the .github#371 defect)');
+  assert.ok(
+    (result.stderr ?? '').length > 0,
+    'expected main() to fail loudly to stderr -- empty output on a "successful" run is indistinguishable from never having looked',
+  );
 });
