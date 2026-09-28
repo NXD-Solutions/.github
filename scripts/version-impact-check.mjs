@@ -82,12 +82,34 @@ export function isShipped(pkgDir, filePath, pkg) {
 // classify -- given the PR's touched files and body, return which packages
 // still need a "Version Impact:" line and the label to apply (null if
 // nothing shipped, or every shipped package honestly declared None).
+//
+// resolutionFailure distinguishes "walked the chain and genuinely found nothing to declare" from
+// "could not read a single package.json anywhere" (.github#371's follow-up finding, DNA Steward on
+// #372): findPackageRoot() returns null both when a real package.json exists but is out of scope,
+// and when the walk read nothing at all -- the second case is what a wrong working directory
+// produces (every readPkg call fails, indistinguishable from a package-free file). Wrapping the
+// injected reader here, once, tracks whether ANY read across the whole PR ever succeeded --
+// touching packages/ with zero successful reads anywhere is the environment failing to look, not
+// a real answer, and main() must not report it as "no packages touched".
 export function classify(files, body, readPkg = readPackageJson) {
   const touched = new Set();
+  let anyFileUnderPackages = false;
+  let anyPackageJsonRead = false;
+  const countingReadPkg = (p) => {
+    const pkg = readPkg(p);
+    if (pkg) anyPackageJsonRead = true;
+    return pkg;
+  };
+
   for (const f of files) {
     if (!f.startsWith('packages/')) continue;
-    const found = findPackageRoot(f, readPkg);
+    anyFileUnderPackages = true;
+    const found = findPackageRoot(f, countingReadPkg);
     if (found && isShipped(found.dir, f, found.pkg)) touched.add(found.dir);
+  }
+
+  if (anyFileUnderPackages && !anyPackageJsonRead) {
+    return { touched: [], missing: [], label: null, resolutionFailure: true };
   }
 
   const declared = {};
@@ -103,7 +125,7 @@ export function classify(files, body, readPkg = readPackageJson) {
 
   const missing = [...touched].filter((pkg) => !declared[pkg]);
   const label = missing.length === 0 && maxLevel ? `semver:${maxLevel.toLowerCase()}` : null;
-  return { touched: [...touched], missing, label };
+  return { touched: [...touched], missing, label, resolutionFailure: false };
 }
 
 // gh calls go through execFileSync with an argument array -- never a shell-interpreted command
@@ -124,7 +146,18 @@ function main() {
     { encoding: 'utf8' },
   );
 
-  const { touched, missing, label } = classify(files, body);
+  const { touched, missing, label, resolutionFailure } = classify(files, body);
+
+  if (resolutionFailure) {
+    console.error(
+      'Touched files under packages/, but no package.json could be read anywhere in the walk. ' +
+      'This is not "no packages touched" -- it means package resolution itself failed, most likely ' +
+      'because this script is running from the wrong working directory (it must run from the ' +
+      "caller repo's own root, per the reusable workflow's checkout layout -- not from wherever " +
+      'this script file lives).',
+    );
+    process.exit(1);
+  }
 
   if (touched.length === 0) {
     console.log('Checked -- no @nxd-solutions/* packages touched, check does not apply.');
