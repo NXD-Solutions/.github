@@ -91,7 +91,9 @@ export function classify(files, body, readPkg = readPackageJson) {
 
   const declared = {};
   let maxLevel = null;
-  for (const line of body.split('\n')) {
+  // A body edited from Windows arrives with CRLF; `.` in LINE_RE does not match
+  // `\r`, so splitting on `\n` alone hides every declaration (packages#927).
+  for (const line of body.split(/\r?\n/)) {
     const m = line.match(LINE_RE);
     if (!m) continue;
     declared[m[1]] = m[2];
