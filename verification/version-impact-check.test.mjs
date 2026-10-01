@@ -88,6 +88,14 @@ test('legacy baseline: a plain shipped Patch declaration still applies its label
   assert.equal(label, 'semver:patch');
 });
 
+test('a CRLF body still satisfies its declaration (packages#927)', () => {
+  const reader = fakeReader({ 'packages/data/dictionary/package.json': DICT_PKG });
+  const body = 'Intro\r\nVersion Impact: packages/data/dictionary: Patch — fix\r\nOutro\r\n';
+  const { missing, label } = classify(['packages/data/dictionary/dist/index.js'], body, reader);
+  assert.deepEqual(missing, []);
+  assert.equal(label, 'semver:patch');
+});
+
 test('evasion: a path merely prefixed "packages" (no slash) is never treated as package-scoped', () => {
   const reader = fakeReader({});
   const { touched } = classify(['packagesfoo/x.js'], '', reader);
