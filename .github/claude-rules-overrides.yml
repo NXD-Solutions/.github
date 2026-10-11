@@ -25,3 +25,6 @@ overrides:
   NXD-Solutions/data-dictionary:
     domains:
       - information
+  NXD-Solutions/ai-prompting:
+    domains:
+      - ai-prompting
