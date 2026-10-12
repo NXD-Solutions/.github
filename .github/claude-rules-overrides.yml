@@ -28,3 +28,6 @@ overrides:
   NXD-Solutions/ai-prompting:
     domains:
       - ai-prompting
+  NXD-Solutions/Manager-Assistant-Plan:
+    domains:
+      - project-planning
