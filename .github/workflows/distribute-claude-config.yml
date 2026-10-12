@@ -1,4 +1,7 @@
 name: Distribute Claude Config
+# A dna-ref test run is titled apart, so a check reading this repo's runs
+# (dna/scripts/sync/find-distribution-pr.sh) never takes one for a real sync.
+run-name: "${{ inputs.dna-ref && format('TEST, do not merge: distribute NXD-Solutions/dna@{0}', inputs.dna-ref) || 'Distribute Claude Config' }}"
 
 on:
   schedule:
