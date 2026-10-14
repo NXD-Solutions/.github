@@ -7,6 +7,10 @@ permissions:
   contents: read
   pull-requests: write
 
+# gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
+env:
+  GH_TELEMETRY: "false"
+
 jobs:
   check:
     # Drafts do not run CI. The `github` context inside a reusable workflow is the
