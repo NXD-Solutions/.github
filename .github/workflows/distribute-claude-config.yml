@@ -22,6 +22,10 @@ on:
         required: false
         type: string
 
+# gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
+env:
+  GH_TELEMETRY: "false"
+
 jobs:
   preflight:
     runs-on: ubuntu-latest
