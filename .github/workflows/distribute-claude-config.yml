@@ -395,10 +395,19 @@ jobs:
           mkdir -p subscriber/.github/
           cp $GITHUB_WORKSPACE/.github/PULL_REQUEST_TEMPLATE.md subscriber/.github/PULL_REQUEST_TEMPLATE.md
 
+      - name: Backfill standard settings
+        # The org-standard hooks and env vars reach the subscriber inside this PR, so
+        # /dna:sync never writes .claude/settings.json into a working tree (dna#1380).
+        # Additive only: the repo's own entries stay as they are.
+        run: >
+          python3 "$GITHUB_WORKSPACE/dna-repo/dna/scripts/sync/backfill-standard-settings.py"
+          "$GITHUB_WORKSPACE/dna-repo/dna/commands/bootstrap.md"
+          subscriber/.claude/settings.json
+
       - name: Check for changes
         id: changes
         run: |
-          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .claude/dna/ .claude/nxd-practices/ .github/PULL_REQUEST_TEMPLATE.md)" ]; then
+          if [ -z "$(git -C subscriber status --porcelain -- .claude/rules/ .claude/commands/ .claude/scripts/ .claude/dna/ .claude/nxd-practices/ .claude/settings.json .github/PULL_REQUEST_TEMPLATE.md)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             if [[ "${{ inputs.verbose }}" != "false" ]]; then
               echo "✅ \`${{ matrix.repo }}\` — already up to date." >> "$GITHUB_STEP_SUMMARY"
@@ -425,6 +434,7 @@ jobs:
             .claude/scripts/
             .claude/dna/
             .claude/nxd-practices/
+            .claude/settings.json
             .github/PULL_REQUEST_TEMPLATE.md
           commit-message: "Update Claude config from NXD-Solutions/dna"
           title: "${{ inputs.dna-ref && format('TEST, do not merge: Claude config from NXD-Solutions/dna@{0}', inputs.dna-ref) || 'automated: Update Claude config from NXD-Solutions/dna' }}"
