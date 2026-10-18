@@ -31,7 +31,7 @@ const ROWS = {
   'ai-prompting': { builds: ['ai-prompting'], consumes: ['enterprise-architecture', 'compliance', 'procurement', 'security'] },
   'platform-config': { builds: [], consumes: ['enterprise-architecture', 'deployment', 'runtime-operations', 'compliance', 'security'] },
   'Manager-Assistant-Plan': { builds: [], consumes: [] },
-  dna: { builds: [], consumes: ['enterprise-architecture'] },
+  dna: { builds: ['enterprise-architecture'], consumes: [] },
 };
 
 function tree() {
