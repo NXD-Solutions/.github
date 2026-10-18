@@ -16,10 +16,14 @@
 #   NXD-Solutions/data-dictionary:
 #     domains:
 #       - information          # domain slug — matches domains/<slug>.md in dna
+#   NXD-Solutions/some-repo:
+#     standards-exemption: "<reason, who granted it, date>"  # holds code without the dev
+#       # standards, by the principal's grant; without a reason it exempts nothing (dna#1387)
 
 overrides:
   NXD-Solutions/.github:
     exclude: true  # source repo — manages its own .claude/ manually
+    standards-exemption: "never hosts a session (Peter, 2026-10-18)"
   NXD-Solutions/roadmap:
     exclude: true
   NXD-Solutions/studies:
