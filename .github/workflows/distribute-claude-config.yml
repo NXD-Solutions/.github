@@ -449,3 +449,37 @@ jobs:
       - name: Report PR to summary
         if: steps.open-pr.outputs.pull-request-url != ''
         run: echo "${{ steps.open-pr.outputs.pull-request-url }}" >> "$GITHUB_STEP_SUMMARY"
+
+  # A repo that holds code and does not receive the dev standards is reported (NXD-Solutions/dna#1387).
+  # Once over every repo in the org, not per subscriber: a repo marked `exclude: true` never enters the
+  # subscriber list above, and it is exactly the kind of repo this report must still see. The report informs,
+  # and no step above waits on it or is changed by it.
+  # A test run (`dna-ref` or a single `repo`) is a dry run: it prints what it would do and opens nothing.
+  code-without-standards:
+    needs: preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Report repos that hold code without the dev standards
+        env:
+          GH_TOKEN: ${{ secrets.REPOS_PAT }}
+          DRY_RUN: ${{ (inputs.dna-ref != '' || inputs.repo != '') && '--dry-run' || '' }}
+        run: |
+          python3 -c "import yaml, json; print(json.dumps(yaml.safe_load(open('.github/claude-rules-overrides.yml'))))" > "$RUNNER_TEMP/registry.json"
+          set +e
+          node scripts/code-without-standards.mjs --registry "$RUNNER_TEMP/registry.json" --owner NXD-Solutions --issues-repo NXD-Solutions/.github --board 1 $DRY_RUN > "$RUNNER_TEMP/report.txt" 2>&1
+          status=$?
+          {
+            echo "### Repos that hold code without the dev standards"
+            echo ""
+            echo '```'
+            cat "$RUNNER_TEMP/report.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/report.txt"
+          exit $status
