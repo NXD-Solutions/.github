@@ -101,16 +101,15 @@ test("a domain's contract folder ships and is removed with its body", () => {
   }
 });
 
-test('a repo declaring neither key keeps every body and is reported as ungated', () => {
+test('a repo declaring neither key knows of every domain: it receives the universal bodies only', () => {
   const { root, sourceDir, destDir } = tree();
   try {
-    // `domains:` alone is the older name for builds and does not gate.
-    const override = { domains: ['enterprise-architecture'] };
-    assert.equal(declared(override), false);
-    const result = apply({ override, universal: UNIVERSAL, sourceDir, destDir });
-    assert.equal(result.gated, false);
-    assert.deepEqual(present(destDir).sort(), [...ALL].sort());
-    assert.match(summary('a/b', result), /ungated/);
+    for (const override of [{}, undefined]) {
+      const result = apply({ override, universal: UNIVERSAL, sourceDir, destDir });
+      assert.equal(result.declared, false);
+      assert.deepEqual(present(destDir).sort(), [...UNIVERSAL].sort());
+      assert.match(summary('a/b', result), /knows of every domain/);
+    }
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -120,7 +119,7 @@ test('an empty declaration is a declaration: it gates, and leaves the universal 
   const { root, sourceDir, destDir } = tree();
   try {
     const result = apply({ override: { builds: [], consumes: [] }, universal: UNIVERSAL, sourceDir, destDir });
-    assert.equal(result.gated, true);
+    assert.equal(result.declared, true);
     assert.deepEqual(present(destDir).sort(), [...UNIVERSAL].sort());
   } finally {
     rmSync(root, { recursive: true, force: true });
