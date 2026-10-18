@@ -1,19 +1,23 @@
 # Claude Code — .github repo
 
-## Session start
+## No session works here
 
-Read `memory/tasks.md`. If it is not empty, recreate the tasks using TaskCreate and warn the user:
+This repo never hosts a session (Peter, 2026-10-18; recorded as `standards-exemption` in `.github/claude-rules-overrides.yml`). It receives no DNA copy, so a session opened here would load none of the rules it is bound by. The Framework Steward builds its code from a clone, in a session running in `NXD-Solutions/packages`, where the dev standards load.
 
-> *"Previous session tasks recovered from crash checkpoint. Full context may be partial — review before proceeding."*
+## Built by Framework, required by the DNA
 
-## Hosted here, owned elsewhere
+**Framework builds this repo's code** — every workflow, script and test in it (`NXD-Solutions/dna#1388`; `domains/framework.md`). Each change is a Framework pull request, written against a requirement issue.
 
-**This repo's content is owned by the DNA** (`NXD-Solutions/dna`) and hosted here — every workflow, script and test in it, and `.github/PULL_REQUEST_TEMPLATE.md`.
+**The DNA states the requirements, as issues on `NXD-Solutions/dna`.** It does not write the code, so each requirement meets a builder who can question and challenge it before it lands.
 
-Never hand-edit them here. Changes are authored in the DNA and land as a PR against this repo, where they pass the Library domain's review like any other DNA output (`nxd-practices/domains/library.md`). Editing in place puts this repo's copy ahead of its owner with nothing to reconcile it.
+**The DNA still changes what is content, not code:** `.github/PULL_REQUEST_TEMPLATE.md` and the subscription registry's values (`.github/claude-rules-overrides.yml`). A change to the registry's *shape* is read by code, so the DNA states it as a requirement and Framework implements it.
 
-**Found a defect here? Open an issue on `NXD-Solutions/dna`** rather than fixing it in place. That routing is the cost of the declaration and it is deliberate: with no owner declared, a defect found here had nowhere to go — which is how a failed publish sat unattended for five months.
+**Found a defect here?**
+- In the code: an issue on `NXD-Solutions/packages`, for the Framework Steward.
+- In what the code is required to do: an issue on `NXD-Solutions/dna`.
 
-**Why the path cannot say this.** GitHub requires the org's workflows and PR template to live in the org's own `.github` repo, so they cannot sit beside the DNA content that governs them. Ownership is stated here because the location points at the host instead.
+**Merging into `main` is the principal's** until the merge right is recorded in `org.config.md`.
 
-Decided at `NXD-Solutions/dna#1043`; reasoning at `rules/claude-code/.governance/claude-rules-system.md/decision-records/github-repo-content-ownership.md` in that repo.
+**Why the code sits here.** GitHub requires the org's workflows and PR template to live in the org's own `.github` repo, so they cannot sit beside the DNA content that governs them.
+
+Decided at `NXD-Solutions/dna#1388`; the earlier ownership declaration, `NXD-Solutions/dna#1043`, is superseded for the code.
