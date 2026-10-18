@@ -39,10 +39,11 @@ export function unknownSlugs(override, universal, sourceSlugs) {
 const NOT_DISTRIBUTED = /^(\..*|CLAUDE\.md|README\.md|meta\.md|.*\.meta\.md|.*\.confluence\.md)$/;
 
 export function sourceSlugs(sourceDir) {
-  return readdirSync(sourceDir, { withFileTypes: true })
+  const slugs = readdirSync(sourceDir, { withFileTypes: true })
     .filter((entry) => !NOT_DISTRIBUTED.test(entry.name))
     .map((entry) => (entry.isDirectory() ? entry.name : entry.name.replace(/\.md$/, '')))
     .filter((name) => !name.startsWith('.'));
+  return [...new Set(slugs)];
 }
 
 // Removes from the subscriber every body it does not receive. rsync --delete protects names the exclude list holds

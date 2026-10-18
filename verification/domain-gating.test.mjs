@@ -193,8 +193,7 @@ test('sidecars and dotfiles in the source are no domain, so the removed count co
   const { root, sourceDir, destDir } = tree();
   try {
     for (const name of ['security.meta.md', 'security.confluence.md', 'meta.md', 'README.md', 'CLAUDE.md', '.governance']) {
-      writeFileSync(join(sourceDir, name), 'x
-');
+      writeFileSync(join(sourceDir, name), 'x');
     }
     assert.deepEqual(sourceSlugs(sourceDir).sort(), [...ALL].sort());
     const result = apply({ override: ROWS.dna, universal: UNIVERSAL, sourceDir, destDir });
