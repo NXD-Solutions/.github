@@ -35,8 +35,12 @@ export function unknownSlugs(override, universal, sourceSlugs) {
   return [...new Set([...universal, ...builds(override), ...consumes(override)])].filter((slug) => !known.has(slug));
 }
 
+// Names the distribution never copies (dna claude-rules-system.md: dot + name levers), so they are no domain's body.
+const NOT_DISTRIBUTED = /^(\..*|CLAUDE\.md|README\.md|meta\.md|.*\.meta\.md|.*\.confluence\.md)$/;
+
 export function sourceSlugs(sourceDir) {
   return readdirSync(sourceDir, { withFileTypes: true })
+    .filter((entry) => !NOT_DISTRIBUTED.test(entry.name))
     .map((entry) => (entry.isDirectory() ? entry.name : entry.name.replace(/\.md$/, '')))
     .filter((name) => !name.startsWith('.'));
 }

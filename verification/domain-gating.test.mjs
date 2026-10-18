@@ -188,3 +188,19 @@ test('subprocess: running the file directly gates the subscriber and fails on an
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('sidecars and dotfiles in the source are no domain, so the removed count counts only bodies', () => {
+  const { root, sourceDir, destDir } = tree();
+  try {
+    for (const name of ['security.meta.md', 'security.confluence.md', 'meta.md', 'README.md', 'CLAUDE.md', '.governance']) {
+      writeFileSync(join(sourceDir, name), 'x
+');
+    }
+    assert.deepEqual(sourceSlugs(sourceDir).sort(), [...ALL].sort());
+    const result = apply({ override: ROWS.dna, universal: UNIVERSAL, sourceDir, destDir });
+    assert.equal(result.removed.length, 9);
+    assert.deepEqual(result.unknown, []);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
