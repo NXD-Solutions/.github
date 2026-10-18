@@ -110,7 +110,7 @@ test('a report is closed once the repo is subscribed, holds no code, or is exemp
   ];
   const actions = plan({ decisions, openReports: { 'o/a': 1, 'o/b': 2, 'o/c': 3 } });
   assert.deepEqual(actions.map((a) => [a.type, a.number]), [['close', 1], ['close', 2], ['close', 3]]);
-  assert.match(actions[0].comment, /subscribes/);
+  assert.match(actions[0].comment, /receives/);
   assert.match(actions[1].comment, /no code/);
   assert.match(actions[2].comment, /Reason: why/);
 });
