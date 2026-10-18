@@ -69,14 +69,20 @@ jobs:
           with open('.github/claude-rules-overrides.yml') as f:
             config = yaml.safe_load(f) or {}
           overrides = config.get('overrides') or {}
+          universal = config.get('universal-domains') or []
+
+          # A repo is gated once it declares builds: or consumes: (dna#1391). Declaring neither
+          # keeps every domain body for now, and the sync summary lists the repo as ungated.
+          def gating(override):
+            return {k: override[k] for k in ('builds', 'consumes') if k in override}
 
           target = os.environ.get('TARGET_REPO', '').strip()
 
           if target:
             override = overrides.get(target, {})
             role = override.get('role', 'Developer')
-            domains = override.get('domains') or []
-            include = [{'repo': target, 'role': role, 'domains': domains}]
+            domains = list(dict.fromkeys((override.get('domains') or []) + (override.get('builds') or [])))
+            include = [{'repo': target, 'role': role, 'domains': domains, 'gating': gating(override), 'universal': universal}]
             print(json.dumps({'matrix': {'include': include}, 'total': 1, 'excluded': 0, 'targeted': True}))
           else:
             result = subprocess.run(
@@ -93,8 +99,8 @@ jobs:
                 excluded += 1
                 continue
               role = override.get('role', 'Developer')
-              domains = override.get('domains') or []
-              include.append({'repo': repo, 'role': role, 'domains': domains})
+              domains = list(dict.fromkeys((override.get('domains') or []) + (override.get('builds') or [])))
+              include.append({'repo': repo, 'role': role, 'domains': domains, 'gating': gating(override), 'universal': universal})
 
             print(json.dumps({'matrix': {'include': include}, 'total': len(repos), 'excluded': excluded, 'targeted': False}))
           ")
@@ -218,6 +224,25 @@ jobs:
           if compgen -G "$GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/*" > /dev/null 2>&1; then
             mkdir -p subscriber/.claude/rules/nxd-practices/
             rsync -a --delete --exclude-from="$RUNNER_TEMP/rsync-excludes.txt" $GITHUB_WORKSPACE/dna-repo/nxd-practices/rules/. subscriber/.claude/rules/nxd-practices/
+          fi
+
+      - name: Remove the domain bodies this repo neither builds nor consumes
+        env:
+          REPO: ${{ matrix.repo }}
+          OVERRIDE_JSON: ${{ toJSON(matrix.gating) }}
+          UNIVERSAL_JSON: ${{ toJSON(matrix.universal) }}
+          SOURCE_DIR: ${{ github.workspace }}/dna-repo/nxd-practices/rules/domains
+          DEST_DIR: ${{ github.workspace }}/subscriber/.claude/rules/nxd-practices/domains
+        run: |
+          # The copy above ships every body. A body stays only where the repo builds or consumes
+          # its domain, or the domain is universal (scripts/domain-gating.mjs, dna#1391).
+          if [ -d "$SOURCE_DIR" ]; then
+            # No pipe: a piped node would hide its exit code from the step.
+            status=0
+            node scripts/domain-gating.mjs > "$RUNNER_TEMP/gating.txt" || status=$?
+            cat "$RUNNER_TEMP/gating.txt" >> "$GITHUB_STEP_SUMMARY"
+            cat "$RUNNER_TEMP/gating.txt"
+            exit $status
           fi
 
       - name: Copy subscribed domains' always-on practitioner content to subscriber
