@@ -22,6 +22,8 @@ overrides:
     exclude: true  # source repo — manages its own .claude/ manually
   NXD-Solutions/roadmap:
     exclude: true
+  NXD-Solutions/studies:
+    exclude: true  # holds only issues (the study library); receives no DNA, by the principal's decision
   NXD-Solutions/data-dictionary:
     domains:
       - information
