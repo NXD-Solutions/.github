@@ -71,8 +71,8 @@ jobs:
           overrides = config.get('overrides') or {}
           universal = config.get('universal-domains') or []
 
-          # A repo is gated once it declares builds: or consumes: (dna#1391). Declaring neither
-          # keeps every domain body for now, and the sync summary lists the repo as ungated.
+          # A repo declaring neither builds: nor consumes: knows of every domain and receives the
+          # universal bodies only (dna#1391).
           def gating(override):
             return {k: override[k] for k in ('builds', 'consumes') if k in override}
 

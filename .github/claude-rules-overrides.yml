@@ -13,7 +13,7 @@
 #   builds:   the domain's contract and its practitioner content (`domains:` is the older name for it)
 #   consumes: the domain's contract
 #   neither:  the domain's name and one line, in domains.md, which every repo receives
-# A repo declaring neither key keeps every domain body until it declares one. The domains in
+# A repo declaring neither key knows of every domain, and a subscribed repo is that by default. The domains in
 # universal-domains below reach every repo whatever it declares.
 #
 # overrides:

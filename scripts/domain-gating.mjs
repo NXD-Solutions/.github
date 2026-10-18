@@ -23,9 +23,9 @@ export function consumes(override) {
   return [...new Set(override?.consumes ?? [])];
 }
 
-// Returns the slugs whose body the repo receives, or null for a repo that declared neither key (not gated yet).
+// Returns the slugs whose body the repo receives. A repo declaring neither key knows of every domain and receives
+// the universal bodies only.
 export function received(override, universal) {
-  if (!declared(override)) return null;
   return new Set([...universal, ...builds(override), ...consumes(override)]);
 }
 
@@ -50,12 +50,11 @@ export function sourceSlugs(sourceDir) {
 // and keeps nothing it was told to leave, so the removal is its own step after the copy.
 export function apply({ override, universal, sourceDir, destDir }) {
   const slugs = [...new Set(sourceSlugs(sourceDir))].sort();
-  if (!declared(override)) return { gated: false, kept: slugs, removed: [], unknown: [] };
   if (universal.length === 0) {
     throw new Error('universal-domains is empty: gating would remove the five domains every repo consumes by nature');
   }
   const unknown = unknownSlugs(override, universal, slugs);
-  if (unknown.length > 0) return { gated: true, kept: [], removed: [], unknown };
+  if (unknown.length > 0) return { declared: declared(override), kept: [], removed: [], unknown };
   const keep = received(override, universal);
   const removed = [];
   for (const slug of slugs) {
@@ -67,13 +66,13 @@ export function apply({ override, universal, sourceDir, destDir }) {
       }
     }
   }
-  return { gated: true, kept: slugs.filter((slug) => keep.has(slug)), removed: [...new Set(removed)], unknown: [] };
+  return { declared: declared(override), kept: slugs.filter((slug) => keep.has(slug)), removed: [...new Set(removed)], unknown: [] };
 }
 
 export function summary(repo, result) {
-  if (!result.gated) return `${repo}: ungated, every domain body shipped (declares neither builds nor consumes)`;
   if (result.unknown.length > 0) return `${repo}: unknown domain slug ${result.unknown.join(', ')}`;
-  return `${repo}: ${result.kept.length} domain bodies shipped, ${result.removed.length} removed`;
+  const knowsOf = result.declared ? '' : ' (declares neither builds nor consumes: knows of every domain)';
+  return `${repo}: ${result.kept.length} domain bodies shipped, ${result.removed.length} removed${knowsOf}`;
 }
 
 function main() {
