@@ -8,6 +8,14 @@
 # to a domain's practitioner content — nxd-practices/practitioner/<slug>/ in
 # NXD-Solutions/dna, shipped only to repos that list the domain here:
 #
+# A repo's relation to each domain (NXD-Solutions/dna#1391), an ordering where each level contains the
+# one before: nothing < knows of < consumes < builds.
+#   builds:   the domain's contract and its practitioner content (`domains:` is the older name for it)
+#   consumes: the domain's contract
+#   neither:  the domain's name and one line, in domains.md, which every repo receives
+# A repo declaring neither key keeps every domain body until it declares one. The domains in
+# universal-domains below reach every repo whatever it declares.
+#
 # overrides:
 #   NXD-Solutions/some-design-repo:
 #     role: Designer          # use a different role for decision-log-extract.md
@@ -19,6 +27,13 @@
 #   NXD-Solutions/some-repo:
 #     standards-exemption: "<reason, who granted it, date>"  # holds code without the dev
 #       # standards, by the principal's grant; without a reason it exempts nothing (dna#1387)
+
+universal-domains:  # consumed by every repo by nature (Peter, 2026-10-18; dna#1391)
+  - framework
+  - test
+  - library
+  - project-planning
+  - dna
 
 overrides:
   NXD-Solutions/.github:
