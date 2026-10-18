@@ -50,6 +50,27 @@ test('a repo subscribed to the dev standards is not named', () => {
   assert.equal(d.status, 'subscribed');
 });
 
+test('a repo receives the dev standards when it builds or consumes enterprise-architecture, by either key name', () => {
+  for (const override of [
+    { builds: [STANDARDS_DOMAIN] },
+    { consumes: [STANDARDS_DOMAIN], builds: [] },
+    { domains: [STANDARDS_DOMAIN] },
+  ]) {
+    assert.equal(decide({ repo: 'o/app', paths: ['src/main.ts'], override }).status, 'subscribed', JSON.stringify(override));
+  }
+});
+
+test('a repo that only knows of enterprise-architecture, or declares nothing about it, is named', () => {
+  for (const override of [{ builds: ['security'], consumes: ['compliance'] }, { builds: [], consumes: [] }, undefined]) {
+    assert.equal(decide({ repo: 'o/app', paths: ['src/main.ts'], override }).status, 'named', JSON.stringify(override));
+  }
+});
+
+test('an excluded repo receives nothing, whatever it declares', () => {
+  const d = decide({ repo: 'o/x', paths: ['a.mjs'], override: { exclude: true, consumes: [STANDARDS_DOMAIN] } });
+  assert.equal(d.status, 'named');
+});
+
 test('an exclusion from the distribution is not an exemption: an excluded repo that holds code is named', () => {
   const d = decide({ repo: 'o/.github', paths: ['scripts/a.mjs'], override: { exclude: true } });
   assert.equal(d.status, 'named');

@@ -35,8 +35,11 @@ export function firstCode(paths) {
   return paths.find(isCode) ?? null;
 }
 
+// The standards are Enterprise Architecture's contract, so a repo receives them when it builds or consumes the domain
+// (dna#1398, dna#1391). `domains:` is the older name for `builds:`. An excluded repo receives nothing.
 export function isSubscribed(override) {
-  return (override?.domains ?? []).includes(STANDARDS_DOMAIN);
+  if (override?.exclude) return false;
+  return [...(override?.builds ?? []), ...(override?.consumes ?? []), ...(override?.domains ?? [])].includes(STANDARDS_DOMAIN);
 }
 
 // An exemption is a granted deviation and carries its reason; one without a reason exempts nothing.
@@ -68,7 +71,7 @@ export function reportBody({ repo, example, truncated }) {
     '## Context',
     evidence,
     '',
-    `It leaves this list when the repo subscribes to \`${STANDARDS_DOMAIN}\` in \`.github/claude-rules-overrides.yml\`, holds no code, or the principal grants an exemption: a \`${EXEMPTION_KEY}\` entry beside its subscription, with the reason. The report informs. It withholds nothing from the repo.`,
+    `It leaves this list when the repo builds or consumes \`${STANDARDS_DOMAIN}\` in \`.github/claude-rules-overrides.yml\`, holds no code, or the principal grants an exemption: a \`${EXEMPTION_KEY}\` entry beside its subscription, with the reason. The report informs. It withholds nothing from the repo.`,
     '',
     '## What must hold',
     '**No invariant yet:** this reports a state; it is not work to build.',
@@ -97,7 +100,7 @@ export function plan({ decisions, openReports }) {
 }
 
 function closeComment(d) {
-  if (d.status === 'subscribed') return 'Closed: the repo now subscribes to the dev standards.';
+  if (d.status === 'subscribed') return 'Closed: the repo now receives the dev standards.';
   if (d.status === 'no-code') return 'Closed: the repo holds no code.';
   return `Closed: the principal granted an exemption. Reason: ${d.reason}`;
 }
