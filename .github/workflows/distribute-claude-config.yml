@@ -86,7 +86,8 @@ jobs:
             print(json.dumps({'matrix': {'include': include}, 'total': 1, 'excluded': 0, 'targeted': True}))
           else:
             result = subprocess.run(
-              ['gh', 'api', 'orgs/NXD-Solutions/repos', '--paginate', '--jq', '.[].full_name'],
+              # An archived repo refuses every push (403), so it never enters the list (.github#397).
+              ['gh', 'api', 'orgs/NXD-Solutions/repos', '--paginate', '--jq', '.[] | select(.archived | not) | .full_name'],
               capture_output=True, text=True
             )
             repos = [r.strip() for r in result.stdout.strip().splitlines() if r.strip()]

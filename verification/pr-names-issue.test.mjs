@@ -120,3 +120,9 @@ test('the sync names the caller path only from the copy step: a pathspec that ma
   // When the flag is off the step must still set an empty path, or the output is undefined.
   assert.match(workflow, /echo "path=" >> "\$GITHUB_OUTPUT"/);
 });
+
+test('the sync lists only repos that accept a push: archived repos never enter the subscriber list (.github#397)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const workflow = readFileSync(new URL('../.github/workflows/distribute-claude-config.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /orgs\/NXD-Solutions\/repos[^\n]*select\(\.archived \| not\)/);
+});
