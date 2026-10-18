@@ -1,0 +1,17 @@
+name: PR Names Its Issue
+
+# Distributed byte for byte to every subscribed repo by NXD-Solutions/.github's Distribute Claude Config
+# workflow, from `distributed/` there. It is not a workflow of that repo. Never edit it in a subscriber: the next
+# sync overwrites it. The check is in
+# `pr-names-issue-check.yml` in NXD-Solutions/.github.
+on:
+  pull_request:
+    # ready_for_review is not a default activity type. Without it, a PR opened as a draft and marked ready
+    # without a further push would never run this check. `edited` reruns it when the body gains its line.
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+jobs:
+  names-issue:
+    permissions:
+      contents: read
+    uses: NXD-Solutions/.github/.github/workflows/pr-names-issue-check.yml@main

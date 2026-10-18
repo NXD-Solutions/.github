@@ -1,0 +1,39 @@
+name: PR Names Its Issue Check
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+# gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
+env:
+  GH_TELEMETRY: "false"
+
+jobs:
+  check:
+    # Drafts do not run CI, the same job-level guard as version-impact-check.yml: billing is per job at a
+    # one-minute minimum, so a step-level guard pays in full and saves nothing. The caller owns *when* this
+    # runs and carries `ready_for_review` in its own `types:`.
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout .github (for the check script)
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/.github
+          ref: main
+          sparse-checkout: |
+            scripts/pr-names-issue.mjs
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Require a Closes or Relates to line naming the issue this PR delivers
+        env:
+          # Through env, never interpolated into the script: a PR body is untrusted text.
+          PR_BODY: ${{ github.event.pull_request.body }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: node scripts/pr-names-issue.mjs

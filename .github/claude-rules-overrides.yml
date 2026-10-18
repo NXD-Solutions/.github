@@ -28,6 +28,10 @@
 #     standards-exemption: "<reason, who granted it, date>"  # holds code without the dev
 #       # standards, by the principal's grant; without a reason it exempts nothing (dna#1387)
 
+# Copies the caller of the PR-names-its-issue check (.github#394) into every subscriber. Pushing a workflow file
+# needs the `workflow` scope on REPOS_PAT; the principal confirms it, then sets this true.
+distribute-caller-workflows: false
+
 universal-domains:  # consumed by every repo by nature (Peter, 2026-10-18; dna#1391)
   - framework
   - test
