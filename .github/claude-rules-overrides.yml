@@ -67,7 +67,6 @@ overrides:
       - compliance
       - deployment
       - procurement
-      - experience
   NXD-Solutions/UX-Framework:
     builds:
       - experience
