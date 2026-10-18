@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   isCode, decide, plan, apply, boardIds, run, readTree, listOpenReports, reportTitle, reportBody,
-  EXEMPTION_KEY, STANDARDS_DOMAIN, REPORT_LABEL,
+  EXEMPTION_KEY, STANDARDS_DOMAIN,
 } from '../scripts/code-without-standards.mjs';
 
 // The promise (NXD-Solutions/dna#1387), one test per guarantee. No real gh call anywhere in this suite.
@@ -124,7 +124,7 @@ test('a report follows the issue layout, and says it is a report, not work to bu
   assert.match(body, /src\/main\.ts/);
 });
 
-// The board, as the hub reads it: Status Proposed, never Ready; label; type Task.
+// The board, as the hub reads it: Status Proposed, never Ready; type Task; no label.
 const BOARD = { projectId: 'PVT_1', statusFieldId: 'PVTSSF_1', proposedOptionId: 'opt-proposed' };
 
 function recordingGh({ failOn } = {}) {
@@ -143,12 +143,12 @@ const OPEN = [{ type: 'open', repo: 'o/app', title: reportTitle('o/app'), body: 
 const CLOSE = [{ type: 'close', repo: 'o/old', number: 3, comment: 'c' }];
 const CONTEXT = { issuesRepo: 'o/.github', owner: 'o', boardNumber: 1, board: BOARD };
 
-test('a report is a Task, labelled dev-standards-report, on the NXD Work Board with Status Proposed, never Ready', () => {
+test('a report is a Task with no label, on the NXD Work Board with Status Proposed, never Ready', () => {
   const { gh, calls } = recordingGh();
   const done = apply(OPEN, { gh, ...CONTEXT });
   const create = calls.find((c) => c[0] === 'issue' && c[1] === 'create');
-  assert.deepEqual(create.slice(create.indexOf('--label')), ['--label', REPORT_LABEL]);
-  assert.ok(calls.some((c) => c[0] === 'label' && c[1] === 'create' && c.includes(REPORT_LABEL)), 'the label exists');
+  assert.equal(create.includes('--label'), false, 'no label on the report');
+  assert.equal(calls.some((c) => c[0] === 'label'), false, 'no label is created');
   assert.deepEqual(
     calls.find((c) => c[0] === 'api'),
     ['api', 'repos/o/.github/issues/7', '-X', 'PATCH', '-f', 'type=Task'],
@@ -161,11 +161,11 @@ test('a report is a Task, labelled dev-standards-report, on the NXD Work Board w
   assert.deepEqual(done, ['opened https://github.com/o/.github/issues/7']);
 });
 
-test('the report only informs: carrying out the actions touches only issues, a label and the board', () => {
+test('the report only informs: carrying out the actions touches only issues and the board', () => {
   const { gh, calls } = recordingGh();
   apply([...OPEN, ...CLOSE], { gh, ...CONTEXT });
   const kinds = new Set(calls.map((c) => `${c[0]} ${c[1]}`));
-  assert.deepEqual([...kinds].sort(), ['api repos/o/.github/issues/7', 'issue close', 'issue create', 'label create', 'project item-add', 'project item-edit']);
+  assert.deepEqual([...kinds].sort(), ['api repos/o/.github/issues/7', 'issue close', 'issue create', 'project item-add', 'project item-edit']);
 });
 
 test('a report that cannot be set up on the board is closed again, and the failure is loud', () => {

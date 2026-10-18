@@ -105,20 +105,15 @@ function closeComment(d) {
   return `Closed: the principal granted an exemption. Reason: ${d.reason}`;
 }
 
-export const REPORT_LABEL = 'dev-standards-report';
 export const REPORT_TYPE = 'Task';
 export const BOARD_STATUS = 'Proposed';
 
 /** Carries the actions out. `gh(args)` returns stdout and throws on failure, so a failure is loud, never skipped. */
 export function apply(actions, { gh, issuesRepo, owner, boardNumber, board }) {
   const done = [];
-  if (actions.some((a) => a.type === 'open')) {
-    gh(['label', 'create', REPORT_LABEL, '--repo', issuesRepo, '--force',
-      '--description', 'A repo holds code without the dev standards (NXD-Solutions/dna#1387)']);
-  }
   for (const a of actions) {
     if (a.type === 'open') {
-      const url = gh(['issue', 'create', '--repo', issuesRepo, '--title', a.title, '--body', a.body, '--label', REPORT_LABEL]).trim();
+      const url = gh(['issue', 'create', '--repo', issuesRepo, '--title', a.title, '--body', a.body]).trim();
       const number = url.split('/').pop();
       try {
         gh(['api', `repos/${issuesRepo}/issues/${number}`, '-X', 'PATCH', '-f', `type=${REPORT_TYPE}`]);
