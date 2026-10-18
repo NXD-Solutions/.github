@@ -106,3 +106,17 @@ test('the distributed caller runs the reusable workflow that exists, on every ac
   assert.match(caller, /types: \[[^\]]*edited[^\]]*\]/);
   assert.match(caller, /types: \[[^\]]*ready_for_review[^\]]*\]/);
 });
+
+test('the sync names the caller path only from the copy step: a pathspec that matches nothing fails every repo\'s sync', async () => {
+  const { readFileSync } = await import('node:fs');
+  const workflow = readFileSync(new URL('../.github/workflows/distribute-claude-config.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+  const stepNames = [...workflow.matchAll(/^ {6}- name: (.+)$/gm)].map((m) => ({ name: m[1], at: m.index }));
+  const stepAt = (index) => stepNames.filter((s) => s.at <= index).at(-1)?.name;
+  const mentions = [...workflow.matchAll(/pr-names-issue\.yml/g)].map((m) => stepAt(m.index));
+  // The copy step names the file; no other step may, and the commit and PR steps read the step's output instead.
+  assert.deepEqual([...new Set(mentions)], ['Copy the caller of the PR-names-its-issue check']);
+  assert.match(workflow, /CALLER_PATH: \$\{\{ steps\.caller\.outputs\.path \}\}/);
+  assert.match(workflow, /^ +\$\{\{ steps\.caller\.outputs\.path \}\}$/m);
+  // When the flag is off the step must still set an empty path, or the output is undefined.
+  assert.match(workflow, /echo "path=" >> "\$GITHUB_OUTPUT"/);
+});
