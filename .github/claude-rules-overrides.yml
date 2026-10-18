@@ -43,29 +43,65 @@ overrides:
     exclude: true
   NXD-Solutions/studies:
     exclude: true  # holds only issues (the study library); receives no DNA, by the principal's decision
-  NXD-Solutions/data-dictionary:
-    domains:
-      - information
-      - enterprise-architecture
-  NXD-Solutions/ai-prompting:
-    domains:
-      - ai-prompting
-      - enterprise-architecture
-  NXD-Solutions/Manager-Assistant-Plan:
-    domains:
-      - project-planning
   NXD-Solutions/Manager-Assistant-v2:
-    domains:
+    builds:
+      - application-development
+      - deployment
+      - runtime-operations
+    consumes:
       - enterprise-architecture
-  NXD-Solutions/UX-Framework:
-    domains:
-      - enterprise-architecture
-  NXD-Solutions/dna:
-    domains:
-      - enterprise-architecture
+      - ai-prompting
+      - information
+      - experience
+      - security
+      - compliance
+      - procurement
   NXD-Solutions/packages:
-    domains:
+    builds:
+      - security
+      - ai-prompting
+      - runtime-operations
+    consumes:
       - enterprise-architecture
+      - information
+      - compliance
+      - deployment
+      - procurement
+  NXD-Solutions/UX-Framework:
+    builds:
+      - experience
+    consumes:
+      - enterprise-architecture
+      - procurement
+      - security
+  NXD-Solutions/data-dictionary:
+    builds:
+      - information
+    consumes:
+      - enterprise-architecture
+      - compliance
+      - security
+  NXD-Solutions/ai-prompting:
+    builds:
+      - ai-prompting
+    consumes:
+      - enterprise-architecture
+      - compliance
+      - procurement
+      - security
   NXD-Solutions/platform-config:
-    domains:
+    builds: []
+    consumes:
       - enterprise-architecture
+      - deployment
+      - runtime-operations
+      - compliance
+      - security
+  NXD-Solutions/Manager-Assistant-Plan:
+    builds:
+      - project-planning
+    consumes: []
+  NXD-Solutions/dna:
+    builds:
+      - enterprise-architecture
+    consumes: []
