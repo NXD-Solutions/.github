@@ -23,6 +23,8 @@ assert.ok(DNA_REPO && existsSync(join(DNA_REPO, 'dna', 'scripts', 'confluence-to
   'set DNA_REPO to a checkout of NXD-Solutions/dna: the Scopes: block is read by its declared-scopes.cjs, never a second parser');
 const declaredScopes = join(DNA_REPO, 'dna', 'scripts', 'confluence-tools', 'declared-scopes.cjs');
 const { scopesIn } = createRequire(declaredScopes)(declaredScopes);
+// Text parsed by line is read through the DNA's shared reader, never a bare readFileSync (code standards).
+const { readText } = await import(pathToFileURL(join(DNA_REPO, 'dna', 'scripts', 'lib', 'text.mjs')).href);
 
 // What each call needs, from Atlassian's OpenAPI (v1 content search: search:confluence; v2 page by id: read:page:confluence).
 const NEEDS = [
@@ -95,14 +97,14 @@ test('G1 a pinned cloud id skips the tenant lookup', () => {
 });
 
 test('G2 the script declares its scopes in a Scopes: block the DNA parser reads', () => {
-  assert.deepEqual(scopesIn(readFileSync(SCRIPT, 'utf8'), 'sync-decisions.ts').sort(), ['read:page:confluence', 'search:confluence']);
+  assert.deepEqual(scopesIn(readText(SCRIPT), 'sync-decisions.ts').sort(), ['read:page:confluence', 'search:confluence']);
 });
 
 test('G3 the declared scopes are exactly what the calls made need', () => {
   const run = runSync();
   try {
     const paths = run.calls.filter((c) => c.url.startsWith('https://api.atlassian.com/')).map((c) => c.url.replace(/^https:\/\/api\.atlassian\.com\/ex\/confluence\/[^/]+/, ''));
-    const declared = scopesIn(readFileSync(SCRIPT, 'utf8'), 'sync-decisions.ts').sort();
+    const declared = scopesIn(readText(SCRIPT), 'sync-decisions.ts').sort();
     assert.deepEqual(neededScopes(paths), declared);
   } finally { run.cleanup(); }
 });
