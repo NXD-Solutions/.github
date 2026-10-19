@@ -34,6 +34,10 @@ const PACKAGE_TREES = ['packages/', 'dev-support/packages/'];
 // has no consumer to meet its version; anything else is no package for this check. The walk follows no folder
 // name, so a package kept anywhere is found (packages/ shapes are not uniform either -- framework-standards.md:
 // one-level is default, two-level is grandfathered where grounded), and a tree added later needs no code change.
+//
+// Stated limit: because the nearest package.json decides, a private or non-@nxd-solutions package nested inside a
+// publishable one hides the files under it from the outer package, though the outer package's `files` may ship
+// them. The DNA's text would count those files as touched; this check does not (.github#400, DNA Steward).
 export function findPackageRoot(filePath, readPkg = readPackageJson) {
   let dir = path.posix.dirname(filePath);
   for (;;) {
