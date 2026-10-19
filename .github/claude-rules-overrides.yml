@@ -42,7 +42,7 @@ universal-domains:  # consumed by every repo by nature (Peter, 2026-10-18; dna#1
 overrides:
   NXD-Solutions/.github:
     exclude: true  # source repo — manages its own .claude/ manually
-    standards-exemption: "never hosts a session (Peter, 2026-10-18)"
+    standards-exemption: "the distribution's own repo, coded by Framework under its own review; never hosts a session (Peter, 2026-10-18)"
   NXD-Solutions/roadmap:
     exclude: true
   NXD-Solutions/studies:
