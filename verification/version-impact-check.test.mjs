@@ -211,3 +211,88 @@ test('subprocess: running the file directly enters main() on this platform (the 
     'expected main() to fail loudly to stderr -- empty output on a "successful" run is indistinguishable from never having looked',
   );
 });
+
+// The promise of .github#400, one test per guarantee. Confirmed by the DNA Steward, with G3 amended and G4 as parity.
+// No real gh call and no filesystem read anywhere here.
+const TOOL_PKG = { name: '@nxd-solutions/dev-platform', files: ['dist', 'CLAUDE.md'] };
+
+test('G1: a file a package under dev-support/packages/ ships needs a line, and the label follows once it is declared', () => {
+  const reader = fakeReader({ 'dev-support/packages/dev-platform/package.json': TOOL_PKG });
+  const file = 'dev-support/packages/dev-platform/dist/index.js';
+  const before = classify([file], '', reader);
+  assert.deepEqual(before.touched, ['dev-support/packages/dev-platform']);
+  assert.deepEqual(before.missing, ['dev-support/packages/dev-platform']);
+  const after = classify([file], 'Version Impact: dev-support/packages/dev-platform: Minor — a new export', reader);
+  assert.deepEqual(after.missing, []);
+  assert.equal(after.label, 'semver:minor');
+});
+
+test('G2: a PR touching only files outside every versioned package needs no line, and a private package is no package for this check', () => {
+  const reader = fakeReader({
+    'dev-support/apps/cockpit/package.json': { name: '@nxd-solutions/cockpit', private: true, version: '0.0.1' },
+    'services/employee-service/package.json': { name: '@nxd-solutions/employee-service', private: true, version: '0.1.0' },
+  });
+  const r = classify(['scripts/check.js', '.github/workflows/x.yml', 'CLAUDE.md', 'dev-support/apps/cockpit/server/app.ts', 'services/employee-service/src/index.ts'], '', reader);
+  assert.deepEqual(r.touched, []);
+  assert.deepEqual(r.missing, []);
+  assert.equal(r.label, null);
+  assert.equal(r.resolutionFailure, false);
+});
+
+test('G3: the walk follows no folder name, so a published package kept anywhere is judged (ai-activity-store, and a tree added later)', () => {
+  const reader = fakeReader({
+    'services/ai-activity-store/package.json': { name: '@nxd-solutions/ai-activity-store', private: false, files: ['dist', 'env.md'] },
+    'tools/new-tree/widget/package.json': { name: '@nxd-solutions/widget' },
+  });
+  const r = classify(['services/ai-activity-store/dist/index.js', 'tools/new-tree/widget/src/a.ts'], '', reader);
+  assert.deepEqual([...r.touched].sort(), ['services/ai-activity-store', 'tools/new-tree/widget']);
+});
+
+test('G3: the nearest package.json decides, and the walk ends at the repo root', () => {
+  const reader = fakeReader({
+    'packages/outer/package.json': { name: '@nxd-solutions/outer' },
+    'packages/outer/tools/inner/package.json': { name: '@nxd-solutions/inner', private: true },
+    'package.json': { name: '@nxd-solutions/root-package' },
+  });
+  assert.equal(findPackageRoot('packages/outer/tools/inner/src/a.ts', reader), null, 'a private package nested in a published one is not judged as the outer one');
+  assert.equal(findPackageRoot('packages/outer/src/a.ts', reader).dir, 'packages/outer');
+  assert.equal(findPackageRoot('docs/a.md', reader).dir, '.', 'a published package at the repo root owns the files that no nearer package does');
+  assert.equal(findPackageRoot('docs/a.md', fakeReader({})), null, 'no package.json anywhere on the way up is no package');
+});
+
+test('G4: a package under dev-support/packages/ behaves exactly as one under packages/, including the #351 exemption', () => {
+  for (const tree of ['packages/data/dictionary', 'dev-support/packages/dev-platform']) {
+    const reader = fakeReader({ [`${tree}/package.json`]: DICT_PKG });
+    for (const [rel, ships] of [['dist/index.js', true], ['package.json', true], ['.governance/decision-records/x.md', false], ['src/a.ts', false]]) {
+      assert.deepEqual(classify([`${tree}/${rel}`], '', reader).touched, ships ? [tree] : [], `${tree}/${rel}`);
+    }
+    const noFiles = fakeReader({ [`${tree}/package.json`]: NO_FILES_PKG });
+    assert.deepEqual(classify([`${tree}/anything/at/all.md`], '', noFiles).touched, [tree], `${tree}: a package with no files field ships every file`);
+  }
+});
+
+test('the failure guard watches both package trees: unreadable package.json files under either are a resolution failure, not a clean no-op', () => {
+  for (const file of ['packages/ai/src/a.ts', 'dev-support/packages/dev-platform/src/a.ts']) {
+    assert.equal(classify([file], '', () => null).resolutionFailure, true, file);
+  }
+});
+
+test('stated limit: the failure guard does not watch a package kept elsewhere, though the package is still judged', () => {
+  assert.equal(classify(['services/ai-activity-store/dist/a.js'], '', () => null).resolutionFailure, false);
+  const reader = fakeReader({ 'services/ai-activity-store/package.json': { name: '@nxd-solutions/ai-activity-store', files: ['dist'] } });
+  assert.deepEqual(classify(['services/ai-activity-store/dist/a.js'], '', reader).touched, ['services/ai-activity-store']);
+});
+
+test('stated limits of isShipped: a glob entry is not evaluated, and the files npm always ships (a README) are not counted', () => {
+  assert.equal(isShipped('p', 'p/dist/a.js', { name: 'x', files: ['dist/**'] }), false);
+  assert.equal(isShipped('p', 'p/README.md', { name: 'x', files: ['dist'] }), false);
+  assert.equal(isShipped('p', 'p/dist/a.js', { name: 'x', files: ['dist'] }), true);
+});
+
+test('no package.json path is read twice, however many files a PR touches', () => {
+  const reads = new Map();
+  const reader = (p) => { reads.set(p, (reads.get(p) ?? 0) + 1); return p === 'packages/ai/package.json' ? { name: '@nxd-solutions/ai', files: ['dist'] } : null; };
+  const r = classify(Array.from({ length: 50 }, (_, i) => `packages/ai/dist/file-${i}.js`), '', reader);
+  assert.deepEqual(r.touched, ['packages/ai']);
+  assert.deepEqual([...reads.values()].filter((n) => n > 1), [], `read more than once: ${[...reads].filter(([, n]) => n > 1).map(([path]) => path)}`);
+});

@@ -25,21 +25,24 @@ function readPackageJson(pkgJsonPath) {
   return JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
 }
 
-// findPackageRoot -- walk up from a touched file to the nearest ancestor
-// carrying a package.json for an @nxd-solutions/* package. packages/ shapes
-// are not uniform (framework-standards.md: one-level is default, two-level
-// is grandfathered where grounded) so this doesn't assume a fixed segment
-// depth.
+// The trees the failure guard in classify() watches: where this org keeps its published packages today. The walk
+// below does not use them, so a package kept anywhere else is still judged (.github#400).
+const PACKAGE_TREES = ['packages/', 'dev-support/packages/'];
+
+// findPackageRoot -- walk up from a touched file to the repo root and stop at the nearest package.json: that
+// file decides. It counts when it names an @nxd-solutions/* package that is not `private`, since a private package
+// has no consumer to meet its version; anything else is no package for this check. The walk follows no folder
+// name, so a package kept anywhere is found (packages/ shapes are not uniform either -- framework-standards.md:
+// one-level is default, two-level is grandfathered where grounded), and a tree added later needs no code change.
 export function findPackageRoot(filePath, readPkg = readPackageJson) {
   let dir = path.posix.dirname(filePath);
-  while (dir.startsWith('packages') && dir !== '.') {
+  for (;;) {
     const pkg = readPkg(path.posix.join(dir, 'package.json'));
-    if (pkg) return pkg.name?.startsWith('@nxd-solutions/') ? { dir, pkg } : null;
+    if (pkg) return pkg.name?.startsWith('@nxd-solutions/') && pkg.private !== true ? { dir, pkg } : null;
     const parent = path.posix.dirname(dir);
-    if (parent === dir) break;
+    if (dir === '.' || parent === dir) return null;
     dir = parent;
   }
-  return null;
 }
 
 // isShipped -- true if a touched file falls under a path the package's own
@@ -52,6 +55,10 @@ export function findPackageRoot(filePath, readPkg = readPackageJson) {
 // `files` field means npm's own default (ship everything not gitignored) --
 // conservatively treat every touched file as shipped rather than risk a
 // false exclusion.
+//
+// Two stated limits (.github#400): an entry that is a glob is not evaluated -- only a directory or a file name,
+// with `!` exclusions -- so a file npm ships under `dist/**` would count as not shipped (no package in the org
+// uses one); and the files npm always ships beyond package.json, a README or a LICENSE, are not counted.
 //
 // npm's `files` entries are applied in array order, and a leading `!`
 // negates a preceding match (e.g. packages/security/oauth-client's real
@@ -95,15 +102,17 @@ export function classify(files, body, readPkg = readPackageJson) {
   const touched = new Set();
   let anyFileUnderPackages = false;
   let anyPackageJsonRead = false;
+  // A PR can touch thousands of files that share a few package roots; read each package.json once.
+  const reads = new Map();
   const countingReadPkg = (p) => {
-    const pkg = readPkg(p);
+    if (!reads.has(p)) reads.set(p, readPkg(p));
+    const pkg = reads.get(p);
     if (pkg) anyPackageJsonRead = true;
     return pkg;
   };
 
   for (const f of files) {
-    if (!f.startsWith('packages/')) continue;
-    anyFileUnderPackages = true;
+    if (PACKAGE_TREES.some((tree) => f.startsWith(tree))) anyFileUnderPackages = true;
     const found = findPackageRoot(f, countingReadPkg);
     if (found && isShipped(found.dir, f, found.pkg)) touched.add(found.dir);
   }
@@ -152,7 +161,7 @@ function main() {
 
   if (resolutionFailure) {
     console.error(
-      'Touched files under packages/, but no package.json could be read anywhere in the walk. ' +
+      'Touched files under a package tree (packages/, dev-support/packages/), but no package.json could be read anywhere in the walk. ' +
       'This is not "no packages touched" -- it means package resolution itself failed, most likely ' +
       'because this script is running from the wrong working directory (it must run from the ' +
       "caller repo's own root, per the reusable workflow's checkout layout -- not from wherever " +
