@@ -20,17 +20,4 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
-      # The sync's Scopes: block is read by the DNA's own parser (NXD-Solutions/.github#402), so the tests
-      # read it from a checkout of the DNA: one parser, never a copy.
-      - uses: actions/checkout@v5
-        with:
-          repository: NXD-Solutions/dna
-          token: ${{ secrets.REPOS_PAT }}
-          path: dna-repo
-          sparse-checkout: |
-            dna/scripts/confluence-tools
-            dna/scripts/lib
-      - run: npm ci
       - run: node --test verification/*.test.mjs
-        env:
-          DNA_REPO: ${{ github.workspace }}/dna-repo

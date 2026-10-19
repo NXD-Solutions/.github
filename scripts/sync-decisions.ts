@@ -12,18 +12,9 @@
  * Decision pages without an AI Summary section for the requested role
  * are skipped silently — no error, no exclusion list needed.
  *
- * Calls go through Atlassian's gateway with the site's cloud id, never the site
- * URL, so the token can be a scoped one. The scopes below are the whole of what
- * the calls need (Atlassian's OpenAPI: v1 content search, v2 page by id); the
- * block is read by the DNA's `scopesIn`, and a test fails when a call needs a
- * scope it leaves out (NXD-Solutions/.github#402).
- *
- * Scopes: search:confluence, read:page:confluence
- *
  * Usage:
  *   CONFLUENCE_EMAIL=you@example.com CONFLUENCE_API_TOKEN=xxx \
  *     npx tsx scripts/sync-decisions.ts --role Developer
- *   CONFLUENCE_CLOUD_ID pins the tenant; without it the site is asked for it.
  */
 
 import { writeFileSync, appendFileSync, mkdirSync } from "fs";
@@ -35,8 +26,6 @@ import { resolve, dirname } from "path";
 
 const CONFLUENCE_BASE = "https://nordicexperiencedesign.atlassian.net";
 const CONFLUENCE_SPACE = "NSME";
-const GATEWAY = "https://api.atlassian.com/ex/confluence";
-const CLOUD_ID_SHAPE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function confluenceUrl(id: number): string {
   return `${CONFLUENCE_BASE}/wiki/spaces/${CONFLUENCE_SPACE}/pages/${id}`;
@@ -112,30 +101,18 @@ function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> 
   );
 }
 
-/** The gateway base for the site's tenant: the pinned cloud id, else the one the site names itself (no credential needed). */
-async function resolveGateway(): Promise<string> {
-  let cloudId = process.env.CONFLUENCE_CLOUD_ID;
-  if (!cloudId) {
-    const res = await fetchWithTimeout(`${CONFLUENCE_BASE}/_edge/tenant_info`, {});
-    if (!res.ok) throw new Error(`${CONFLUENCE_BASE} did not name its tenant (HTTP ${res.status})`);
-    cloudId = ((await res.json()) as { cloudId?: string }).cloudId;
-  }
-  if (!cloudId || !CLOUD_ID_SHAPE.test(cloudId)) throw new Error("the tenant's cloud id is missing or malformed");
-  return `${GATEWAY}/${cloudId}`;
-}
-
 /**
  * Returns all pages that are descendants of DECISION_LOG_ROOT using CQL.
  * Paginates until all results are collected.
  */
-async function fetchAllPageRefs(gateway: string, auth: string): Promise<PageRef[]> {
+async function fetchAllPageRefs(auth: string): Promise<PageRef[]> {
   const pages: PageRef[] = [];
   const limit = 50;
   let start = 0;
 
   while (true) {
     const cql = encodeURIComponent(`ancestor=${DECISION_LOG_ROOT} AND type=page`);
-    const url = `${gateway}/wiki/rest/api/content/search?cql=${cql}&limit=${limit}&start=${start}`;
+    const url = `${CONFLUENCE_BASE}/wiki/rest/api/content/search?cql=${cql}&limit=${limit}&start=${start}`;
     console.log(`  GET ${url}`);
     const res = await fetchWithTimeout(url, {
       headers: {
@@ -168,8 +145,8 @@ async function fetchAllPageRefs(gateway: string, auth: string): Promise<PageRef[
 }
 
 /** Fetches the storage-format body of a single page. */
-async function fetchPageBody(gateway: string, id: number, auth: string): Promise<string> {
-  const url = `${gateway}/wiki/api/v2/pages/${id}?body-format=storage`;
+async function fetchPageBody(id: number, auth: string): Promise<string> {
+  const url = `${CONFLUENCE_BASE}/wiki/rest/api/content/${id}?expand=body.storage`;
   const res = await fetchWithTimeout(url, {
     headers: {
       Authorization: `Basic ${auth}`,
@@ -445,17 +422,16 @@ function writeStepSummary(stats: RunStats): void {
 
 async function main(): Promise<void> {
   const auth = getAuth();
-  const gateway = await resolveGateway();
 
   console.log(`Role: ${ROLE}`);
   console.log(`Output: ${OUTPUT_PATH}`);
   console.log(`Discovering pages under Decision Log root (${DECISION_LOG_ROOT})…`);
-  const allPages = await fetchAllPageRefs(gateway, auth);
+  const allPages = await fetchAllPageRefs(auth);
   console.log(`Found ${allPages.length} pages. Fetching bodies…`);
 
   const bodyResults = await Promise.allSettled(
     allPages.map((p) =>
-      fetchPageBody(gateway, p.id, auth).then((body) => ({ ...p, body }))
+      fetchPageBody(p.id, auth).then((body) => ({ ...p, body }))
     )
   );
 
