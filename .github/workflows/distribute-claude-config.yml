@@ -1,13 +1,22 @@
 name: Distribute Claude Config
 # A dna-ref test run is titled apart, so a check reading this repo's runs
 # (dna/scripts/sync/find-distribution-pr.sh) never takes one for a real sync.
-run-name: "${{ inputs.dna-ref && format('TEST, do not merge: distribute NXD-Solutions/dna@{0}', inputs.dna-ref) || 'Distribute Claude Config' }}"
+# The weekly timer starts no sync: it reopens every repo's sync task instead (NXD-Solutions/.github#409), so it
+# is titled apart too.
+run-name: "${{ (github.event_name == 'schedule' || inputs.reopen-sync-tasks) && 'Reopen sync tasks (no sync started)' || inputs.dna-ref && format('TEST, do not merge: distribute NXD-Solutions/dna@{0}', inputs.dna-ref) || 'Distribute Claude Config' }}"
 
 on:
+  # Monday 06:00 UTC: reopens every repo's sync task and sets it Ready; it starts no sync on a team's behalf
+  # (NXD-Solutions/.github#409). A team, or a manual start here, still distributes.
   schedule:
     - cron: '0 6 * * 1'
   workflow_dispatch:
     inputs:
+      reopen-sync-tasks:
+        description: 'Run the Monday step now: reopen every repo sync task, start no sync. Leave repo empty'
+        required: false
+        type: boolean
+        default: false
       repo:
         description: 'Target repo (org/repo) — leave empty to sync all repos'
         required: false
@@ -119,6 +128,8 @@ jobs:
 
   sync:
     needs: load-subscribers
+    # The timer starts no sync (NXD-Solutions/.github#409): only a manual start distributes.
+    if: github.event_name != 'schedule' && !inputs.reopen-sync-tasks
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJSON(needs.load-subscribers.outputs.matrix) }}
@@ -498,6 +509,38 @@ jobs:
       - name: Report PR to summary
         if: steps.open-pr.outputs.pull-request-url != ''
         run: echo "${{ steps.open-pr.outputs.pull-request-url }}" >> "$GITHUB_STEP_SUMMARY"
+
+  # Each Monday every repo that receives the DNA has its one sync task open and Ready (NXD-Solutions/.github#409).
+  # The repos are this workflow's own subscriber list, so the catalogue is checked against what is distributed.
+  # A single-repo run is skipped: its list holds one repo, and every other task would read as deprecated.
+  reopen-sync-tasks:
+    needs: load-subscribers
+    if: (github.event_name == 'schedule' || inputs.reopen-sync-tasks) && inputs.repo == ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Checkout the DNA's role configuration
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/dna
+          ref: main
+          path: dna
+          token: ${{ secrets.REPOS_PAT }}
+          sparse-checkout: nxd-practices/rules/org.config.md
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Reopen sync tasks, set them Ready, report what was missed
+        env:
+          GH_TOKEN: ${{ secrets.REPOS_PAT }}
+          MATRIX: ${{ needs.load-subscribers.outputs.matrix }}
+        run: |
+          echo "$MATRIX" | python3 -c "import sys, json; print(json.dumps([i['repo'] for i in json.load(sys.stdin)['include']]))" > "$RUNNER_TEMP/subscribers.json"
+          node scripts/sync-tasks.mjs --subscribers "$RUNNER_TEMP/subscribers.json" --config dna/nxd-practices/rules/org.config.md
 
   # A repo that holds code and does not receive the dev standards is reported (NXD-Solutions/dna#1387).
   # Once over every repo in the org, not per subscriber: a repo marked `exclude: true` never enters the
