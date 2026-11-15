@@ -1,0 +1,69 @@
+name: Report answered Decision Requests
+
+# Within the hour of a decision maker ticking a Decision Request's answer box, the hub of that decision maker has it
+# listed on its standing issue (NXD-Solutions/.github#409). A tick notifies nobody, so without this an answer
+# waits unseen.
+#
+# This repo is public, and so is this run's log: the report lists requests in private repos, so it goes to a file
+# and is never printed. The log gets person names and counts only.
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Post nothing; log only what would be posted, by count'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: answered-decisions
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+# gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
+env:
+  GH_TELEMETRY: "false"
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # The script and the hub lines are the DNA's, read from its main at each run.
+      - name: Checkout the DNA's script and role configuration
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/dna
+          ref: main
+          path: dna
+          token: ${{ secrets.REPOS_PAT }}
+          sparse-checkout: |
+            dna/scripts/rules/project-management-core/project-management.md/answered-decisions.mjs
+            nxd-practices/rules/org.config.md
+          sparse-checkout-cone-mode: false
+
+      # NXD-Solutions/dna: nxd-practices/appendix/technology-admission/node/node-24.md
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Find answered requests and post them to each hub's issue
+        env:
+          GH_TOKEN: ${{ secrets.REPOS_PAT }}
+          DRY_RUN: ${{ inputs.dry-run && '--dry-run' || '' }}
+        run: |
+          set +e
+          node dna/dna/scripts/rules/project-management-core/project-management.md/answered-decisions.mjs --org NXD-Solutions --hubs dna/nxd-practices/rules/org.config.md > "$RUNNER_TEMP/report.txt"
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "::error::answered-decisions.mjs exited $status"
+            exit "$status"
+          fi
+          node scripts/post-answered-decisions.mjs --report "$RUNNER_TEMP/report.txt" --config dna/nxd-practices/rules/org.config.md $DRY_RUN
