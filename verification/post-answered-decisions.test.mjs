@@ -114,7 +114,9 @@ test('Every half hour: the workflow starts on the hour and the half hour, reads 
   const minutes = cron[1].split(',').map(Number);
   assert.deepEqual(minutes, [0, 30], 'at :00 and :30, as the principal ruled');
   assert.match(wf, /repository: NXD-Solutions\/dna\n\s+ref: main/);
-  assert.match(wf, /answered-decisions\.mjs --org NXD-Solutions --hubs [^\n]*org\.config\.md > "\$RUNNER_TEMP\/report\.txt"/);
+  // An answer is taken only once it has stood unchanged for 30 minutes, so its author can still change it
+  // (the principal, 2026-11-16).
+  assert.match(wf, /answered-decisions\.mjs --org NXD-Solutions --hubs [^\n]*org\.config\.md --settle 30 > "\$RUNNER_TEMP\/report\.txt"/);
   assert.doesNotMatch(wf, /--since/);
   assert.doesNotMatch(wf, /cat "\$RUNNER_TEMP\/report\.txt"|GITHUB_STEP_SUMMARY/);
   assert.doesNotMatch(wf, /pull_request/);

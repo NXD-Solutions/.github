@@ -1,8 +1,9 @@
 name: Report answered Decision Requests
 
-# Once a decision maker's ticked answer on a Decision Request has settled, the hub of that decision maker has it
-# listed on its standing issue within about half an hour (NXD-Solutions/.github#416, after #409). A tick notifies
-# nobody, so without this an answer waits unseen.
+# Once a decision maker's ticked answer on a Decision Request has stood unchanged for 30 minutes (`--settle 30`,
+# so its author can still change it), the hub of that decision maker has it listed on its standing issue within
+# about half an hour (NXD-Solutions/.github#416, after #409). A tick notifies nobody, so without this an answer
+# waits unseen.
 #
 # This repo is public, and so is this run's log: the report lists requests in private repos, so it goes to a file
 # and is never printed. The log gets person names and counts only.
@@ -61,7 +62,7 @@ jobs:
           DRY_RUN: ${{ inputs.dry-run && '--dry-run' || '' }}
         run: |
           set +e
-          node dna/dna/scripts/rules/project-management-core/project-management.md/answered-decisions.mjs --org NXD-Solutions --hubs dna/nxd-practices/rules/org.config.md > "$RUNNER_TEMP/report.txt"
+          node dna/dna/scripts/rules/project-management-core/project-management.md/answered-decisions.mjs --org NXD-Solutions --hubs dna/nxd-practices/rules/org.config.md --settle 30 > "$RUNNER_TEMP/report.txt"
           status=$?
           set -e
           if [ "$status" -ne 0 ]; then
