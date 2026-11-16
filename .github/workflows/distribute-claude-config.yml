@@ -553,6 +553,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # The principal, to whom each report is assigned, is read from the DNA's role configuration at each run.
+      - name: Checkout the DNA's role configuration
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/dna
+          ref: main
+          path: dna
+          token: ${{ secrets.REPOS_PAT }}
+          sparse-checkout: nxd-practices/rules/org.config.md
+          sparse-checkout-cone-mode: false
+
       - uses: actions/setup-node@v5
         with:
           node-version: '24'
@@ -564,7 +575,7 @@ jobs:
         run: |
           python3 -c "import yaml, json; print(json.dumps(yaml.safe_load(open('.github/claude-rules-overrides.yml'))))" > "$RUNNER_TEMP/registry.json"
           set +e
-          node scripts/code-without-standards.mjs --registry "$RUNNER_TEMP/registry.json" --owner NXD-Solutions --issues-repo NXD-Solutions/.github --board 1 $DRY_RUN > "$RUNNER_TEMP/report.txt" 2>&1
+          node scripts/code-without-standards.mjs --registry "$RUNNER_TEMP/registry.json" --owner NXD-Solutions --issues-repo NXD-Solutions/.github --config dna/nxd-practices/rules/org.config.md $DRY_RUN > "$RUNNER_TEMP/report.txt" 2>&1
           status=$?
           {
             echo "### Repos that hold code without the dev standards"
