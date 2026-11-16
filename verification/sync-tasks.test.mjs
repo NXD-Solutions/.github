@@ -27,8 +27,9 @@ function files(subscribers, config = CONFIG) {
   return ['--subscribers', join(dir, 'subs.json'), '--config', join(dir, 'org.config.md')];
 }
 
-// Records every write. `status` answers the Ready check: by default an item reads Ready once set.
-function stand_in(tasks, { reopened = {}, statusSeq = null } = {}) {
+// Records every write. `status` answers the Ready check: by default an item reads Ready once set, and before that
+// its `initial` Status, else Backlog.
+function stand_in(tasks, { reopened = {}, statusSeq = null, initial = {} } = {}) {
   const calls = [];
   const set = new Map();
   let reads = 0;
@@ -42,7 +43,8 @@ function stand_in(tasks, { reopened = {}, statusSeq = null } = {}) {
       close: (t) => calls.push(['close', `${t.repo}#${t.number}`]),
       comment: (repo, number, body) => calls.push(['comment', `${repo}#${number}`, body]),
       setReady: (p, t) => { calls.push(['ready', p.id, `${t.repo}#${t.number}`]); set.set(`item:${t.id}`, true); return `item:${t.id}`; },
-      status: (item) => (statusSeq ? statusSeq[reads++] ?? 'Ready' : set.has(item) ? 'Ready' : 'Backlog'),
+      item: (p, t) => `item:${t.id}`,
+      status: (item) => (statusSeq ? statusSeq[reads++] ?? 'Ready' : set.has(item) ? 'Ready' : initial[item] ?? 'Backlog'),
       sleep: async () => {},
       now: () => NOW,
     },
@@ -104,12 +106,20 @@ test('Missed: an unassigned task, or one whose assignee has no hub, is told to t
   assert.equal(p.tell.get('Peter P').length, 2);
 });
 
-test('Missed: a task opened this week, by hand before the run, is left as it is: no comment, no hub line, no Status change', async () => {
+test('Missed: a task opened this week, by hand before the run, is not missed, and is set Ready from the Backlog its reopening left it in', async () => {
   const logs = [];
   const s = stand_in([task('Org/a', 1, 'OPEN')], { reopened: { 'Org/a#1': '2026-11-16T02:38:00Z' } });
   assert.equal(await main(files(['Org/a']), s.deps, (l) => logs.push(l)), 0);
-  assert.deepEqual(s.calls.filter((c) => c[0] !== 'project'), []);
+  assert.deepEqual(s.calls.filter((c) => c[0] !== 'project'), [['ready', 'P7', 'Org/a#1']]);
   assert.ok(logs[0].includes('0 missed, 1 already opened this week'));
+});
+
+test('Ready: a task opened this week that is already Ready, or being worked, keeps its Status', async () => {
+  const tasks = [task('Org/a', 1, 'OPEN'), task('Org/b', 2, 'OPEN'), task('Org/c', 3, 'OPEN')];
+  const reopened = { 'Org/a#1': '2026-11-16T02:38:00Z', 'Org/b#2': '2026-11-16T02:38:00Z', 'Org/c#3': '2026-11-16T02:38:00Z' };
+  const s = stand_in(tasks, { reopened, initial: { 'item:I_Org/a_1': 'Ready', 'item:I_Org/b_2': 'In progress', 'item:I_Org/c_3': 'In review' } });
+  assert.equal(await main(files(['Org/a', 'Org/b', 'Org/c']), s.deps, quiet), 0);
+  assert.deepEqual(s.calls.filter((c) => c[0] !== 'project'), []);
 });
 
 test('Missed: a task this job reopened earlier in the week is not missed when the job runs again', () => {

@@ -5,7 +5,8 @@
 // DNA are the distribution's own subscriber list, handed in by the workflow, so the two never disagree.
 //   - a closed task whose repo receives the DNA is reopened and set Ready on the Priority project
 //   - an open one opened before this week has been missed: it gets a comment naming how many weeks it is behind,
-//     and its hub is told; one opened this week (by hand, or by an earlier run) is left as it is
+//     and its hub is told; one opened this week (by hand, or by an earlier run) is not missed, but is set Ready
+//     unless it is already Ready or being worked
 //   - a receiving repo with no task, or with more than one, is reported to the principal's hub
 //   - an open task whose repo no longer receives the DNA is marked deprecated: commented and closed as not
 //     planned, never deleted
@@ -24,6 +25,8 @@ export const CATALOGUE = { repo: 'NXD-Solutions/dna', number: 1892 };
 export const PROJECT_NAME = 'Priority';
 export const HUB_MARKER = '**Sync tasks** — Monday report (NXD-Solutions/.github#409)';
 const WEEK = 7 * 24 * 60 * 60 * 1000;
+// Statuses a task opened this week keeps: already Ready, or a team is working it.
+const KEEP_STATUS = new Set(['Ready', 'In progress', 'In review']);
 
 // Whole weeks since the task was last reopened, or created when it never was; at least one.
 export function weeksBehind(sinceIso, now) {
@@ -38,7 +41,7 @@ export function weekStart(now) {
 
 // What this Monday does, from the catalogue and the subscriber list alone. `lastOpened(task)` gives the date an
 // open task was last reopened or created. An open task opened this week, by hand or by an earlier run of this job,
-// is not missed: it is left as it is (NXD-Solutions/.github#411).
+// is not missed (NXD-Solutions/.github#411).
 export function plan({ tasks, subscribers, hubs, principal, lastOpened, now }) {
   const receiving = new Set(subscribers);
   const byRepo = new Map();
@@ -108,8 +111,10 @@ const live = {
   reopen: (t) => gh(['api', '-X', 'PATCH', `repos/${t.repo}/issues/${t.number}`, '-f', 'state=open']),
   close: (t) => gh(['api', '-X', 'PATCH', `repos/${t.repo}/issues/${t.number}`, '-f', 'state=closed', '-f', 'state_reason=not_planned']),
   comment: (repo, number, body) => gh(['issue', 'comment', String(number), '--repo', repo, '--body-file', bodyFile(body)]),
+  // Adding an issue already on the project returns its existing item.
+  item: (project, t) => graphql('mutation($p: ID!, $c: ID!) { addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } } }', { p: project.id, c: t.id }).addProjectV2ItemById.item.id,
   setReady(project, t) {
-    const item = graphql('mutation($p: ID!, $c: ID!) { addProjectV2ItemById(input: { projectId: $p, contentId: $c }) { item { id } } }', { p: project.id, c: t.id }).addProjectV2ItemById.item.id;
+    const item = live.item(project, t);
     graphql('mutation($p: ID!, $i: ID!, $f: ID!, $o: String!) { updateProjectV2ItemFieldValue(input: { projectId: $p, itemId: $i, fieldId: $f, value: { singleSelectOptionId: $o } }) { projectV2Item { id } } }', { p: project.id, i: item, f: project.fieldId, o: project.readyId });
     return item;
   },
@@ -159,6 +164,12 @@ export async function main(argv, deps = live, log = console.log) {
       deps.reopen(t);
       items.push({ task: t, item: deps.setReady(project, t) });
     }
+    // Opened this week: not missed, but still owed Ready. A hand reopen lands in Backlog through the project's
+    // Item reopened automation. A task already Ready, or being worked, keeps its Status.
+    for (const t of p.openedThisWeek) {
+      if (KEEP_STATUS.has(deps.status(deps.item(project, t)))) continue;
+      items.push({ task: t, item: deps.setReady(project, t) });
+    }
     for (const { task, weeks } of p.missed) deps.comment(task.repo, task.number, missedComment(weeks));
     for (const t of p.deprecate) {
       deps.comment(t.repo, t.number, DEPRECATED_COMMENT);
@@ -178,8 +189,8 @@ export async function main(argv, deps = live, log = console.log) {
       notReady = notReady.filter(({ item }) => deps.status(item) !== 'Ready');
       for (const n of notReady) deps.setReady(project, n.task);
     }
-    if (notReady.length) { log(`::error::${notReady.length} reopened task(s) did not stay Ready on ${PROJECT_NAME}`); return 1; }
-    log(`Reopened ${items.length}, all Ready on ${PROJECT_NAME}.`);
+    if (notReady.length) { log(`::error::${notReady.length} task(s) set Ready did not stay Ready on ${PROJECT_NAME}`); return 1; }
+    log(`Reopened ${p.reopen.length}; set ${items.length} Ready on ${PROJECT_NAME}, all still Ready.`);
     return 0;
   } catch (e) {
     if (!e.gh) throw e;
