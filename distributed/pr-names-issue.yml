@@ -12,6 +12,9 @@ on:
 
 jobs:
   names-issue:
+    # pull-requests: read is what the check reads the Development field with; issues: read, the scan of open issues for a linked branch.
     permissions:
       contents: read
+      pull-requests: read
+      issues: read
     uses: NXD-Solutions/.github/.github/workflows/pr-names-issue-check.yml@main

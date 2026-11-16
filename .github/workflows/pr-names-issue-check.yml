@@ -2,9 +2,19 @@ name: PR Names Its Issue Check
 
 on:
   workflow_call:
+    inputs:
+      # Where the check script is read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch
+      # of this repo, to run the check before it is merged.
+      script_ref:
+        type: string
+        default: main
 
+# `pull-requests: read` is what the Development read needs (closingIssuesReferences), and `issues: read` what the scan of open issues for a linked branch needs (observed: without it the
+# scan is refused); the distributed caller grants both, byte for byte in every repo.
 permissions:
   contents: read
+  pull-requests: read
+  issues: read
 
 # gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
 env:
@@ -17,12 +27,18 @@ jobs:
     # runs and carries `ready_for_review` in its own `types:`.
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    # A check that fails for no link waits up to WAIT_MINUTES (scripts/pr-names-issue.mjs) for a late sidebar link, which starts no workflow of its own;
+    # a body edit or a push starts a new run and cancels the waiting one, so one pull request holds at most one waiting job.
+    timeout-minutes: 15
+    concurrency:
+      group: pr-names-issue-${{ github.repository }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     steps:
       - name: Checkout .github (for the check script)
         uses: actions/checkout@v5
         with:
           repository: NXD-Solutions/.github
-          ref: main
+          ref: ${{ inputs.script_ref }}
           sparse-checkout: |
             scripts/pr-names-issue.mjs
           sparse-checkout-cone-mode: false
@@ -31,9 +47,14 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Require a Closes or Relates to line naming the issue this PR delivers
+      - name: Require an issue in the pull request's Development field
         env:
-          # Through env, never interpolated into the script: a PR body is untrusted text.
+          # Through env, never interpolated into the script: a PR body is untrusted text, read here only to word the failure.
           PR_BODY: ${{ github.event.pull_request.body }}
           HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
         run: node scripts/pr-names-issue.mjs
