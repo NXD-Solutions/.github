@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  check, decide, hintsFor, readLinked, scanLinkedBranch,
+  check, crossRepoClaims, decide, hintsFor, readLinked, scanLinkedBranch,
   EXEMPT_HEAD_PREFIXES, WAIT_MINUTES, POLL_SECONDS, SCAN_MAX_PAGES, SCAN_PAGE_SIZE, SCAN_EVERY,
 } from '../scripts/pr-names-issue.mjs';
 
@@ -36,7 +36,7 @@ test('one with none fails, naming the missing link and the ways to give one', as
 });
 
 test('the decision reads GitHub, not the text: a body full of keywords passes nothing when GitHub links nothing, and a linked issue passes whatever the body says', () => {
-  assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [], body: 'Closes #1\nFixes NXD-Solutions/dna#2' }).status, 'fail');
+  assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [], body: 'Closes #1\nFixes #2\nCloses the loop on #3' }).status, 'fail');
   assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [issue(1)], body: 'Relates to #1' }).status, 'pass');
   assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [issue(1)], body: '' }).status, 'pass');
 });
@@ -47,6 +47,32 @@ test('`Closes <repo>#n` without its owner, which GitHub links to nothing, fails 
   assert.match(r.message, /without its owner links to nothing: write `Closes <owner>\/<repo>#n`/);
   assert.deepEqual(hintsFor('Closes NXD-Solutions/Prototype#12'), []);
   assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [{ repo: 'NXD-Solutions/Prototype', number: 12 }], body: 'Closes NXD-Solutions/Prototype#12' }).status, 'pass');
+});
+
+test('a closing keyword naming another repository with its owner passes when GitHub shows no link, and the message says the issue could not be confirmed (option 2, observed case 13)', async () => {
+  const claim = (body, extra = {}) => decide({ ...MAIN, headRef: 'feature/x', linked: [], body, repo: 'NXD-Solutions/packages', ...extra });
+  const r = claim('Closes NXD-Solutions/Manager-Assistant-Plan#349');
+  assert.equal(r.status, 'pass');
+  assert.match(r.message, /Names an issue in another repository, NXD-Solutions\/Manager-Assistant-Plan#349/);
+  assert.match(r.message, /the check could not confirm that the issue exists/);
+  assert.match(r.message, /token reads only this repository/);
+  for (const body of ['Fixes other/repo#1', 'Resolves other/repo#1', '- Closes: other/repo#1', 'closes other/repo#1']) assert.equal(claim(body).status, 'pass', body);
+  // A wrong number passes: GitHub's link is what would prove the issue exists.
+  assert.equal(claim('Closes NXD-Solutions/Manager-Assistant-Plan#999999').status, 'pass');
+  // What does not qualify.
+  assert.equal(claim('Relates to NXD-Solutions/Manager-Assistant-Plan#349').status, 'fail', '`Relates to` never counts');
+  assert.equal(claim('Closes Manager-Assistant-Plan#349').status, 'fail', 'without the owner GitHub links nothing');
+  assert.equal(claim('Closes NXD-Solutions/packages#349').status, 'fail', 'a keyword naming this repository is read by GitHub: when it shows no link there is none');
+  assert.equal(claim('Closes nxd-solutions/PACKAGES#349').status, 'fail', 'the repository is compared in any letter case');
+  assert.equal(claim('<!-- Closes other/repo#1 -->\n```\nCloses other/repo#2\n```').status, 'fail', 'an example is no statement');
+  assert.equal(claim('See other/repo#1 and Closes the loop on other/repo#2').status, 'fail', 'a mention is not a keyword line');
+  assert.equal(decide({ ...FEATURE, headRef: 'task/x', linked: [], body: 'Closes other/repo#1', repo: 'NXD-Solutions/packages' }).status, 'fail', 'into a feature branch GitHub honours no keyword, so none counts');
+  assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [issue(1)], body: 'Closes other/repo#9', repo: 'NXD-Solutions/packages' }).message, 'Has an issue in its Development field: NXD-Solutions/dna#1.', 'what GitHub shows is preferred');
+  const { now, sleep } = clock();
+  const run = await check({ ...MAIN, headRef: 'feature/x', body: 'Closes NXD-Solutions/Manager-Assistant-Plan#349', repo: 'NXD-Solutions/Prototype', read: async () => [], scan: async () => assert.fail('no scan'), now, sleep });
+  assert.equal(run.status, 'pass');
+  assert.equal(run.waited, false, 'a claim passes at once, with no ten-minute wait');
+  assert.deepEqual(crossRepoClaims('Closes a/b#1\nFixes a/b#2', 'x/y').map((c) => c.number), [1, 2]);
 });
 
 test('`Relates to` alone fails with no transition period, its message pointing to the leaf-issue rule', () => {

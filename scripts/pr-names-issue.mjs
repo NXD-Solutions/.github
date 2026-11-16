@@ -32,18 +32,39 @@ const HINTS = [
     `\`Relates to\` links nothing and does not count: a pull request delivers a leaf issue and closes it (${LEAF_RULE}).`],
 ];
 
+// A line inside a code fence or an HTML comment is an example, not a statement about this pull request.
+const withoutExamples = (body) => (body ?? '').replace(/\r\n/g, '\n').replace(/<!--[\s\S]*?-->/g, '').replace(/^[ \t]*(```|~~~)[\s\S]*?^[ \t]*\1[ \t]*$/gm, '');
+
 export function hintsFor(body) {
-  const text = (body ?? '').replace(/\r\n/g, '\n').replace(/<!--[\s\S]*?-->/g, '').replace(/^[ \t]*(```|~~~)[\s\S]*?^[ \t]*\1[ \t]*$/gm, '');
+  const text = withoutExamples(body);
   return HINTS.filter(([re]) => re.test(text)).map(([, message]) => message);
+}
+
+// A closing keyword that names another repository with its owner. GitHub links it, but the workflow's own token reads only this repository, so the read comes back
+// empty for it (observed on a scratch repository, case 13 of the runs on .github#408). Option 2 of that issue, the DNA's: such a keyword passes when GitHub shows no
+// link, and the message says the issue could not be confirmed; a wrong issue number passes. `Relates to`, a keyword without its owner, and one naming this repository
+// do not qualify (a keyword naming this repository is read by GitHub). Option 1, a token that reads the org's repositories, is Security's to grant: a follow-up.
+const CLOSING_WITH_OWNER = /^[ \t]*(?:[-*][ \t]+)?(?:close[sd]?|fix(?:es|ed)?|resolve[sd]?):?[ \t]+([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)#(\d+)/gim;
+
+export function crossRepoClaims(body, repo) {
+  const own = String(repo ?? '').toLowerCase();
+  return [...withoutExamples(body).matchAll(CLOSING_WITH_OWNER)]
+    .filter((m) => m[1].toLowerCase() !== own)
+    .map((m) => ({ repo: m[1], number: Number(m[2]), via: 'a closing keyword GitHub shows no link for: not confirmed' }));
 }
 
 const named = (linked) => linked.map((i) => `${i.repo}#${i.number}${i.via ? ` (${i.via})` : ''}`).join(', ');
 
 // decide({ headRef, baseRef, defaultBranch, linked, scanTruncated, body }) → { status: 'pass' | 'fail' | 'skip', message }. `linked` is what the reads found: [{ repo, number, via? }].
-export function decide({ headRef, baseRef, defaultBranch, linked, scanTruncated = false, body }) {
+export function decide({ headRef, baseRef, defaultBranch, linked, scanTruncated = false, body, repo }) {
   const exempt = EXEMPT_HEAD_PREFIXES.find((prefix) => (headRef ?? '').startsWith(prefix));
   if (exempt) return { status: 'skip', message: `Skipped: a pull request from \`${exempt}*\` names no issue by nature.` };
   if (linked.length) return { status: 'pass', message: `Has an issue in its Development field: ${named(linked)}.` };
+  // Only into the default branch: GitHub honours a closing keyword nowhere else, so a keyword into a feature branch counts for nothing.
+  const claims = baseRef === defaultBranch ? crossRepoClaims(body, repo) : [];
+  if (claims.length) {
+    return { status: 'pass', message: `Names an issue in another repository, ${named(claims)}. GitHub shows no link for it because this check's token reads only this repository, so the check could not confirm that the issue exists.` };
+  }
   const into = baseRef === defaultBranch ? '' : ` Into \`${baseRef}\`, a sidebar link or a branch created from an open issue counts; a closing keyword does not (GitHub honours it only into the default branch).`;
   return {
     status: 'fail',
@@ -126,7 +147,7 @@ export function scanLinkedBranch({ repo, headRef }, run = gh) {
 async function main() {
   const { REPO, PR_NUMBER, PR_BODY, HEAD_REF, BASE_REF, DEFAULT_BRANCH } = process.env;
   const result = await check({
-    headRef: HEAD_REF, baseRef: BASE_REF, defaultBranch: DEFAULT_BRANCH, body: PR_BODY,
+    headRef: HEAD_REF, baseRef: BASE_REF, defaultBranch: DEFAULT_BRANCH, body: PR_BODY, repo: REPO,
     read: async () => readLinked({ repo: REPO, number: Number(PR_NUMBER) }),
     scan: async (headRef) => scanLinkedBranch({ repo: REPO, headRef }),
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
