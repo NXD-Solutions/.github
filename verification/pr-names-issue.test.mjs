@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  check, crossRepoClaims, decide, hintsFor, readLinked, scanLinkedBranch,
+  check, crossRepoClaims, decide, failureAnnotation, hintsFor, readLinked, scanLinkedBranch,
   EXEMPT_HEAD_PREFIXES, WAIT_MINUTES, POLL_SECONDS, SCAN_MAX_PAGES, SCAN_PAGE_SIZE, SCAN_EVERY,
 } from '../scripts/pr-names-issue.mjs';
 
@@ -213,6 +213,40 @@ test('the distributed caller grants the permission the read needs and the reusab
   assert.match(reusable, /if: github\.event\.pull_request\.draft == false/);
   for (const name of ['PR_NUMBER', 'REPO', 'GH_TOKEN', 'BASE_REF', 'DEFAULT_BRANCH', 'HEAD_REF']) assert.match(reusable, new RegExp(`${name}: \\$\\{\\{`), name);
   assert.match(reusable, /GH_TOKEN: \$\{\{ github\.token \}\}/);
+});
+
+test('a cross-repo closing keyword is read as GitHub reads it: mid-sentence and as the issue\'s URL, never a word that only ends in one or a keyword followed by other words', () => {
+  const claim = (body) => crossRepoClaims(body, 'NXD-Solutions/packages').map((c) => `${c.repo}#${c.number}`);
+  assert.deepEqual(claim('This pull request fixes other/repo#12 and more.'), ['other/repo#12']);
+  assert.deepEqual(claim('Part of the work: closes: other/repo#3'), ['other/repo#3']);
+  assert.deepEqual(claim('Closes https://github.com/other/repo/issues/45'), ['other/repo#45']);
+  assert.deepEqual(claim('Resolves https://github.com/NXD-Solutions/packages/issues/7'), [], 'this repository is GitHub\'s to read');
+  assert.deepEqual(claim('Closes a/b#1 and fixes c/d#2'), ['a/b#1', 'c/d#2']);
+  assert.deepEqual(claim('prefixes other/repo#9, disclosed other/repo#8'), [], 'a word that only ends in a keyword is none');
+  assert.deepEqual(claim('Closes the loop on other/repo#9'), [], 'a keyword followed by other words is none');
+  assert.deepEqual(claim('Closes other/repo#9x'), [], 'the number ends at a non-word character');
+  assert.equal(decide({ ...MAIN, headRef: 'feature/x', linked: [], repo: 'NXD-Solutions/packages', body: 'It fixes other/repo#12 along the way' }).status, 'pass');
+});
+
+test('the scan returns at the first match, so a pull request that has its link pays only the pages up to it, and reads the newest issues first', () => {
+  const page = (nodes, hasNextPage) => JSON.stringify({ data: { repository: { issues: { pageInfo: { hasNextPage, endCursor: 'c' }, nodes } } } });
+  const withBranch = (number, name) => ({ number, linkedBranches: { nodes: name ? [{ ref: { name } }] : [] } });
+  const queries = [];
+  const run = (args) => { queries.push(args.find((a) => a.startsWith('query='))); return page([withBranch(1, 'other'), withBranch(2, 'task/x'), withBranch(3, 'task/x')], true); };
+  assert.deepEqual(scanLinkedBranch({ repo: 'o/r', headRef: 'task/x' }, run), { linked: [{ repo: 'o/r', number: 2, via: 'linked branch' }], truncated: false });
+  assert.equal(queries.length, 1, 'one page, though more follow');
+  assert.match(queries[0], /orderBy:\{field:CREATED_AT, direction:DESC\}/, 'newest first: the default is oldest first');
+  let calls = 0;
+  const none = scanLinkedBranch({ repo: 'o/r', headRef: 'task/x' }, () => { calls += 1; return page([withBranch(1, 'other')], calls < 3); });
+  assert.deepEqual(none, { linked: [], truncated: false });
+  assert.equal(calls, 3, 'with no match it reads to the last page');
+});
+
+test('a refused or failed read ends the check as an annotation naming what GitHub said, never a stack', () => {
+  const note = failureAnnotation(new Error('gh api failed: Resource not accessible by integration\n    at somewhere'));
+  assert.equal(note, '::error title=Could not read the Development field::gh api failed: Resource not accessible by integration. The check did not run to an answer; re-run it once the cause is fixed.');
+  assert.ok(!note.includes('\n'));
+  assert.match(failureAnnotation('plain text'), /Could not read the Development field::plain text\./);
 });
 
 test('the sync names the caller path only from the copy step: a pathspec that matches nothing fails every repo\'s sync', async () => {

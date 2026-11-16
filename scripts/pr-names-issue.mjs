@@ -44,13 +44,17 @@ export function hintsFor(body) {
 // empty for it (observed on a scratch repository, case 13 of the runs on .github#408). Option 2 of that issue, the DNA's: such a keyword passes when GitHub shows no
 // link, and the message says the issue could not be confirmed; a wrong issue number passes. `Relates to`, a keyword without its owner, and one naming this repository
 // do not qualify (a keyword naming this repository is read by GitHub). Option 1, a token that reads the org's repositories, is Security's to grant: a follow-up.
-const CLOSING_WITH_OWNER = /^[ \t]*(?:[-*][ \t]+)?(?:close[sd]?|fix(?:es|ed)?|resolve[sd]?):?[ \t]+([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)#(\d+)/gim;
+// GitHub reads a closing keyword wherever it stands in the body, mid-sentence included, followed by `owner/repo#n` or the issue's URL, so the claim is read the same way:
+// anywhere, not only at the start of a line. A word that merely ends in a keyword (`prefixes`) or a keyword followed by other words (`closes the loop on`) is no claim.
+const KEYWORD = '(?<![A-Za-z0-9_])(?:close[sd]?|fix(?:es|ed)?|resolve[sd]?):?[ \\t]+';
+const CLOSING_WITH_OWNER = new RegExp(`${KEYWORD}(?:([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)#(\\d+)|https://github\\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/issues/(\\d+))(?![A-Za-z0-9_])`, 'gi');
 
 export function crossRepoClaims(body, repo) {
   const own = String(repo ?? '').toLowerCase();
   return [...withoutExamples(body).matchAll(CLOSING_WITH_OWNER)]
-    .filter((m) => m[1].toLowerCase() !== own)
-    .map((m) => ({ repo: m[1], number: Number(m[2]), via: 'a closing keyword GitHub shows no link for: not confirmed' }));
+    .map((m) => ({ repo: m[1] ?? m[3], number: Number(m[2] ?? m[4]) }))
+    .filter((c) => c.repo.toLowerCase() !== own)
+    .map((c) => ({ ...c, via: 'a closing keyword GitHub shows no link for: not confirmed' }));
 }
 
 const named = (linked) => linked.map((i) => `${i.repo}#${i.number}${i.via ? ` (${i.via})` : ''}`).join(', ');
@@ -109,7 +113,9 @@ export async function check({ read, scan, sleep, now = Date.now, waitMinutes = W
 }
 
 const READ_QUERY = 'query($owner:String!,$name:String!,$number:Int!){ repository(owner:$owner,name:$name){ pullRequest(number:$number){ closingIssuesReferences(first:10){ nodes{ number repository{ nameWithOwner } } } } } }';
-const SCAN_QUERY = 'query($owner:String!,$name:String!,$after:String){ repository(owner:$owner,name:$name){ issues(first:' + SCAN_PAGE_SIZE + ', states:OPEN, after:$after){ pageInfo{ hasNextPage endCursor } nodes{ number linkedBranches(first:5){ nodes{ ref{ name } } } } } } }';
+// Newest first: a branch is linked to a recent issue far more often than an old one, and GitHub's own default order is oldest first (observed on Manager-Assistant-v2),
+// so a repository above SCAN_MAX_PAGES * SCAN_PAGE_SIZE open issues would otherwise be cut short exactly where the match is.
+const SCAN_QUERY = 'query($owner:String!,$name:String!,$after:String){ repository(owner:$owner,name:$name){ issues(first:' + SCAN_PAGE_SIZE + ', states:OPEN, orderBy:{field:CREATED_AT, direction:DESC}, after:$after){ pageInfo{ hasNextPage endCursor } nodes{ number linkedBranches(first:5){ nodes{ ref{ name } } } } } } }';
 // A refused call names what GitHub said, never only that the command failed: the permission a read lacks is the first thing a person looks for.
 const gh = (args) => {
   try {
@@ -128,30 +134,42 @@ export function readLinked({ repo, number }, run = gh) {
   return pull.closingIssuesReferences.nodes.map((n) => ({ repo: n.repository.nameWithOwner, number: n.number }));
 }
 
-// scanLinkedBranch({ repo, headRef }) → { linked, truncated }: the open issues of the repository whose linked branch is `headRef`, read page by page up to the bound.
+// scanLinkedBranch({ repo, headRef }) → { linked, truncated }: the open issues of the repository whose linked branch is `headRef`, newest first, read page by page up to the
+// bound. It returns at the first match: a pull request that has its link pays only the pages up to it, never all of them.
 export function scanLinkedBranch({ repo, headRef }, run = gh) {
   const [owner, name] = repo.split('/');
-  const linked = [];
   let after = null;
   for (let page = 0; page < SCAN_MAX_PAGES; page += 1) {
     const out = JSON.parse(run(['api', 'graphql', '-f', `query=${SCAN_QUERY}`, '-f', `owner=${owner}`, '-f', `name=${name}`, ...(after ? ['-f', `after=${after}`] : [])]));
     const issues = out?.data?.repository?.issues;
     if (!issues) throw new Error(`the issues of ${repo} could not be read`);
-    for (const issue of issues.nodes) if (issue.linkedBranches.nodes.some((b) => b.ref?.name === headRef)) linked.push({ repo, number: issue.number, via: 'linked branch' });
-    if (!issues.pageInfo.hasNextPage) return { linked, truncated: false };
+    const match = issues.nodes.find((issue) => issue.linkedBranches.nodes.some((b) => b.ref?.name === headRef));
+    if (match) return { linked: [{ repo, number: match.number, via: 'linked branch' }], truncated: false };
+    if (!issues.pageInfo.hasNextPage) return { linked: [], truncated: false };
     after = issues.pageInfo.endCursor;
   }
-  return { linked, truncated: linked.length === 0 };
+  return { linked: [], truncated: true };
 }
+
+// The annotation a refused or failed read ends as: what GitHub said, on one line, and what to do.
+export const failureAnnotation = (error) =>
+  `::error title=Could not read the Development field::${String(error?.message ?? error).split('\n')[0]}. The check did not run to an answer; re-run it once the cause is fixed.`;
 
 async function main() {
   const { REPO, PR_NUMBER, PR_BODY, HEAD_REF, BASE_REF, DEFAULT_BRANCH } = process.env;
-  const result = await check({
-    headRef: HEAD_REF, baseRef: BASE_REF, defaultBranch: DEFAULT_BRANCH, body: PR_BODY, repo: REPO,
-    read: async () => readLinked({ repo: REPO, number: Number(PR_NUMBER) }),
-    scan: async (headRef) => scanLinkedBranch({ repo: REPO, headRef }),
-    sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-  });
+  let result;
+  try {
+    result = await check({
+      headRef: HEAD_REF, baseRef: BASE_REF, defaultBranch: DEFAULT_BRANCH, body: PR_BODY, repo: REPO,
+      read: async () => readLinked({ repo: REPO, number: Number(PR_NUMBER) }),
+      scan: async (headRef) => scanLinkedBranch({ repo: REPO, headRef }),
+      sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    });
+  } catch (e) {
+    // A refused or failed read is never taken for a pass or for "no link": the check fails, as an annotation naming what GitHub said, not as a stack.
+    console.log(failureAnnotation(e));
+    process.exit(1);
+  }
   if (result.status === 'fail') {
     console.log(`::error title=No issue in Development::${result.message}`);
     process.exit(1);
