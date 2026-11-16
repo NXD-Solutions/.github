@@ -176,8 +176,8 @@ test('the distributed caller grants the permission the read needs and the reusab
   const reusable = readFileSync(new URL(`../${target[1]}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   assert.match(reusable, /workflow_call:/);
   assert.match(reusable, /scripts\/pr-names-issue\.mjs/);
-  assert.match(caller, /permissions:\n {6}contents: read\n {6}pull-requests: read\n/);
-  assert.match(reusable, /^permissions:\n {2}contents: read\n {2}pull-requests: read\n/m);
+  assert.match(caller, /permissions:\n {6}contents: read\n {6}pull-requests: read\n {6}issues: read\n/, 'the scan of open issues needs issues: read, observed refused without it');
+  assert.match(reusable, /^permissions:\n {2}contents: read\n {2}pull-requests: read\n {2}issues: read\n/m);
   assert.doesNotMatch(reusable, /(?:write|actions: )/, 'it writes nothing');
   assert.doesNotMatch(caller, /inputs|script_ref|with:/, 'the caller passes nothing, so it is byte-identical in every repo');
   assert.match(caller, /types: \[[^\]]*edited[^\]]*\]/);

@@ -9,10 +9,12 @@ on:
         type: string
         default: main
 
-# `pull-requests: read` is what the Development read needs (closingIssuesReferences); the distributed caller grants it, byte for byte in every repo.
+# `pull-requests: read` is what the Development read needs (closingIssuesReferences), and `issues: read` what the scan of open issues for a linked branch needs (observed: without it the
+# scan is refused); the distributed caller grants both, byte for byte in every repo.
 permissions:
   contents: read
   pull-requests: read
+  issues: read
 
 # gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
 env:

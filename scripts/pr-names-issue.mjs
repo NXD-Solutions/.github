@@ -89,7 +89,15 @@ export async function check({ read, scan, sleep, now = Date.now, waitMinutes = W
 
 const READ_QUERY = 'query($owner:String!,$name:String!,$number:Int!){ repository(owner:$owner,name:$name){ pullRequest(number:$number){ closingIssuesReferences(first:10){ nodes{ number repository{ nameWithOwner } } } } } }';
 const SCAN_QUERY = 'query($owner:String!,$name:String!,$after:String){ repository(owner:$owner,name:$name){ issues(first:' + SCAN_PAGE_SIZE + ', states:OPEN, after:$after){ pageInfo{ hasNextPage endCursor } nodes{ number linkedBranches(first:5){ nodes{ ref{ name } } } } } } }';
-const gh = (args) => execFileSync('gh', args, { encoding: 'utf8' });
+// A refused call names what GitHub said, never only that the command failed: the permission a read lacks is the first thing a person looks for.
+const gh = (args) => {
+  try {
+    return execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (e) {
+    const said = String(e.stderr || e.message).trim().split('\n')[0];
+    throw new Error(`gh api failed: ${said}`);
+  }
+};
 
 export function readLinked({ repo, number }, run = gh) {
   const [owner, name] = repo.split('/');
