@@ -107,14 +107,12 @@ test('The role configuration\'s lines are read as stated: hub issues, the princi
   assert.equal(hubFor(null, hubs, 'Nobody'), null);
 });
 
-test('Every half hour: the workflow starts once in each half hour, reads the script and the role configuration from the DNA\'s main, and keeps the report out of the log', () => {
+test('Every half hour: the workflow starts on the hour and the half hour, reads the script and the role configuration from the DNA\'s main, and keeps the report out of the log', () => {
   const wf = readFileSync(new URL('../.github/workflows/answered-decisions.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   const cron = wf.match(/schedule:\n(?:\s*#.*\n)*\s+- cron: '([\d,]+) \* \* \* \*'/);
   assert.ok(cron, 'one cron line, every hour of every day');
   const minutes = cron[1].split(',').map(Number);
-  assert.equal(minutes.filter((m) => m < 30).length, 1, 'one start in the first half hour');
-  assert.equal(minutes.filter((m) => m >= 30).length, 1, 'one start in the second half hour');
-  assert.ok(minutes.every((m) => m % 60 !== 0), 'off the top of the hour, when GitHub is busiest');
+  assert.deepEqual(minutes, [0, 30], 'at :00 and :30, as the principal ruled');
   assert.match(wf, /repository: NXD-Solutions\/dna\n\s+ref: main/);
   assert.match(wf, /answered-decisions\.mjs --org NXD-Solutions --hubs [^\n]*org\.config\.md > "\$RUNNER_TEMP\/report\.txt"/);
   assert.doesNotMatch(wf, /--since/);

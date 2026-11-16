@@ -8,10 +8,10 @@ name: Report answered Decision Requests
 # and is never printed. The log gets person names and counts only.
 
 on:
-  # Every 30 minutes (the principal, 2026-11-16). GitHub drops scheduled starts silently; a dropped one costs 30
-  # minutes, accepted. A repeated scan posts nothing twice.
+  # Every 30 minutes, on the hour and the half hour (the principal, 2026-11-16). GitHub drops scheduled starts
+  # silently, most at the top of the hour; a dropped one costs 30 minutes, accepted. A repeated scan posts nothing twice.
   schedule:
-    - cron: '7,37 * * * *'
+    - cron: '0,30 * * * *'
   workflow_dispatch:
     inputs:
       dry-run:
