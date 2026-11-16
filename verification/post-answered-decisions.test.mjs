@@ -108,7 +108,7 @@ test('The role configuration\'s lines are read as stated: hub issues, the princi
 });
 
 test('Hourly: the workflow runs every hour, reads the script and the role configuration from the DNA\'s main, and keeps the report out of the log', () => {
-  const wf = readFileSync(new URL('../.github/workflows/answered-decisions.yml', import.meta.url), 'utf8');
+  const wf = readFileSync(new URL('../.github/workflows/answered-decisions.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   assert.match(wf, /schedule:\n\s+- cron: '\d+ \* \* \* \*'/);
   assert.match(wf, /repository: NXD-Solutions\/dna\n\s+ref: main/);
   assert.match(wf, /answered-decisions\.mjs --org NXD-Solutions --hubs [^\n]*org\.config\.md > "\$RUNNER_TEMP\/report\.txt"/);

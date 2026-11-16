@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { writeFileSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { main, plan, weeksBehind, missedComment, DEPRECATED_COMMENT, HUB_MARKER } from '../scripts/sync-tasks.mjs';
+import { main, plan, weeksBehind, weekStart, missedComment, DEPRECATED_COMMENT, HUB_MARKER } from '../scripts/sync-tasks.mjs';
 
 // The promise: NXD-Solutions/.github#409. Invariant: each Monday, every repo that receives the DNA has its one sync
 // task open and Ready, and nothing starts a sync on a team's behalf. One test per guarantee; fixtures and a recording
@@ -27,8 +27,9 @@ function files(subscribers, config = CONFIG) {
   return ['--subscribers', join(dir, 'subs.json'), '--config', join(dir, 'org.config.md')];
 }
 
-// Records every write. `status` answers the Ready check: by default an item reads Ready once set.
-function stand_in(tasks, { reopened = {}, statusSeq = null } = {}) {
+// Records every write. `status` answers the Ready check: by default an item reads Ready once set, and before that
+// its `initial` Status, else Backlog.
+function stand_in(tasks, { reopened = {}, statusSeq = null, initial = {} } = {}) {
   const calls = [];
   const set = new Map();
   let reads = 0;
@@ -42,7 +43,8 @@ function stand_in(tasks, { reopened = {}, statusSeq = null } = {}) {
       close: (t) => calls.push(['close', `${t.repo}#${t.number}`]),
       comment: (repo, number, body) => calls.push(['comment', `${repo}#${number}`, body]),
       setReady: (p, t) => { calls.push(['ready', p.id, `${t.repo}#${t.number}`]); set.set(`item:${t.id}`, true); return `item:${t.id}`; },
-      status: (item) => (statusSeq ? statusSeq[reads++] ?? 'Ready' : set.has(item) ? 'Ready' : 'Backlog'),
+      item: (p, t) => `item:${t.id}`,
+      status: (item) => (statusSeq ? statusSeq[reads++] ?? 'Ready' : set.has(item) ? 'Ready' : initial[item] ?? 'Backlog'),
       sleep: async () => {},
       now: () => NOW,
     },
@@ -104,6 +106,36 @@ test('Missed: an unassigned task, or one whose assignee has no hub, is told to t
   assert.equal(p.tell.get('Peter P').length, 2);
 });
 
+test('Missed: a task opened this week, by hand before the run, is not missed, and is set Ready from the Backlog its reopening left it in', async () => {
+  const logs = [];
+  const s = stand_in([task('Org/a', 1, 'OPEN')], { reopened: { 'Org/a#1': '2026-11-16T02:38:00Z' } });
+  assert.equal(await main(files(['Org/a']), s.deps, (l) => logs.push(l)), 0);
+  assert.deepEqual(s.calls.filter((c) => c[0] !== 'project'), [['ready', 'P7', 'Org/a#1']]);
+  assert.ok(logs[0].includes('0 missed, 1 already opened this week'));
+});
+
+test('Ready: a task opened this week that is already Ready, or being worked, keeps its Status', async () => {
+  const tasks = [task('Org/a', 1, 'OPEN'), task('Org/b', 2, 'OPEN'), task('Org/c', 3, 'OPEN')];
+  const reopened = { 'Org/a#1': '2026-11-16T02:38:00Z', 'Org/b#2': '2026-11-16T02:38:00Z', 'Org/c#3': '2026-11-16T02:38:00Z' };
+  const s = stand_in(tasks, { reopened, initial: { 'item:I_Org/a_1': 'Ready', 'item:I_Org/b_2': 'In progress', 'item:I_Org/c_3': 'In review' } });
+  assert.equal(await main(files(['Org/a', 'Org/b', 'Org/c']), s.deps, quiet), 0);
+  assert.deepEqual(s.calls.filter((c) => c[0] !== 'project'), []);
+});
+
+test('Missed: a task this job reopened earlier in the week is not missed when the job runs again', () => {
+  const wednesday = new Date('2026-11-18T09:00:00Z');
+  const p = plan({ tasks: [task('Org/a', 1, 'OPEN'), task('Org/b', 2, 'OPEN')], subscribers: ['Org/a', 'Org/b'], hubs: new Map([['peter', 'Peter P']]), principal: 'Peter P', lastOpened: (t) => (t.repo === 'Org/a' ? '2026-11-16T06:00:00Z' : '2026-11-15T23:59:59Z'), now: wednesday });
+  assert.deepEqual(p.openedThisWeek.map((t) => t.repo), ['Org/a']);
+  assert.deepEqual(p.missed.map((m) => m.task.repo), ['Org/b']);
+});
+
+test('Missed: the week starts Monday 00:00 UTC, whatever day the run falls on', () => {
+  assert.equal(weekStart(new Date('2026-11-16T00:00:00Z')).toISOString(), '2026-11-16T00:00:00.000Z');
+  assert.equal(weekStart(new Date('2026-11-16T14:32:00Z')).toISOString(), '2026-11-16T00:00:00.000Z');
+  assert.equal(weekStart(new Date('2026-11-22T23:59:59Z')).toISOString(), '2026-11-16T00:00:00.000Z');
+  assert.equal(weekStart(new Date('2026-11-15T23:59:59Z')).toISOString(), '2026-11-09T00:00:00.000Z');
+});
+
 test('Complete: a repo that receives the DNA with no sync task, or with more than one, is reported to the principal\'s hub', async () => {
   const s = stand_in([task('Org/a', 1, 'CLOSED'), task('Org/b', 2, 'CLOSED'), task('Org/b', 3, 'CLOSED')]);
   assert.equal(await main(files(['Org/a', 'Org/b', 'Org/c']), s.deps, quiet), 0);
@@ -133,7 +165,7 @@ test('No sync started: the script touches only issues, the hub issue and the Pri
 });
 
 test('No sync started: on the timer the distribution workflow runs this step and never its sync job', () => {
-  const wf = readFileSync(new URL('../.github/workflows/distribute-claude-config.yml', import.meta.url), 'utf8');
+  const wf = readFileSync(new URL('../.github/workflows/distribute-claude-config.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   const block = (name) => {
     const start = wf.indexOf(`\n  ${name}:\n`);
     assert.notEqual(start, -1, `job ${name} exists`);
