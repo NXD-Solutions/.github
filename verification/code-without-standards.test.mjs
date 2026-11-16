@@ -1,9 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  isCode, decide, plan, apply, boardIds, run, readTree, listOpenReports, reportTitle, reportBody,
-  EXEMPTION_KEY, STANDARDS_DOMAIN,
+  isCode, decide, plan, apply, run, readTree, listOpenReports, reportTitle, reportBody,
+  EXEMPTION_KEY, STANDARDS_DOMAIN, REPORT_PARENT,
 } from '../scripts/code-without-standards.mjs';
+import { readPrincipalLogin } from '../scripts/org-config.mjs';
 
 // The promise (NXD-Solutions/dna#1387), one test per guarantee. No real gh call anywhere in this suite.
 
@@ -124,16 +125,15 @@ test('a report follows the issue layout, and says it is a report, not work to bu
   assert.match(body, /src\/main\.ts/);
 });
 
-// The board, as the hub reads it: Status Proposed, never Ready; type Task; no label.
-const BOARD = { projectId: 'PVT_1', statusFieldId: 'PVTSSF_1', proposedOptionId: 'opt-proposed' };
-
+// A report as the hub finds it: a Task with no label, on no project, assigned to the principal whose decision it
+// waits on, a sub-issue of the requirement it reports for (NXD-Solutions/.github#413).
 function recordingGh({ failOn } = {}) {
   const calls = [];
   const gh = (args) => {
     calls.push(args);
     if (failOn && failOn(args)) throw new Error(`gh ${args[0]} ${args[1]} failed: nope`);
     if (args[0] === 'issue' && args[1] === 'create') return 'https://github.com/o/.github/issues/7\n';
-    if (args[0] === 'project' && args[1] === 'item-add') return 'PVTI_9\n';
+    if (args[0] === 'api' && args.includes('--jq')) return '4242\n';
     return '';
   };
   return { gh, calls };
@@ -141,36 +141,38 @@ function recordingGh({ failOn } = {}) {
 
 const OPEN = [{ type: 'open', repo: 'o/app', title: reportTitle('o/app'), body: 'b' }];
 const CLOSE = [{ type: 'close', repo: 'o/old', number: 3, comment: 'c' }];
-const CONTEXT = { issuesRepo: 'o/.github', owner: 'o', boardNumber: 1, board: BOARD };
+const CONTEXT = { issuesRepo: 'o/.github', assignee: 'principal-login' };
 
-test('a report is a Task with no label, on the NXD Work Board with Status Proposed, never Ready', () => {
+test('a report is a Task with no label, assigned to the principal, a sub-issue of NXD-Solutions/dna#1387, and on no project', () => {
   const { gh, calls } = recordingGh();
   const done = apply(OPEN, { gh, ...CONTEXT });
-  const create = calls.find((c) => c[0] === 'issue' && c[1] === 'create');
-  assert.equal(create.includes('--label'), false, 'no label on the report');
+  assert.deepEqual(
+    calls.find((c) => c[0] === 'issue' && c[1] === 'create'),
+    ['issue', 'create', '--repo', 'o/.github', '--title', reportTitle('o/app'), '--body', 'b', '--assignee', 'principal-login'],
+  );
   assert.equal(calls.some((c) => c[0] === 'label'), false, 'no label is created');
-  assert.deepEqual(
-    calls.find((c) => c[0] === 'api'),
+  assert.deepEqual(calls.filter((c) => c[0] === 'api'), [
     ['api', 'repos/o/.github/issues/7', '-X', 'PATCH', '-f', 'type=Task'],
-  );
-  assert.deepEqual(calls.find((c) => c[1] === 'item-add').slice(0, 7), ['project', 'item-add', '1', '--owner', 'o', '--url', 'https://github.com/o/.github/issues/7']);
-  assert.deepEqual(
-    calls.find((c) => c[1] === 'item-edit'),
-    ['project', 'item-edit', '--id', 'PVTI_9', '--project-id', 'PVT_1', '--field-id', 'PVTSSF_1', '--single-select-option-id', 'opt-proposed'],
-  );
+    ['api', 'repos/o/.github/issues/7', '--jq', '.id'],
+    ['api', `repos/${REPORT_PARENT.repo}/issues/${REPORT_PARENT.number}/sub_issues`, '-X', 'POST', '-F', 'sub_issue_id=4242'],
+  ]);
+  assert.deepEqual(REPORT_PARENT, { repo: 'NXD-Solutions/dna', number: 1387 });
+  assert.equal(calls.some((c) => c[0] === 'project'), false, 'on no project: the old work board is retired');
   assert.deepEqual(done, ['opened https://github.com/o/.github/issues/7']);
 });
 
-test('the report only informs: carrying out the actions touches only issues and the board', () => {
+test('the report only informs: carrying out the actions touches only issues', () => {
   const { gh, calls } = recordingGh();
   apply([...OPEN, ...CLOSE], { gh, ...CONTEXT });
   const kinds = new Set(calls.map((c) => `${c[0]} ${c[1]}`));
-  assert.deepEqual([...kinds].sort(), ['api repos/o/.github/issues/7', 'issue close', 'issue create', 'project item-add', 'project item-edit']);
+  assert.deepEqual([...kinds].sort(), [
+    `api repos/${REPORT_PARENT.repo}/issues/${REPORT_PARENT.number}/sub_issues`, 'api repos/o/.github/issues/7', 'issue close', 'issue create',
+  ]);
 });
 
-test('a report that cannot be set up on the board is closed again, and the failure is loud', () => {
-  for (const failing of ['api', 'item-add', 'item-edit']) {
-    const { gh, calls } = recordingGh({ failOn: (a) => a[0] === failing || a[1] === failing });
+test('a report that cannot be made a Task under its requirement is closed again, and the failure is loud', () => {
+  for (const failing of ['PATCH', '--jq', 'sub_issue_id=4242']) {
+    const { gh, calls } = recordingGh({ failOn: (a) => a[0] === 'api' && a.includes(failing) });
     assert.throws(() => apply(OPEN, { gh, ...CONTEXT }), /nope/, failing);
     const close = calls.find((c) => c[0] === 'issue' && c[1] === 'close');
     assert.equal(close?.[2], '7', `${failing}: the new issue is closed`);
@@ -180,17 +182,13 @@ test('a report that cannot be set up on the board is closed again, and the failu
 test('a failing gh call before anything exists is loud and nothing carries on', () => {
   const { gh, calls } = recordingGh({ failOn: (a) => a[0] === 'issue' && a[1] === 'create' });
   assert.throws(() => apply(OPEN, { gh, ...CONTEXT }), /nope/);
-  assert.equal(calls.some((c) => c[0] === 'project'), false);
+  assert.equal(calls.some((c) => c[0] === 'api'), false);
 });
 
-test('the board ids are read from the board, and a board without a Proposed status is refused', () => {
-  const gh = (args) => {
-    if (args[1] === 'view') return 'PVT_1\n';
-    return JSON.stringify({ fields: [{ id: 'F0', name: 'Title' }, { id: 'F1', name: 'Status', options: [{ id: 'o1', name: 'Proposed' }, { id: 'o2', name: 'Ready' }] }] });
-  };
-  assert.deepEqual(boardIds(gh, 'o', 1), { projectId: 'PVT_1', statusFieldId: 'F1', proposedOptionId: 'o1' });
-  const without = (args) => (args[1] === 'view' ? 'PVT_1' : JSON.stringify({ fields: [{ id: 'F1', name: 'Status', options: [{ id: 'o2', name: 'Ready' }] }] }));
-  assert.throws(() => boardIds(without, 'o', 1), /Proposed/);
+test('the principal assigned each report is read from the role configuration, by their own Hub line', () => {
+  const config = '| Manifest Steward — the apex | Peter P |\n- **Hub:** Dana D (@dana) — x\n- **Hub:** Peter P (@Peter-P) — y\n';
+  assert.equal(readPrincipalLogin(config), 'Peter-P');
+  assert.equal(readPrincipalLogin('| Manifest Steward | Nobody |\n- **Hub:** Dana D (@dana) — x\n'), null);
 });
 
 test('a list of open issues cut at the limit is refused, since it could hide an open report', () => {
@@ -225,9 +223,7 @@ function fakeOrg() {
     }
     if (a === 'issue' && b === 'list') return JSON.stringify([{ number: 5, title: reportTitle('o/lib') }, { number: 6, title: 'unrelated' }]);
     if (a === 'issue' && b === 'create') return 'https://github.com/o/.github/issues/9';
-    if (a === 'project' && b === 'view') return 'PVT_1';
-    if (a === 'project' && b === 'field-list') return JSON.stringify({ fields: [{ id: 'F1', name: 'Status', options: [{ id: 'o1', name: 'Proposed' }] }] });
-    if (a === 'project' && b === 'item-add') return 'PVTI_1';
+    if (a === 'api' && args.includes('--jq') && b.startsWith('repos/o/.github/issues/')) return '4242';
     return '';
   };
   return { gh, calls };
@@ -243,7 +239,7 @@ const registry = {
 
 test('over a whole organisation: names the unsubscribed coders, clears the rest, closes a report no longer due', () => {
   const { gh, calls } = fakeOrg();
-  const r = run({ gh, owner: 'o', issuesRepo: 'o/.github', boardNumber: 1, registry, dryRun: false });
+  const r = run({ gh, owner: 'o', issuesRepo: 'o/.github', assignee: 'principal-login', registry, dryRun: false });
   assert.deepEqual(
     Object.fromEntries(r.decisions.map((d) => [d.repo, d.status])),
     { 'o/app': 'named', 'o/plan': 'no-code', 'o/lib': 'subscribed', 'o/mirror': 'exempt', 'o/.github': 'named', 'o/infra': 'named' },
@@ -254,7 +250,7 @@ test('over a whole organisation: names the unsubscribed coders, clears the rest,
 
 test('a dry run reports what it would do and calls nothing that writes', () => {
   const { gh, calls } = fakeOrg();
-  const r = run({ gh, owner: 'o', issuesRepo: 'o/.github', boardNumber: 1, registry, dryRun: true });
+  const r = run({ gh, owner: 'o', issuesRepo: 'o/.github', assignee: 'principal-login', registry, dryRun: true });
   assert.deepEqual(r.done, ['would open o/app', 'would close o/lib', 'would open o/.github', 'would open o/infra']);
   assert.equal(calls.some((c) => (c[0] === 'issue' && c[1] !== 'list') || c[0] === 'project' || c[0] === 'label'), false);
 });

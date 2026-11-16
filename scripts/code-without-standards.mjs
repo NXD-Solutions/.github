@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { readPrincipalLogin } from './org-config.mjs';
 
 export const STANDARDS_DOMAIN = 'enterprise-architecture';
 export const EXEMPTION_KEY = 'standards-exemption';
@@ -75,7 +76,7 @@ export function reportBody({ repo, example, truncated }) {
     '',
     '## What must hold',
     '**No invariant yet:** this reports a state; it is not work to build.',
-    `**Domains:** ${STANDARDS_DOMAIN}, framework`,
+    `**Ruling domains:** ${STANDARDS_DOMAIN}, framework`,
     '',
     '## Metadata',
     '- **Source:** NXD-Solutions/dna#1387',
@@ -106,24 +107,28 @@ function closeComment(d) {
 }
 
 export const REPORT_TYPE = 'Task';
-export const BOARD_STATUS = 'Proposed';
+// Every issue but an Area has a parent: each report is a sub-issue of the requirement it reports for.
+export const REPORT_PARENT = { repo: 'NXD-Solutions/dna', number: 1387 };
 
-/** Carries the actions out. `gh(args)` returns stdout and throws on failure, so a failure is loud, never skipped. */
-export function apply(actions, { gh, issuesRepo, owner, boardNumber, board }) {
+/**
+ * Carries the actions out. `gh(args)` returns stdout and throws on failure, so a failure is loud, never skipped.
+ * A report is on no project: it is not picked work, and the old work board is retired (NXD-Solutions/.github#413).
+ * It is assigned to `assignee`, the principal, whose decision it waits on.
+ */
+export function apply(actions, { gh, issuesRepo, assignee }) {
   const done = [];
   for (const a of actions) {
     if (a.type === 'open') {
-      const url = gh(['issue', 'create', '--repo', issuesRepo, '--title', a.title, '--body', a.body]).trim();
+      const url = gh(['issue', 'create', '--repo', issuesRepo, '--title', a.title, '--body', a.body, '--assignee', assignee]).trim();
       const number = url.split('/').pop();
       try {
         gh(['api', `repos/${issuesRepo}/issues/${number}`, '-X', 'PATCH', '-f', `type=${REPORT_TYPE}`]);
-        const itemId = gh(['project', 'item-add', String(boardNumber), '--owner', owner, '--url', url, '--format', 'json', '--jq', '.id']).trim();
-        gh(['project', 'item-edit', '--id', itemId, '--project-id', board.projectId, '--field-id', board.statusFieldId,
-          '--single-select-option-id', board.proposedOptionId]);
+        const id = gh(['api', `repos/${issuesRepo}/issues/${number}`, '--jq', '.id']).trim();
+        gh(['api', `repos/${REPORT_PARENT.repo}/issues/${REPORT_PARENT.number}/sub_issues`, '-X', 'POST', '-F', `sub_issue_id=${id}`]);
       } catch (e) {
-        // A report off the board, or not a Task, or not Proposed, would stay open, and the next run would leave it so.
+        // A report that is not a Task, or has no parent, would stay open, and the next run would leave it so.
         gh(['issue', 'close', number, '--repo', issuesRepo, '--reason', 'not planned',
-          '--comment', `Closed: it could not be set up on the board (${e.message}). The next run opens it again.`]);
+          '--comment', `Closed: it could not be set up as a Task under ${REPORT_PARENT.repo}#${REPORT_PARENT.number} (${e.message}). The next run opens it again.`]);
         throw e;
       }
       done.push(`opened ${url}`);
@@ -135,15 +140,6 @@ export function apply(actions, { gh, issuesRepo, owner, boardNumber, board }) {
   return done;
 }
 
-/** The board's own ids, read once: the project, its Status field, and the Proposed option. */
-export function boardIds(gh, owner, boardNumber) {
-  const projectId = gh(['project', 'view', String(boardNumber), '--owner', owner, '--format', 'json', '--jq', '.id']).trim();
-  const fields = JSON.parse(gh(['project', 'field-list', String(boardNumber), '--owner', owner, '--format', 'json'])).fields;
-  const status = fields.find((f) => f.name === 'Status');
-  const proposed = status?.options?.find((o) => o.name === BOARD_STATUS);
-  if (!projectId || !status || !proposed) throw new Error(`the board has no Status field with a "${BOARD_STATUS}" option`);
-  return { projectId, statusFieldId: status.id, proposedOptionId: proposed.id };
-}
 
 // ---- the gh edges ----------------------------------------------------------------------------------------------
 
@@ -185,28 +181,30 @@ export function listOpenReports(gh, issuesRepo) {
   return map;
 }
 
-export function run({ gh, owner, issuesRepo, boardNumber, registry, dryRun }) {
+export function run({ gh, owner, issuesRepo, assignee, registry, dryRun }) {
   const overrides = registry.overrides ?? {};
   const decisions = listRepos(gh, owner).map((repo) => {
     const { paths, truncated } = readTree(gh, repo);
     return decide({ repo, paths, truncated, override: overrides[repo] });
   });
   const actions = plan({ decisions, openReports: listOpenReports(gh, issuesRepo) });
-  const needsBoard = !dryRun && actions.some((a) => a.type === 'open');
   const done = dryRun
     ? actions.map((a) => `would ${a.type} ${a.repo}`)
-    : apply(actions, { gh, issuesRepo, owner, boardNumber, board: needsBoard ? boardIds(gh, owner, boardNumber) : null });
+    : apply(actions, { gh, issuesRepo, assignee });
   return { decisions, actions, done };
 }
 
 function main(argv) {
   const arg = (name) => argv[argv.indexOf(name) + 1];
   const registry = JSON.parse(readFileSync(arg('--registry'), 'utf8'));
+  // The principal decides each report: subscribe the repo, or grant an exemption.
+  const assignee = readPrincipalLogin(readFileSync(arg('--config'), 'utf8'));
+  if (!assignee) throw new Error('the principal has no **Hub:** line with a login in the role configuration: no one to assign reports to');
   const result = run({
     gh: ghRunner(),
     owner: arg('--owner'),
     issuesRepo: arg('--issues-repo'),
-    boardNumber: Number(arg('--board')),
+    assignee,
     registry,
     dryRun: argv.includes('--dry-run'),
   });

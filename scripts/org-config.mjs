@@ -24,6 +24,13 @@ export function readPrincipal(text) {
   return m ? m[1].trim() : null;
 }
 
+// The principal's GitHub login, from their own `**Hub:**` line, or null when they have none.
+export function readPrincipalLogin(text) {
+  const principal = readPrincipal(text);
+  for (const m of text.matchAll(/^\s*-\s*\*\*Hub:\*\*\s*(.+?)\s*\(@([\w-]+)\)/gm)) if (m[1].trim() === principal) return m[2];
+  return null;
+}
+
 // `- **Tier project:** <name> — #<n>`: the project's number, or null.
 export function readTierProject(text, name) {
   for (const m of text.matchAll(/^\s*-\s*\*\*Tier project:\*\*\s*(.+?)\s*—\s*#(\d+)\s*$/gm)) {
