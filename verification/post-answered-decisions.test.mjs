@@ -107,11 +107,16 @@ test('The role configuration\'s lines are read as stated: hub issues, the princi
   assert.equal(hubFor(null, hubs, 'Nobody'), null);
 });
 
-test('Hourly: the workflow runs every hour, reads the script and the role configuration from the DNA\'s main, and keeps the report out of the log', () => {
+test('Every half hour: the workflow starts on the hour and the half hour, reads the script and the role configuration from the DNA\'s main, and keeps the report out of the log', () => {
   const wf = readFileSync(new URL('../.github/workflows/answered-decisions.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-  assert.match(wf, /schedule:\n\s+- cron: '\d+ \* \* \* \*'/);
+  const cron = wf.match(/schedule:\n(?:\s*#.*\n)*\s+- cron: '([\d,]+) \* \* \* \*'/);
+  assert.ok(cron, 'one cron line, every hour of every day');
+  const minutes = cron[1].split(',').map(Number);
+  assert.deepEqual(minutes, [0, 30], 'at :00 and :30, as the principal ruled');
   assert.match(wf, /repository: NXD-Solutions\/dna\n\s+ref: main/);
-  assert.match(wf, /answered-decisions\.mjs --org NXD-Solutions --hubs [^\n]*org\.config\.md > "\$RUNNER_TEMP\/report\.txt"/);
+  // An answer is taken only once it has stood unchanged for 30 minutes, so its author can still change it
+  // (the principal, 2026-11-16).
+  assert.match(wf, /answered-decisions\.mjs --org NXD-Solutions --hubs [^\n]*org\.config\.md --settle 30 > "\$RUNNER_TEMP\/report\.txt"/);
   assert.doesNotMatch(wf, /--since/);
   assert.doesNotMatch(wf, /cat "\$RUNNER_TEMP\/report\.txt"|GITHUB_STEP_SUMMARY/);
   assert.doesNotMatch(wf, /pull_request/);
