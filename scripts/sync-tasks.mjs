@@ -4,7 +4,8 @@
 // The catalogue is the sub-issues of NXD-Solutions/dna#1892, one sync task per repo. The repos that receive the
 // DNA are the distribution's own subscriber list, handed in by the workflow, so the two never disagree.
 //   - a closed task whose repo receives the DNA is reopened and set Ready on the Priority project
-//   - an open one has been missed: it gets a comment naming how many weeks it is behind, and its hub is told
+//   - an open one opened before this week has been missed: it gets a comment naming how many weeks it is behind,
+//     and its hub is told; one opened this week (by hand, or by an earlier run) is left as it is
 //   - a receiving repo with no task, or with more than one, is reported to the principal's hub
 //   - an open task whose repo no longer receives the DNA is marked deprecated: commented and closed as not
 //     planned, never deleted
@@ -29,8 +30,15 @@ export function weeksBehind(sinceIso, now) {
   return Math.max(1, Math.round((now.getTime() - new Date(sinceIso).getTime()) / WEEK));
 }
 
+// The start of the week `now` falls in: Monday 00:00 UTC.
+export function weekStart(now) {
+  const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  return new Date(day.getTime() - ((day.getUTCDay() + 6) % 7) * 24 * 60 * 60 * 1000);
+}
+
 // What this Monday does, from the catalogue and the subscriber list alone. `lastOpened(task)` gives the date an
-// open task was last reopened or created.
+// open task was last reopened or created. An open task opened this week, by hand or by an earlier run of this job,
+// is not missed: it is left as it is (NXD-Solutions/.github#411).
 export function plan({ tasks, subscribers, hubs, principal, lastOpened, now }) {
   const receiving = new Set(subscribers);
   const byRepo = new Map();
@@ -39,12 +47,15 @@ export function plan({ tasks, subscribers, hubs, principal, lastOpened, now }) {
   const reopen = [];
   const missed = [];
   const deprecate = [];
+  const openedThisWeek = [];
+  const since = weekStart(now).getTime();
   for (const t of tasks) {
     if (!receiving.has(t.repo)) {
       if (t.state === 'OPEN') deprecate.push(t);
       continue;
     }
     if (t.state === 'CLOSED') reopen.push(t);
+    else if (new Date(lastOpened(t)).getTime() >= since) openedThisWeek.push(t);
     else missed.push({ task: t, weeks: weeksBehind(lastOpened(t), now) });
   }
   const withoutTask = subscribers.filter((r) => !byRepo.has(r)).sort();
@@ -61,7 +72,7 @@ export function plan({ tasks, subscribers, hubs, principal, lastOpened, now }) {
   for (const repo of duplicated) add(principal, `- ${repo} has more than one sync task under ${CATALOGUE.repo}#${CATALOGUE.number}`);
   for (const t of deprecate) add(principal, `- ${t.repo}#${t.number} — marked deprecated: its repo no longer receives the DNA`);
 
-  return { reopen, missed, deprecate, withoutTask, duplicated, tell };
+  return { reopen, missed, openedThisWeek, deprecate, withoutTask, duplicated, tell };
 }
 
 export function missedComment(weeks) {
@@ -136,7 +147,7 @@ export async function main(argv, deps = live, log = console.log) {
     const opened = new Map();
     for (const t of tasks) if (t.state === 'OPEN' && subscribers.includes(t.repo)) opened.set(t, deps.lastReopened(t) ?? t.createdAt);
     const p = plan({ tasks, subscribers, hubs, principal, lastOpened: (t) => opened.get(t), now: deps.now() });
-    log(`${tasks.length} sync tasks, ${subscribers.length} repos receive the DNA: ${p.reopen.length} to reopen, ${p.missed.length} missed, ${p.deprecate.length} to deprecate, ${p.withoutTask.length} repos without a task, ${p.duplicated.length} with more than one`);
+    log(`${tasks.length} sync tasks, ${subscribers.length} repos receive the DNA: ${p.reopen.length} to reopen, ${p.missed.length} missed, ${p.openedThisWeek.length} already opened this week, ${p.deprecate.length} to deprecate, ${p.withoutTask.length} repos without a task, ${p.duplicated.length} with more than one`);
     if (dryRun) {
       for (const [hub, lines] of p.tell) log(`would tell ${hub}: ${lines.length} line(s)${hubIssues.has(hub) ? '' : ' (no **Hub issue:** line)'}`);
       return 0;
