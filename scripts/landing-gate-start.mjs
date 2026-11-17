@@ -23,6 +23,9 @@ const ghExec = (args) => execFileSync('gh', args, { encoding: 'utf8', stdio: ['i
 
 export function run({ env, gh = ghExec }) {
   const { REPO: repo, BRANCH: branch, SHA: sha, STEP_MINUTES: stepMinutes } = env;
+  // Nothing reaches the API until the inputs are well formed: a commit that is no full id, or a branch that is not `landed/**`, is refused before the compare is asked.
+  const wellFormed = checkStart({ branch, sha, comparison: 'ahead', stepMinutes });
+  if (!wellFormed.ok) return wellFormed;
   let comparison;
   try {
     comparison = gh(['api', `repos/${repo}/compare/${sha}...${encodeURIComponent(branch ?? '')}`, '--jq', '.status']);

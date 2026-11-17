@@ -24,6 +24,10 @@ on:
       step_minutes:
         type: string
         default: '55'
+      # The runner label of the full test's gate job (the caller passes the repository variable LANDING_GATE_RUNNER); `ubuntu-latest` when none is set.
+      runs_on:
+        type: string
+        default: 'ubuntu-latest'
       # Where the scripts are read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch of this repo.
       script_ref:
         type: string
@@ -82,7 +86,9 @@ jobs:
   gate:
     name: Landing gate
     needs: start
-    runs-on: ubuntu-latest
+    # The machine the repository's full test runs on: a repository whose full test needs its own stack (containers, a database, services) points it at a machine that has it. The default
+    # is GitHub's; which machine, and who runs it, is Deployment's. A single runner label; the start check above always runs on GitHub's.
+    runs-on: ${{ inputs.runs_on }}
     # The gate step's limit plus a margin: the job's own ceiling never fires first, so a hung full test ends as a failed step and a red status.
     timeout-minutes: ${{ fromJSON(needs.start.outputs.job_minutes) }}
     steps:

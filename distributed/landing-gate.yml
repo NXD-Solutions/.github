@@ -6,7 +6,8 @@ name: Landing Gate
 # Two tests, two contexts, never mixed (NXD-Solutions/.github#423):
 #   - after each merge into `landed/**` the QUICK set runs (the early warning) and sets `landing-quick`: the repository's variable LANDING_QUICK_COMMAND, optional; none set, nothing runs;
 #   - the FULL test is started by hand with a landing branch and a commit of it, runs to its end whatever merges meanwhile, and sets `landing-gate` on that commit alone: the
-#     repository's variable LANDING_GATE_COMMAND (and LANDING_GATE_NODE, if it needs another Node than 24; LANDING_GATE_TIMEOUT_MINUTES, its step limit, default 55).
+#     repository's variable LANDING_GATE_COMMAND (and LANDING_GATE_NODE, if it needs another Node than 24; LANDING_GATE_TIMEOUT_MINUTES, its step limit, default 55; LANDING_GATE_RUNNER,
+#     the runner label it runs on, default ubuntu-latest, for a full test that needs a machine with its own stack).
 # A candidate's pull request is admitted on `landing-gate` success at its head, so a quick pass never admits one.
 on:
   push:
@@ -49,4 +50,5 @@ jobs:
       branch: ${{ inputs.branch }}
       sha: ${{ inputs.sha }}
       step_minutes: ${{ vars.LANDING_GATE_TIMEOUT_MINUTES || '55' }}
+      runs_on: ${{ vars.LANDING_GATE_RUNNER || 'ubuntu-latest' }}
     secrets: inherit

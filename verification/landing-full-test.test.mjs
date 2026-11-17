@@ -165,11 +165,33 @@ test('a hung full test ends as a red status: the step limit is an input, the gat
   assert.match(full, /step_minutes:\s*\n(?:\s*#[^\n]*\n)*\s*type: string\s*\n\s*default: '55'/);
   assert.match(full, /id: gate\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: \$\{\{ fromJSON\(inputs\.step_minutes\) \}\}/);
   // Actions expressions have no arithmetic (found by the run on the scratch repository): the start step works the ceiling out and the gate job reads it.
-  assert.match(full, /name: Landing gate\s*\n\s*needs: start\s*\n\s*runs-on: ubuntu-latest\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: \$\{\{ fromJSON\(needs\.start\.outputs\.job_minutes\) \}\}/);
+  assert.match(full, /name: Landing gate\s*\n\s*needs: start\s*\n(?:\s*#[^\n]*\n)*\s*runs-on: \$\{\{ inputs\.runs_on \}\}\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: \$\{\{ fromJSON\(needs\.start\.outputs\.job_minutes\) \}\}/);
   assert.match(full, /outputs:\s*\n(?:\s*#[^\n]*\n)*\s*job_minutes: \$\{\{ steps\.start\.outputs\.job_minutes \}\}/);
   assert.ok(!/\$\{\{[^}]*\+[^}]*\}\}/.test(full), 'no expression does arithmetic: Actions has none');
   assert.ok(JOB_MARGIN_MINUTES >= 1 && jobMinutes('55') === 55 + JOB_MARGIN_MINUTES && jobMinutes('1') > 1, 'the job outlives the step by a margin');
   assert.match(full, /if: \$\{\{ !cancelled\(\) \}\}/, 'the status step reports a step that timed out');
+});
+
+test('the full test\'s two inputs, the branch and the commit, stay required: a caller that passes neither stops at startup, so none can start a full test on no commit', () => {
+  for (const name of ['branch', 'sha']) {
+    assert.ok(full.includes(`      ${name}:\n        type: string\n        required: true`), `${name} is a required string input`);
+  }
+});
+
+test('a bad commit or branch is refused before GitHub is asked anything', () => {
+  for (const env of [{ BRANCH, SHA: 'HEAD' }, { BRANCH: 'main', SHA }, { BRANCH, SHA: '' }]) {
+    const r = runStart({ env: { REPO: 'NXD-Solutions/x', STEP_MINUTES: '55', ...env }, gh: () => assert.fail('the API is not asked') });
+    assert.equal(r.ok, false);
+  }
+});
+
+test('the machine the full test runs on is an input: a runner label that defaults to GitHub\'s, set by the repository\'s variable, and the start check always runs on GitHub\'s', () => {
+  assert.ok(full.includes("      runs_on:\n        type: string\n        default: 'ubuntu-latest'"));
+  assert.ok(full.includes('runs-on: ${{ inputs.runs_on }}'));
+  const start = full.slice(full.indexOf('  start:'), full.indexOf('  gate:'));
+  assert.ok(start.includes('runs-on: ubuntu-latest'), 'the start check does not run on the repository\'s own machine');
+  assert.ok(caller.includes("runs_on: ${{ vars.LANDING_GATE_RUNNER || 'ubuntu-latest' }}"));
+  assert.ok(!quick.includes('runs_on'), 'the quick set stays on GitHub\'s');
 });
 
 test('the caller starts the quick set on a push and the full test only by hand with a branch and a commit, passing the repository\'s step limit, and grants the status write and nothing wider', () => {
