@@ -105,7 +105,8 @@ test('the reusable workflow keeps one run per branch, the latest merge\'s, so th
   assert.match(reusable, /concurrency:\s*\n\s*group: landing-gate-\$\{\{ github\.repository \}\}-\$\{\{ github\.ref \}\}\s*\n\s*cancel-in-progress: true/);
 });
 
-test('the workflow sets the status in a step that runs whatever the gate did, so a failing gate is a red status and never a missing one', () => {
-  assert.match(reusable, /if: always\(\)/);
+test('the workflow sets the status in a step that runs whatever the gate did, so a failing gate is a red status and never a missing one, but not when a later merge cancelled the run: a cancel is no failure and the superseded commit gets no status', () => {
+  assert.match(reusable, /if: \$\{\{ !cancelled\(\) \}\}/);
+  assert.ok(!/if: always\(\)/.test(reusable), 'always() would post a failure for a run a later merge cancelled');
   assert.match(reusable, /GATE_EXIT_CODE/);
 });
