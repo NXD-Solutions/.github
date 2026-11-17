@@ -1,0 +1,17 @@
+name: Feature Closes Its Delivered Issues
+
+# Distributed byte for byte to every subscribed repo by NXD-Solutions/.github's Distribute Claude Config workflow, from `distributed/` there. It is not a workflow of that repo.
+# Never edit it in a subscriber: the next sync overwrites it. The check is in `feature-closes-delivered-check.yml` in NXD-Solutions/.github.
+on:
+  pull_request:
+    # ready_for_review is not a default activity type; `edited` reruns the check when the body gains its Closes line.
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+jobs:
+  closes-delivered:
+    # pull-requests: read reads the merged task pull requests; issues: read, the state of the issues they delivered.
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+    uses: NXD-Solutions/.github/.github/workflows/feature-closes-delivered-check.yml@main

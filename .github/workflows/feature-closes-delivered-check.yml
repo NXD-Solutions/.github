@@ -1,0 +1,58 @@
+name: Feature Closes Its Delivered Issues Check
+
+# Fails a pull request from a feature branch into the default branch whose body does not close every issue its merged task pull requests delivered and that is still open
+# (NXD-Solutions/dna#2003; the rule is `tools/github/github-workflow.md`, *Issue linkage and closure*). An increment names the issues it leaves out in a `**Leaves:**` line.
+# The logic is `scripts/feature-closes-delivered.mjs`, tested in `verification/feature-closes-delivered.test.mjs`. The caller is `distributed/feature-closes-delivered.yml`.
+on:
+  workflow_call:
+    inputs:
+      # Where the check script is read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch of this repo.
+      script_ref:
+        type: string
+        default: main
+
+# Reads only: the merged pull requests of this repository (`pull-requests: read`) and the state of their issues (`issues: read`).
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+
+# gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
+env:
+  GH_TELEMETRY: "false"
+
+jobs:
+  check:
+    # Drafts do not run CI, the same job-level guard as pr-names-issue-check.yml; the caller carries `ready_for_review` in its own `types:`.
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # A body edit or a push starts a new run and cancels the earlier one, so one pull request holds at most one run.
+    concurrency:
+      group: feature-closes-delivered-${{ github.repository }}-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout .github (for the check script)
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/.github
+          ref: ${{ inputs.script_ref }}
+          sparse-checkout: |
+            scripts/feature-closes-delivered.mjs
+            scripts/pr-names-issue.mjs
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Require a Closes line for every open issue the merged task pull requests delivered
+        env:
+          # Through env, never interpolated into the script: a PR body is untrusted text.
+          PR_BODY: ${{ github.event.pull_request.body }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/feature-closes-delivered.mjs

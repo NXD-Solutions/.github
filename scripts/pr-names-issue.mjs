@@ -33,7 +33,7 @@ const HINTS = [
 ];
 
 // A line inside a code fence or an HTML comment is an example, not a statement about this pull request.
-const withoutExamples = (body) => (body ?? '').replace(/\r\n/g, '\n').replace(/<!--[\s\S]*?-->/g, '').replace(/^[ \t]*(```|~~~)[\s\S]*?^[ \t]*\1[ \t]*$/gm, '');
+export const withoutExamples = (body) => (body ?? '').replace(/\r\n/g, '\n').replace(/<!--[\s\S]*?-->/g, '').replace(/^[ \t]*(```|~~~)[\s\S]*?^[ \t]*\1[ \t]*$/gm, '');
 
 export function hintsFor(body) {
   const text = withoutExamples(body);
