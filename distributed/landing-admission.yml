@@ -1,0 +1,38 @@
+name: Landing Admission
+
+# Meant for every repo that has a landing branch (`landed/<name>`): copied byte for byte from `distributed/` in NXD-Solutions/.github. It is not a workflow of that repo.
+# Never edit it in a subscriber: the next copy overwrites it. The check itself is in `landing-admission-check.yml` in NXD-Solutions/.github; the repository sets the checks it
+# requires as the variable LANDING_REQUIRED_CHECKS (check names, one per line or comma separated).
+#
+# It runs again whenever a condition changes, not only on a push: a pull request event into `landed/**`, a comment that opens `## Review:` (a review note is a comment), and a
+# finished check. Billing is per job at a one-minute minimum, so the job's own condition lets only those start it: a draft is skipped (except the moment it becomes one, which
+# must flip its status), a comment that is no review note starts nothing, and the job's own check (named `landing-admission / ...`) is excluded from "a check finished", so it never
+# starts itself.
+on:
+  pull_request:
+    branches:
+      - 'landed/**'
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, edited]
+  issue_comment:
+    types: [created, edited]
+  check_run:
+    types: [completed]
+
+jobs:
+  landing-admission:
+    if: >-
+      (github.event_name == 'pull_request' && (github.event.pull_request.draft == false || github.event.action == 'converted_to_draft')) ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && startsWith(github.event.comment.body, '## Review:')) ||
+      (github.event_name == 'check_run' && !startsWith(github.event.check_run.name, 'landing-admission') && startsWith(github.event.check_run.pull_requests[0].base.ref, 'landed/'))
+    # The grants a security reader should look at. statuses: write sets the `landing-admission` status on the head. pull-requests: write is one grant wider than the landing gate's
+    # caller (`landing-gate.yml`, whose only write is the status): it is what keeps the job's ONE comment current (create it, then update it in place), and it is used for nothing else.
+    # checks: read reads the required checks; contents and issues are read. No other write is granted, and the job runs no pull-request code.
+    permissions:
+      contents: read
+      issues: read
+      checks: read
+      pull-requests: write
+      statuses: write
+    uses: NXD-Solutions/.github/.github/workflows/landing-admission-check.yml@main
+    with:
+      number: ${{ github.event.pull_request.number || github.event.issue.number || github.event.check_run.pull_requests[0].number }}

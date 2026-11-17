@@ -1,0 +1,64 @@
+name: Landing Admission Check
+
+# Admits or returns one pull request into a `landed/**` branch (NXD-Solutions/.github#419): it checks the delivery rule's conditions (the pull request names its issue, the
+# repository's required checks pass, its latest review note is an approval at its head from another session, it is clean and not draft), sets one commit status,
+# `landing-admission`, on its head, and keeps one comment listing each condition that fails. The required checks are the repository variable LANDING_REQUIRED_CHECKS
+# (check names, one per line or comma separated); none set is never a pass.
+# It reads the API and checks out only this repository's own script: no pull-request code runs here. The caller decides when it runs (`distributed/landing-admission.yml`).
+on:
+  workflow_call:
+    inputs:
+      # The pull request to evaluate: the event that started the caller names it differently (a pull request, a comment's issue, a check's pull request), so the caller passes it.
+      number:
+        type: string
+        required: true
+      # Where the scripts are read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch of this repo.
+      script_ref:
+        type: string
+        default: main
+
+# pull-requests: write is what keeps the one comment current (the caller grants it, named there); the rest is read, and the status is the one other write.
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+  checks: read
+  issues: read
+
+# gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
+env:
+  GH_TELEMETRY: "false"
+
+# One run per pull request, the latest event's: a later evaluation is never overtaken by an earlier one that was still reading.
+concurrency:
+  group: landing-admission-${{ github.repository }}-${{ inputs.number }}
+  cancel-in-progress: true
+
+jobs:
+  admit:
+    name: admit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout .github (for the scripts)
+        uses: actions/checkout@v5
+        with:
+          repository: NXD-Solutions/.github
+          ref: ${{ inputs.script_ref }}
+          path: .github-landing-admission
+          sparse-checkout: |
+            scripts/landing-admission.mjs
+            scripts/pr-names-issue.mjs
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Evaluate the pull request, set its status, keep its comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ inputs.number }}
+          LANDING_REQUIRED_CHECKS: ${{ vars.LANDING_REQUIRED_CHECKS }}
+        run: node .github-landing-admission/scripts/landing-admission.mjs
