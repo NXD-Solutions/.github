@@ -1,11 +1,20 @@
-// Sets one commit status, `landing-gate`, on a landing branch's head after a merge into it (NXD-Solutions/.github#418): the result of the repository's own gate, the
-// commit it ran on, what failed, and the time of its run, so a pull request into `main` shows whether the branch builds and passes.
+// Sets one commit status on the commit a gate ran on (NXD-Solutions/.github#418, #423): the result of the repository's own gate, the commit it ran on, what failed, and the time of
+// its run. Two contexts, never mixed: `landing-gate` is set only by the full test, on the commit it tested; `landing-quick` is the per-merge early warning. A candidate is admitted on
+// `landing-gate` alone (#419), so a quick pass can never admit one.
 // The decision is a pure function of the gate's exit and output; the gh edge sits at the bottom, and a run is a function of the workflow's environment and an injected gh.
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 export const CONTEXT = 'landing-gate';
+export const QUICK_CONTEXT = 'landing-quick';
+
+// The one choice a run makes about where its result goes: the full test's context or the quick one's, and nothing else.
+export function contextFor(name) {
+  if (name === undefined || name === '') return CONTEXT;
+  if (name === CONTEXT || name === QUICK_CONTEXT) return name;
+  throw new Error(`STATUS_CONTEXT is neither ${CONTEXT} nor ${QUICK_CONTEXT}: ${JSON.stringify(name)}`);
+}
 
 // GitHub keeps 140 characters of a status description.
 export const DESCRIPTION_MAX = 140;
@@ -39,21 +48,23 @@ export function statusFor({ exitCode, sha, output, now = new Date() }) {
   return { state: 'failure', description: cut(`Failed on ${head} (exit ${shown}): ${failedLineOf(output)}`) };
 }
 
-// One call, on the commit the gate ran on: `landing-gate` is the one context, so a later run on the same commit replaces this one.
-export function postStatus({ repo, sha, state, description, targetUrl }, gh = ghExec) {
-  gh(['api', '-X', 'POST', `repos/${repo}/statuses/${sha}`, '-f', `state=${state}`, '-f', `context=${CONTEXT}`, '-f', `description=${description}`, '-f', `target_url=${targetUrl}`]);
+// One call, on the commit the gate ran on, under one context, so a later run on the same commit replaces this one.
+export function postStatus({ repo, sha, state, description, targetUrl, context = CONTEXT }, gh = ghExec) {
+  gh(['api', '-X', 'POST', `repos/${repo}/statuses/${sha}`, '-f', `state=${state}`, '-f', `context=${context}`, '-f', `description=${description}`, '-f', `target_url=${targetUrl}`]);
   return { sha, state, description };
 }
 
 export function run({ env, now = new Date(), gh = ghExec }) {
-  const sha = env.GITHUB_SHA ?? '';
-  if (!/^[0-9a-f]{40}$/.test(sha)) throw new Error(`GITHUB_SHA is not a commit: ${JSON.stringify(sha)}`);
+  // The tested commit, named by the workflow: a manual start's own GITHUB_SHA is the default branch's head, never the commit that was tested.
+  const sha = env.TESTED_SHA || env.GITHUB_SHA || '';
+  if (!/^[0-9a-f]{40}$/.test(sha)) throw new Error(`the tested commit is not a commit: ${JSON.stringify(sha)}`);
+  const context = contextFor(env.STATUS_CONTEXT);
   const repo = env.GITHUB_REPOSITORY ?? '';
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) throw new Error(`GITHUB_REPOSITORY is not a repository: ${JSON.stringify(repo)}`);
   const server = env.GITHUB_SERVER_URL || 'https://github.com';
   const targetUrl = env.GITHUB_RUN_ID ? `${server}/${repo}/actions/runs/${env.GITHUB_RUN_ID}` : `${server}/${repo}/commit/${sha}`;
   const { state, description } = statusFor({ exitCode: env.GATE_EXIT_CODE, sha, output: env.GATE_OUTPUT, now });
-  return postStatus({ repo, sha, state, description, targetUrl }, gh);
+  return postStatus({ repo, sha, state, description, targetUrl, context }, gh);
 }
 
 const ghExec = (args) => execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });

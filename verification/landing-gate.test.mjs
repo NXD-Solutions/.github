@@ -88,16 +88,18 @@ test('a repository that set no gate gets a failure status that says so, never a 
 });
 
 test('a run that cannot tell which commit or repository it is on posts nothing and fails loudly', () => {
-  assert.throws(() => run({ env: { GATE_EXIT_CODE: '0' }, now: NOW, gh: () => assert.fail('no post') }), /GITHUB_SHA/);
-  assert.throws(() => run({ env: { GATE_EXIT_CODE: '0', GITHUB_SHA: 'not-a-sha', GITHUB_REPOSITORY: 'NXD-Solutions/x' }, now: NOW, gh: () => assert.fail('no post') }), /GITHUB_SHA/);
+  assert.throws(() => run({ env: { GATE_EXIT_CODE: '0' }, now: NOW, gh: () => assert.fail('no post') }), /tested commit/);
+  assert.throws(() => run({ env: { GATE_EXIT_CODE: '0', GITHUB_SHA: 'not-a-sha', GITHUB_REPOSITORY: 'NXD-Solutions/x' }, now: NOW, gh: () => assert.fail('no post') }), /tested commit/);
 });
 
 // The shape of the two workflow files. Reading text is not the proof (the run of the workflow on the scratch repository is); these keep the pieces the run relies on from
 // being edited away unnoticed.
 const caller = readFileSync(new URL('../distributed/landing-gate.yml', import.meta.url), 'utf8');
+// The full test's reusable workflow, and the quick set's (landing-quick-check.yml): the per-merge one is the early warning (NXD-Solutions/.github#423).
 const reusable = readFileSync(new URL('../.github/workflows/landing-gate-check.yml', import.meta.url), 'utf8');
+const quick = readFileSync(new URL('../.github/workflows/landing-quick-check.yml', import.meta.url), 'utf8');
 
-test('the caller runs on a push to a landed/** branch, which is what a merge into it is, and on a manual start for a head whose run died; it grants the status write and nothing wider', () => {
+test('the caller runs the quick set on a push to a landed/** branch, which is what a merge into it is, and the full test on a manual start; it grants the status write and nothing wider', () => {
   assert.match(caller, /on:\s*\n\s*push:\s*\n\s*branches:\s*\n\s*- 'landed\/\*\*'/);
   assert.match(caller, /workflow_dispatch:/);
   assert.match(caller, /statuses: write/);
@@ -118,17 +120,18 @@ test('the checkout has the whole history, so a gate that compares against origin
 });
 
 test('a hung gate is a failed step the status step reports, because the gate step\'s own limit is shorter than the job\'s', () => {
-  const step = Number(/id: gate[\s\S]*?timeout-minutes: (\d+)/.exec(reusable)?.[1]);
-  const job = Number(/runs-on: ubuntu-latest\s*\n\s*#[^\n]*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: (\d+)/.exec(reusable)?.[1]);
+  // The quick set's limits are fixed numbers; the full test's follow its step-limit input (landing-full-test.test.mjs).
+  const step = Number(/id: gate[\s\S]*?timeout-minutes: (\d+)/.exec(quick)?.[1]);
+  const job = Number(/runs-on: ubuntu-latest\s*\n\s*#[^\n]*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: (\d+)/.exec(quick)?.[1]);
   assert.ok(step > 0 && job > 0 && step < job, `step ${step} job ${job}`);
 });
 
-test('the reusable workflow keeps one run per branch, the latest merge\'s, so the head\'s status is the head\'s own', () => {
-  assert.match(reusable, /concurrency:\s*\n\s*group: landing-gate-\$\{\{ github\.repository \}\}-\$\{\{ github\.ref \}\}\s*\n\s*cancel-in-progress: true/);
+test('the quick set keeps one run per branch, the latest merge\'s, so the head\'s warning is the head\'s own, in a group of its own', () => {
+  assert.match(quick, /concurrency:\s*\n(?:\s*#[^\n]*\n)*\s*group: landing-quick-\$\{\{ github\.repository \}\}-\$\{\{ github\.ref \}\}\s*\n\s*cancel-in-progress: true/);
 });
 
 test('the workflow sets the status in a step that runs whatever the gate did, so a failing gate is a red status and never a missing one, but not when a later merge cancelled the run: a cancel is no failure and the superseded commit gets no status', () => {
-  assert.match(reusable, /if: \$\{\{ !cancelled\(\) \}\}/);
-  assert.ok(!/if: always\(\)/.test(reusable), 'always() would post a failure for a run a later merge cancelled');
-  assert.match(reusable, /GATE_EXIT_CODE/);
+  assert.match(quick, /if: \$\{\{ !cancelled\(\) \}\}/);
+  assert.ok(!/if: always\(\)/.test(quick), 'always() would post a failure for a run a later merge cancelled');
+  assert.match(quick, /GATE_EXIT_CODE/);
 });

@@ -1,15 +1,34 @@
 name: Landing Gate Check
 
-# Runs a repository's own gate on a landing branch after a merge into it and sets one commit status, `landing-gate`, on that commit (NXD-Solutions/.github#418).
-# The gate is the repository's: its command is the repository variable LANDING_GATE_COMMAND (a shell command run from the checked-out branch), and the Node version it
-# needs is LANDING_GATE_NODE (default 24). A repository that sets no command gets a failure status that says so, never a pass.
-# The cost of a run is the gate's duration, billed per job with a one-minute minimum (NXD-Solutions/dna `github-actions.md`); it waits on Deployment's and the principal's acceptance, and
-# a repository pays only once it carries the caller.
+# The full test of a landing branch, on a chosen commit, to its end (NXD-Solutions/.github#423): started by hand with the landing branch's name and a commit, it refuses a commit that is
+# neither the branch's head nor an ancestor of it (naming both, running nothing, setting no status), runs the repository's gate on that commit, and sets one commit status, `landing-gate`,
+# on THAT commit, whatever the branch has become since. A merge arriving meanwhile neither cancels nor restarts it. `landing-gate` is set only here: the per-merge quick set sets
+# `landing-quick` (`landing-quick-check.yml`), so a candidate is never admitted on a quick pass (#419).
+# The gate is the repository's: its command is the repository variable LANDING_GATE_COMMAND (a shell command run from the checked-out commit), and the Node version it needs is
+# LANDING_GATE_NODE (default 24). A repository that sets no command gets a failure status that says so, never a pass.
+# The cost of a run is the gate's duration, billed per job with a one-minute minimum (NXD-Solutions/dna `github-actions.md`), once per candidate; it waits on Deployment's and the
+# principal's acceptance, and a repository pays only once it carries the caller.
 on:
   workflow_call:
     inputs:
-      # Where the status script is read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch of this
-      # repo, to run the job before it is merged.
+      # The landing branch the commit is on.
+      branch:
+        type: string
+        required: true
+      # The commit to test, in full.
+      sha:
+        type: string
+        required: true
+      # The gate step's own time limit, in minutes; its value is Deployment's to set from the measured duration (the caller passes the repository variable LANDING_GATE_TIMEOUT_MINUTES).
+      # The job's ceiling is this plus a margin, so a hung full test ends as a red status and not a silently cancelled job.
+      step_minutes:
+        type: string
+        default: '55'
+      # The runner label of the full test's gate job (the caller passes the repository variable LANDING_GATE_RUNNER); `ubuntu-latest` when none is set.
+      runs_on:
+        type: string
+        default: 'ubuntu-latest'
+      # Where the scripts are read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch of this repo.
       script_ref:
         type: string
         default: main
@@ -23,25 +42,64 @@ permissions:
 env:
   GH_TELEMETRY: "false"
 
-# One run per branch, the latest merge's: a merge that lands while an earlier run is going cancels it, so the head's status is the head's own and a commit that is no
-# longer the head gets none. By design: the head's run covers the earlier commit's content, so "after each merge" is met by the run of the latest one, and a merge that
-# gets no status was superseded, not missed.
+# One run per tested commit, and it NEVER cancels: a merge into the branch, another start for another commit, or a quick run leaves it going, and the result lands on its own commit.
+# A second start for the same commit waits for the first rather than replacing it. The group is per COMMIT, not per runner: two full tests of two commits may run at once, and on one
+# machine they would share whatever stack it holds. What the machine holds (containers, a database, ports) and keeping two runs apart on it is the runner machine's, never this workflow's:
+# serialise per machine on it (one job at a time) or give each run its own.
 concurrency:
-  group: landing-gate-${{ github.repository }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: landing-full-${{ github.repository }}-${{ inputs.sha }}
+  cancel-in-progress: false
 
 jobs:
-  gate:
-    name: Landing gate
+  start:
+    name: Start check
     runs-on: ubuntu-latest
-    # The gate is the repository's, so its length is too; the bound is the platform's ceiling for a hung run, not a budget.
-    timeout-minutes: 60
+    timeout-minutes: 5
+    outputs:
+      # The gate job's ceiling, the step limit plus a margin, worked out by the start step (Actions expressions have no arithmetic).
+      job_minutes: ${{ steps.start.outputs.job_minutes }}
     steps:
-      - name: Checkout the branch at the commit that was pushed
+      - name: Checkout .github (for the scripts)
         uses: actions/checkout@v5
         with:
-          # Full history: a gate that compares against its base (`origin/main`) needs it; at depth 1 the base does not resolve and such a gate skips its comparison and passes
-          # (MADT-1's read of .github#420, F2).
+          repository: NXD-Solutions/.github
+          ref: ${{ inputs.script_ref }}
+          path: .github-landing-gate
+          sparse-checkout: |
+            scripts/landing-gate-start.mjs
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      # Refuses before anything runs: a commit that is neither the branch's head nor an ancestor of it, a branch that is not `landed/**`, or a step limit that is no whole number of minutes.
+      # The step reads the API only; it checks out and runs no repository code.
+      - name: Refuse a commit that is not on the landing branch
+        id: start
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ inputs.branch }}
+          SHA: ${{ inputs.sha }}
+          STEP_MINUTES: ${{ inputs.step_minutes }}
+        run: node .github-landing-gate/scripts/landing-gate-start.mjs
+
+  gate:
+    name: Landing gate
+    needs: start
+    # The machine the repository's full test runs on: a repository whose full test needs its own stack (containers, a database, services) points it at a machine that has it. The default
+    # is GitHub's; which machine, and who runs it, is Deployment's. A single runner label; the start check above always runs on GitHub's.
+    runs-on: ${{ inputs.runs_on }}
+    # The gate step's limit plus a margin: the job's own ceiling never fires first, so a hung full test ends as a failed step and a red status.
+    timeout-minutes: ${{ fromJSON(needs.start.outputs.job_minutes) }}
+    steps:
+      - name: Checkout the tested commit
+        uses: actions/checkout@v5
+        with:
+          # The commit that was named, not the branch's head: the branch may have moved on.
+          ref: ${{ inputs.sha }}
+          # Full history: a gate that compares against its base (`origin/main`) needs it; at depth 1 the base does not resolve and such a gate skips its comparison and passes.
           fetch-depth: 0
 
       - name: Checkout .github (for the status script)
@@ -57,23 +115,21 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ vars.LANDING_GATE_NODE || '24' }}
-          # The same registry line the repos' own workflows use, so a gate that installs `@nxd-solutions` packages from their lockfiles reads the token from NODE_AUTH_TOKEN
-          # (MADT-1's read of .github#420, F1). A repo that installs none is unaffected.
+          # The same registry line the repos' own workflows use, so a gate that installs `@nxd-solutions` packages from their lockfiles reads the token from NODE_AUTH_TOKEN.
           registry-url: 'https://npm.pkg.github.com'
           scope: '@nxd-solutions'
 
-      - name: Run the repository's gate
+      - name: Run the repository's full test
         id: gate
-        # A hung gate ends here, as a failed step, and the status step below reports it (a failure with no exit): the job's own limit never fires first. Were the job to
-        # time out, the run is cancelled and no status is set (ai-prompting's read of .github#420, note 4).
-        timeout-minutes: 55
+        # A hung full test ends here, as a failed step, and the status step below reports it (a failure with no exit): the job's own limit, this plus a margin, never fires first.
+        timeout-minutes: ${{ fromJSON(inputs.step_minutes) }}
+        # The script is bash (`set +e`, `PIPESTATUS`, `tee`): named, so a runner whose default shell is another one (a Windows machine's PowerShell) runs the same step (MADT-1's read).
+        shell: bash
         env:
           GATE_COMMAND: ${{ vars.LANDING_GATE_COMMAND }}
-          # The registry read token: the repository's secret NODE_AUTH_TOKEN when it set one (the name Manager-Assistant-v2's pipeline already uses, for packages the workflow's own
-          # token cannot read, from another repository), else the workflow's token with `packages: read`. The gate is the repository's own code on a branch it merged under review,
-          # so it holds this token as the repository's other workflows do. A gate that needs any other secret is out of scope here: this workflow names no other secret.
+          # The registry read token: the repository's secret NODE_AUTH_TOKEN when it set one, else the workflow's token with `packages: read`. This workflow names no other secret.
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || github.token }}
-        # The step always succeeds: the gate's exit is an output, so the status step below reports it whatever it was. A missing command is its own output, never a pass.
+        # The step always succeeds: the exit is an output, so the status step below reports it whatever it was. A missing command is its own output, never a pass.
         run: |
           set +e
           if [ -z "$GATE_COMMAND" ]; then
@@ -83,12 +139,14 @@ jobs:
           bash -o pipefail -c "$GATE_COMMAND" 2>&1 | tee "$RUNNER_TEMP/gate-output.txt"
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
-      - name: Set the landing-gate status on this commit
-        # Runs whatever the gate did, so a failing gate is a red status and never a missing one; the job itself goes red when the status is not a pass. Not `always()`: that also
-        # runs when a later merge cancels this run (observed on the scratch repository: the superseded commit got a failure status), and a cancel is no failure and that commit no longer the head.
+      - name: Set the landing-gate status on the tested commit
+        # Runs whatever the full test did, so a failing one is a red status and never a missing one. Nothing cancels this run, so `!cancelled()` only matters for a manual cancel, which is no result.
         if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_CONTEXT: landing-gate
+          # The tested commit, never GITHUB_SHA: a manual start's own is the default branch's head.
+          TESTED_SHA: ${{ inputs.sha }}
           GATE_EXIT_CODE: ${{ steps.gate.outputs.code }}
           GATE_OUTPUT_FILE: ${{ runner.temp }}/gate-output.txt
         run: node .github-landing-gate/scripts/landing-gate.mjs
