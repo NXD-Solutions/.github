@@ -7,6 +7,10 @@ import {
 
 // The promise (NXD-Solutions/.github#418), one test per guarantee, written before the script. Fixture reads only: no GitHub call anywhere in this suite. That the workflow
 // does what these say is the run of the workflow on the scratch repository, recorded on the issue.
+//
+// Owed: the guarantee "a job runs the full build and test of the landing branch" is shown here with trivial gate commands on a scratch repository; no repository's real gate has run through
+// it on a runner.
+// GAP: Guarantee: NXD-Solutions/.github#421
 
 const SHA = 'a1b2c3d4e5f60718293a4b5c6d7e8f9012345678';
 const OTHER = '0000000000000000000000000000000000000000';
