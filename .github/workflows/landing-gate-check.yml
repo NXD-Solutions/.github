@@ -67,8 +67,6 @@ jobs:
         # A hung gate ends here, as a failed step, and the status step below reports it (a failure with no exit): the job's own limit never fires first. Were the job to
         # time out, the run is cancelled and no status is set (ai-prompting's read of .github#420, note 4).
         timeout-minutes: 55
-        # GAP: Guarantee: NXD-Solutions/.github#421
-        # (A repository's real gate has not run through this on a runner; it is shown on a scratch repository only. The gate command is the value this concerns.)
         env:
           GATE_COMMAND: ${{ vars.LANDING_GATE_COMMAND }}
           # The registry read token: the repository's secret NODE_AUTH_TOKEN when it set one (the name Manager-Assistant-v2's pipeline already uses, for packages the workflow's own
