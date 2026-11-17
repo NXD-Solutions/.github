@@ -1,0 +1,20 @@
+name: Landing Gate
+
+# Meant for every repo that has a landing branch (`landed/<name>`): copied byte for byte from `distributed/` in NXD-Solutions/.github. It is not a workflow of that repo.
+# Never edit it in a subscriber: the next copy overwrites it. The gate itself is in `landing-gate-check.yml` in NXD-Solutions/.github; the repository sets its command
+# as the variable LANDING_GATE_COMMAND (and, if the gate needs another Node than 24, LANDING_GATE_NODE).
+on:
+  push:
+    branches:
+      - 'landed/**'
+  workflow_dispatch:
+
+jobs:
+  gate:
+    # statuses: write is what sets the `landing-gate` status on the commit; nothing wider is granted.
+    permissions:
+      contents: read
+      statuses: write
+    uses: NXD-Solutions/.github/.github/workflows/landing-gate-check.yml@main
+    # The repository's gate may need its own secrets (a registry token); `inherit` passes the repository's, and a repo with none passes none.
+    secrets: inherit
