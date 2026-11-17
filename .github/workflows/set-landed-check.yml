@@ -1,8 +1,8 @@
 name: Set Landed Check
 
-# Sets the card of each issue a pull request closes to Landed on the tier projects, when the pull request is merged into a landing branch (`landed/<name>`) (NXD-Solutions/dna#2004).
+# Sets the card of each issue a pull request closes to Landed on every project the card is on, when the pull request is merged into a landing branch (`landed/<name>`) (NXD-Solutions/dna#2004).
 # The logic is `scripts/set-landed.mjs` (tested in `verification/set-landed.test.mjs`); the caller is `distributed/set-landed.yml`, copied byte for byte into every repo with a landing branch.
-# The tier projects are the repository variable LANDING_TIER_PROJECTS (a comma list of project numbers, e.g. `12`). A repository that sets none gets a failed run that says so, never a quiet pass.
+# No project is named: a card on a project with no Landed status (Critical, Priority) is left as it is, and the run says so.
 # The token that writes the organisation's projects is a secret the caller passes: PROJECTS_PAT, else the existing ADD_TO_PROJECT_PAT. Which, and where it is placed, is the principal's
 # decision (NXD-Solutions/dna#2004); a run with neither fails and says so.
 on:
@@ -50,5 +50,4 @@ jobs:
           # The body goes through the environment, never into the command line: it is text anyone with write access to the pull request can set.
           PR_BODY: ${{ github.event.pull_request.body }}
           PR_REPO: ${{ github.repository }}
-          PROJECTS: ${{ vars.LANDING_TIER_PROJECTS }}
         run: node .github-set-landed/scripts/set-landed.mjs
