@@ -24,6 +24,8 @@ const MEETS = {
   headSha: HEAD,
   draft: false,
   mergeState: 'clean',
+  mergeable: true,
+  statuses: [],
 };
 const failing = (overrides) => evaluate({ ...MEETS, ...overrides }).failures.map((f) => f.condition);
 
@@ -79,9 +81,18 @@ test('independence: an approval from the pull request\'s own session, or a pull 
   assert.deepEqual(failing({ prBody: 'no session line' }), [CONDITIONS.approval]);
 });
 
-test('it is clean and not draft: any merge state but clean, and a draft, are returned naming that condition', () => {
-  for (const mergeState of ['dirty', 'blocked', 'behind', 'unstable', 'unknown', undefined]) assert.deepEqual(failing({ mergeState }), [CONDITIONS.clean], String(mergeState));
+test('it is clean and not draft: any merge state but clean, a conflict and a draft are returned naming that condition', () => {
+  for (const mergeState of ['dirty', 'blocked', 'behind', 'unknown', undefined]) assert.deepEqual(failing({ mergeState }), [CONDITIONS.clean], String(mergeState));
   assert.deepEqual(failing({ draft: true }), [CONDITIONS.clean]);
+  assert.deepEqual(failing({ mergeable: false }), [CONDITIONS.clean]);
+});
+
+test("a pull request this job returned is not unclean for it: `unstable` with only this job's own failed status and check is clean, and with any other check or status not passing it is not", () => {
+  const own = { checkRuns: [green, { name: 'landing-admission / admit', status: 'completed', conclusion: 'failure' }], statuses: [{ context: 'landing-admission', state: 'failure' }], mergeState: 'unstable' };
+  assert.equal(evaluate({ ...MEETS, ...own }).admitted, true, "the job's own failure must not keep a fixed pull request returned");
+  assert.deepEqual(failing({ ...own, checkRuns: [...own.checkRuns, { name: 'lint', status: 'completed', conclusion: 'failure' }] }), [CONDITIONS.clean]);
+  assert.deepEqual(failing({ ...own, statuses: [...own.statuses, { context: 'ci/other', state: 'pending' }] }), [CONDITIONS.clean]);
+  assert.deepEqual(failing({ ...own, checkRuns: [...own.checkRuns, { name: 'lint', status: 'in_progress', conclusion: null }] }), [CONDITIONS.clean], 'a check still running is not passing');
 });
 
 test('a pull request missing several conditions is returned naming every one, each once', () => {
@@ -130,7 +141,7 @@ test('a pull request returned for lacking an approval is admitted when the appro
   const posted = [];
   const readers = (notes) => ({
     pull: () => ({ headSha: HEAD, baseRef: 'landed/x', headRef: 'feature/y', draft: false, mergeState: 'clean', body: PR_BODY }),
-    notes: () => notes, checkRuns: () => [green], linked: async () => MEETS.linkedIssues, comments: () => [],
+    notes: () => notes, checkRuns: () => [green], statuses: () => [], linked: async () => MEETS.linkedIssues, comments: () => [],
   });
   const env = { gh: (args) => { posted.push(args); return ''; }, repo: 'NXD-Solutions/x', number: 5, requiredChecks: ['pre-push / build+test'] };
   return run({ ...env, readers: readers([]) }).then(async (first) => {
@@ -145,7 +156,7 @@ test('a pull request returned for lacking an approval is admitted when the appro
 });
 
 test('Mutation: the status stays returned after the approval arrives: a run that does not re-read the notes would post failure twice, which the test above fails on', async () => {
-  const stale = { pull: () => ({ headSha: HEAD, baseRef: 'landed/x', headRef: 'f', draft: false, mergeState: 'clean', body: PR_BODY }), notes: () => [], checkRuns: () => [green], linked: async () => MEETS.linkedIssues, comments: () => [] };
+  const stale = { pull: () => ({ headSha: HEAD, baseRef: 'landed/x', headRef: 'f', draft: false, mergeState: 'clean', mergeable: true, body: PR_BODY }), notes: () => [], checkRuns: () => [green], statuses: () => [], linked: async () => MEETS.linkedIssues, comments: () => [] };
   const states = [];
   const gh = (args) => { const s = args.find((x) => x.startsWith('state=')); if (s) states.push(s); return ''; };
   await run({ gh, repo: 'NXD-Solutions/x', number: 5, requiredChecks: ['pre-push / build+test'], readers: stale });

@@ -62,14 +62,32 @@ function checksFailure({ requiredChecks, checkRuns }) {
   return notPassing.length === 0 ? null : `not passing on the head: ${notPassing.join(', ')}`;
 }
 
+// Clean is GitHub's own word (`clean`), with one exception this job's own doing: a pull request this job has returned carries this job's failed status and failed check, which
+// GitHub reads as `unstable`, so a returned pull request could never read clean again, whatever was fixed (observed on the scratch repository). `unstable` therefore stays clean when
+// nothing but this job's own context and check is not passing, and never when another check or status is.
+const isOwn = (name) => String(name ?? '').startsWith(CONTEXT);
+function cleanFailure({ draft, mergeState, mergeable, checkRuns, statuses }) {
+  if (draft) return 'it is a draft';
+  if (mergeable === false) return 'it has conflicts with its base';
+  if (mergeState === 'clean') return null;
+  if (mergeState === 'unstable') {
+    const others = [
+      ...(checkRuns ?? []).filter((r) => !isOwn(r.name)).filter((r) => !(r.status === 'completed' && ['success', 'skipped', 'neutral'].includes(r.conclusion))).map((r) => r.name),
+      ...(statuses ?? []).filter((s) => !isOwn(s.context)).filter((s) => s.state !== 'success').map((s) => s.context),
+    ];
+    return others.length === 0 ? null : `its merge state is unstable: not passing besides this job's own: ${others.join(', ')}`;
+  }
+  return `its merge state is ${mergeState ?? 'unknown'}, not clean`;
+}
+
 // evaluate(read) → { admitted, failures: [{ condition, detail }] }, in the order the conditions are listed.
-export function evaluate({ linkedIssues, requiredChecks, checkRuns, notes, prBody, headSha, draft, mergeState }) {
+export function evaluate({ linkedIssues, requiredChecks, checkRuns, statuses = [], notes, prBody, headSha, draft, mergeState, mergeable = true }) {
   const failures = [];
   const fail = (condition, detail) => detail && failures.push({ condition, detail });
   fail(CONDITIONS.issue, (linkedIssues ?? []).length === 0 ? 'no issue in its Development field' : null);
   fail(CONDITIONS.checks, checksFailure({ requiredChecks, checkRuns }));
   fail(CONDITIONS.approval, approvalFailure({ notes, prBody, headSha }));
-  fail(CONDITIONS.clean, draft ? 'it is a draft' : mergeState === 'clean' ? null : `its merge state is ${mergeState ?? 'unknown'}, not clean`);
+  fail(CONDITIONS.clean, cleanFailure({ draft, mergeState, mergeable, checkRuns, statuses }));
   return { admitted: failures.length === 0, failures };
 }
 
@@ -106,7 +124,7 @@ export function ghReaders({ repo, number, gh = ghExec, sleep = (ms) => new Promi
     async pull() {
       for (let attempt = 0; attempt < 6; attempt += 1) {
         const p = ghJson(gh, ['api', `repos/${repo}/pulls/${number}`]);
-        if (p.mergeable_state !== 'unknown' || attempt === 5) return { headSha: p.head.sha, baseRef: p.base.ref, headRef: p.head.ref, draft: p.draft, mergeState: p.mergeable_state, body: p.body ?? '' };
+        if (p.mergeable_state !== 'unknown' || attempt === 5) return { headSha: p.head.sha, baseRef: p.base.ref, headRef: p.head.ref, draft: p.draft, mergeState: p.mergeable_state, mergeable: p.mergeable, body: p.body ?? '' };
         await sleep(3000);
       }
       return undefined;
@@ -114,6 +132,7 @@ export function ghReaders({ repo, number, gh = ghExec, sleep = (ms) => new Promi
     notes: () => lines(gh(['api', '--paginate', `repos/${repo}/issues/${number}/comments`, '--jq', '.[]|{id,body}|tojson'])),
     comments: () => lines(gh(['api', '--paginate', `repos/${repo}/issues/${number}/comments`, '--jq', '.[]|{id,body}|tojson'])),
     checkRuns: (sha) => lines(gh(['api', '--paginate', `repos/${repo}/commits/${sha}/check-runs`, '--jq', '.check_runs[]|{name,status,conclusion}|tojson'])),
+    statuses: (sha) => lines(gh(['api', '--paginate', `repos/${repo}/commits/${sha}/status`, '--jq', '.statuses[]|{context,state}|tojson'])),
     async linked({ headRef }) {
       const direct = readLinked({ repo, number }, gh);
       if (direct.length > 0) return direct;
@@ -124,10 +143,10 @@ export function ghReaders({ repo, number, gh = ghExec, sleep = (ms) => new Promi
 
 export async function run({ repo, number, requiredChecks, readers = ghReaders({ repo, number }), gh = ghExec }) {
   const pull = await readers.pull();
-  const [notes, comments, checkRuns, linkedIssues] = await Promise.all([
-    readers.notes(), readers.comments(), readers.checkRuns(pull.headSha), readers.linked({ headRef: pull.headRef }),
+  const [notes, comments, checkRuns, statuses, linkedIssues] = await Promise.all([
+    readers.notes(), readers.comments(), readers.checkRuns(pull.headSha), readers.statuses(pull.headSha), readers.linked({ headRef: pull.headRef }),
   ]);
-  const result = evaluate({ linkedIssues, requiredChecks, checkRuns, notes, prBody: pull.body, headSha: pull.headSha, draft: pull.draft, mergeState: pull.mergeState });
+  const result = evaluate({ linkedIssues, requiredChecks, checkRuns, statuses, notes, prBody: pull.body, headSha: pull.headSha, draft: pull.draft, mergeState: pull.mergeState, mergeable: pull.mergeable });
   const { state, description } = statusFor(result, { sha: pull.headSha });
   gh(['api', '-X', 'POST', `repos/${repo}/statuses/${pull.headSha}`, '-f', `state=${state}`, '-f', `context=${CONTEXT}`, '-f', `description=${description}`, '-f', `target_url=https://github.com/${repo}/pull/${number}`]);
   const body = commentFor(result, { headSha: pull.headSha });
