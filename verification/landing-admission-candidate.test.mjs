@@ -93,6 +93,20 @@ test('when the default branch moves, every open candidate\'s pull request is eva
   assert.deepEqual(await runCandidates({ repo: 'NXD-Solutions/x', list: () => [], runOne: async () => assert.fail('none open') }), []);
 });
 
+test('one candidate whose evaluation throws does not stop the others: each is evaluated, the failure is reported with its number', async () => {
+  const pulls = [{ number: 1, head: 'candidate/a', base: 'main' }, { number: 2, head: 'candidate/b', base: 'main' }, { number: 3, head: 'candidate/c', base: 'main' }];
+  const ran = [];
+  const out = await runCandidates({
+    repo: 'NXD-Solutions/x', list: () => pulls,
+    runOne: async (n) => { ran.push(n); if (n === 2) throw new Error('gh: HTTP 502'); return { state: 'failure' }; },
+  });
+  assert.deepEqual(ran, [1, 2, 3], 'the candidate after the failing one is still evaluated');
+  assert.deepEqual(out.map((o) => o.number), [1, 2, 3]);
+  assert.equal(out[1].error, 'gh: HTTP 502');
+  assert.equal(out[0].error, undefined);
+  assert.equal(out[2].state, 'failure');
+});
+
 const caller = readFileSync(new URL('../distributed/landing-admission.yml', import.meta.url), 'utf8');
 
 test('the caller hears a candidate: pull requests into the default branch, but its job starts only for a head that begins `candidate/`, and a push to the default branch re-evaluates the open ones', () => {

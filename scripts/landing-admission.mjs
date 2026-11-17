@@ -101,6 +101,7 @@ export function evaluate({ linkedIssues, requiredChecks, checkRuns, statuses = [
   return { admitted: failures.length === 0, failures };
 }
 
+// `landing-gate` is trusted by its name: any writer with `statuses: write` can post it, so the check is only as strong as who may write statuses (the DNA's "trust the sessions" stands).
 // A candidate is admitted when its head carries the full test's `landing-gate` success (the tested commit), the default branch is an ancestor of it (the compare says `ahead` or
 // `identical`), and it is not a draft and is clean. It needs no approval at its head (it is reviewed through the reviews of what it carries) and is asked for no issue and no required
 // checks: the first is the existing check every pull request has, the second reaches it through `clean`.
@@ -195,7 +196,10 @@ export function candidatePulls(pulls, defaultBranch = 'main') {
 export async function runCandidates({ repo, defaultBranch = 'main', requiredChecks = [], gh = ghExec, list = () => lines(gh(['api', '--paginate', `repos/${repo}/pulls?state=open&base=${encodeURIComponent(defaultBranch)}&per_page=100`, '--jq', '.[]|{number,head:.head.ref,base:.base.ref}|tojson'])), runOne = (number) => run({ repo, number, requiredChecks, defaultBranch, gh }) }) {
   const numbers = candidatePulls(await list(), defaultBranch);
   const results = [];
-  for (const number of numbers) results.push({ number, ...(await runOne(number)) });
+  // One candidate whose evaluation throws (an API error) never stops the others: each would otherwise keep an `admitted` status on a head that no longer contains the default branch.
+  for (const number of numbers) {
+    try { results.push({ number, ...(await runOne(number)) }); } catch (e) { results.push({ number, error: e instanceof Error ? e.message : String(e) }); }
+  }
   return results;
 }
 
@@ -206,6 +210,8 @@ async function main() {
   if (!PR_NUMBER) {
     const all = await runCandidates({ repo: REPO, defaultBranch, requiredChecks });
     console.log(`the default branch moved: ${all.length} open candidate pull request${all.length === 1 ? '' : 's'} evaluated again`);
+    // An evaluation that failed is reported by number and makes the job red, after every other candidate was evaluated.
+    for (const r of all.filter((x) => x.error !== undefined)) { console.log(`#${r.number} could not be evaluated: ${r.error}`); process.exitCode = 1; }
     return;
   }
   const r = await run({ repo: REPO, number: Number(PR_NUMBER), requiredChecks, defaultBranch });
