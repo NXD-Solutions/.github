@@ -9,9 +9,10 @@ on:
   workflow_call:
     inputs:
       # The pull request to evaluate: the event that started the caller names it differently (a pull request, a comment's issue, a check's pull request), so the caller passes it.
+      # Empty when the default branch moved: every open candidate's pull request is then evaluated again.
       number:
         type: string
-        required: true
+        default: ''
       # Where the scripts are read from. The distributed caller never passes it, so every repo reads `main`; a test run on a scratch repository names a branch of this repo.
       script_ref:
         type: string
@@ -60,5 +61,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ inputs.number }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           LANDING_REQUIRED_CHECKS: ${{ vars.LANDING_REQUIRED_CHECKS }}
         run: node .github-landing-admission/scripts/landing-admission.mjs

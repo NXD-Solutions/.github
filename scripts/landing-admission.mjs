@@ -20,7 +20,17 @@ export const CONDITIONS = Object.freeze({
   checks: 'the required checks pass',
   approval: 'it has an approval at its head from another session',
   clean: 'it is clean and not draft',
+  // A candidate's pull request into the default branch (`candidate/**` head): the tested commit, and main contained in it.
+  gate: 'its head carries the full test\'s landing-gate success',
+  ahead: 'main is an ancestor of its head',
 });
+
+// Which sort of pull request this is: one into a landing branch, a candidate's into the default branch, or neither (then this job does nothing and sets nothing).
+export function kindOf({ baseRef, headRef, defaultBranch = 'main' }) {
+  if (String(baseRef ?? '').startsWith('landed/')) return 'landing';
+  if (baseRef === defaultBranch && String(headRef ?? '').startsWith('candidate/')) return 'candidate';
+  return null;
+}
 
 const APPROVED = '## Review: approved';
 
@@ -91,6 +101,19 @@ export function evaluate({ linkedIssues, requiredChecks, checkRuns, statuses = [
   return { admitted: failures.length === 0, failures };
 }
 
+// A candidate is admitted when its head carries the full test's `landing-gate` success (the tested commit), the default branch is an ancestor of it (the compare says `ahead` or
+// `identical`), and it is not a draft and is clean. It needs no approval at its head (it is reviewed through the reviews of what it carries) and is asked for no issue and no required
+// checks: the first is the existing check every pull request has, the second reaches it through `clean`.
+export function evaluateCandidate({ statuses = [], comparison, checkRuns, draft, mergeState, mergeable = true, defaultBranch = 'main' }) {
+  const failures = [];
+  const fail = (condition, detail) => detail && failures.push({ condition, detail });
+  const gate = (statuses ?? []).find((s) => s.context === 'landing-gate');
+  fail(CONDITIONS.gate, gate?.state === 'success' ? null : gate ? `landing-gate is ${gate.state} on its head, not success` : 'no landing-gate status on its head: the full test was not run on this commit');
+  fail(CONDITIONS.ahead, ['ahead', 'identical'].includes(comparison) ? null : `its head does not contain ${defaultBranch} (the compare says ${comparison ?? 'nothing'})`);
+  fail(CONDITIONS.clean, cleanFailure({ draft, mergeState, mergeable, checkRuns, statuses }));
+  return { admitted: failures.length === 0, failures };
+}
+
 const cut = (text) => (text.length <= DESCRIPTION_MAX ? text : `${text.slice(0, DESCRIPTION_MAX - 1)}…`);
 
 export function statusFor(result, { sha }) {
@@ -133,6 +156,7 @@ export function ghReaders({ repo, number, gh = ghExec, sleep = (ms) => new Promi
     comments: () => lines(gh(['api', '--paginate', `repos/${repo}/issues/${number}/comments`, '--jq', '.[]|{id,body}|tojson'])),
     checkRuns: (sha) => lines(gh(['api', '--paginate', `repos/${repo}/commits/${sha}/check-runs`, '--jq', '.check_runs[]|{name,status,conclusion}|tojson'])),
     statuses: (sha) => lines(gh(['api', '--paginate', `repos/${repo}/commits/${sha}/status`, '--jq', '.statuses[]|{context,state}|tojson'])),
+    compare: (baseRef, headSha) => gh(['api', `repos/${repo}/compare/${encodeURIComponent(baseRef)}...${headSha}`, '--jq', '.status']),
     async linked({ headRef }) {
       const direct = readLinked({ repo, number }, gh);
       if (direct.length > 0) return direct;
@@ -141,12 +165,17 @@ export function ghReaders({ repo, number, gh = ghExec, sleep = (ms) => new Promi
   };
 }
 
-export async function run({ repo, number, requiredChecks, readers = ghReaders({ repo, number }), gh = ghExec }) {
+export async function run({ repo, number, requiredChecks, defaultBranch = 'main', readers = ghReaders({ repo, number }), gh = ghExec }) {
   const pull = await readers.pull();
+  const kind = kindOf({ baseRef: pull.baseRef, headRef: pull.headRef, defaultBranch });
+  // A pull request that is neither into a landing branch nor a candidate's into the default branch is not this job's: nothing is set, nothing is said.
+  if (kind === null) return { skipped: true, admitted: null, failures: [] };
   const [notes, comments, checkRuns, statuses, linkedIssues] = await Promise.all([
-    readers.notes(), readers.comments(), readers.checkRuns(pull.headSha), readers.statuses(pull.headSha), readers.linked({ headRef: pull.headRef }),
+    readers.notes(), readers.comments(), readers.checkRuns(pull.headSha), readers.statuses(pull.headSha), kind === 'landing' ? readers.linked({ headRef: pull.headRef }) : [],
   ]);
-  const result = evaluate({ linkedIssues, requiredChecks, checkRuns, statuses, notes, prBody: pull.body, headSha: pull.headSha, draft: pull.draft, mergeState: pull.mergeState, mergeable: pull.mergeable });
+  const result = kind === 'candidate'
+    ? evaluateCandidate({ statuses, comparison: await readers.compare(pull.baseRef, pull.headSha), checkRuns, draft: pull.draft, mergeState: pull.mergeState, mergeable: pull.mergeable, defaultBranch })
+    : evaluate({ linkedIssues, requiredChecks, checkRuns, statuses, notes, prBody: pull.body, headSha: pull.headSha, draft: pull.draft, mergeState: pull.mergeState, mergeable: pull.mergeable });
   const { state, description } = statusFor(result, { sha: pull.headSha });
   gh(['api', '-X', 'POST', `repos/${repo}/statuses/${pull.headSha}`, '-f', `state=${state}`, '-f', `context=${CONTEXT}`, '-f', `description=${description}`, '-f', `target_url=https://github.com/${repo}/pull/${number}`]);
   const body = commentFor(result, { headSha: pull.headSha });
@@ -158,10 +187,29 @@ export async function run({ repo, number, requiredChecks, readers = ghReaders({ 
 
 const ghExec = (args) => execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 64 * 1024 * 1024 }).trim();
 
+// When the default branch moves, every open candidate's pull request is evaluated again: "main is an ancestor of its head" changes with no event on the pull request.
+export function candidatePulls(pulls, defaultBranch = 'main') {
+  return (pulls ?? []).filter((p) => kindOf({ baseRef: p.base, headRef: p.head, defaultBranch }) === 'candidate').map((p) => p.number);
+}
+
+export async function runCandidates({ repo, defaultBranch = 'main', requiredChecks = [], gh = ghExec, list = () => lines(gh(['api', '--paginate', `repos/${repo}/pulls?state=open&base=${encodeURIComponent(defaultBranch)}&per_page=100`, '--jq', '.[]|{number,head:.head.ref,base:.base.ref}|tojson'])), runOne = (number) => run({ repo, number, requiredChecks, defaultBranch, gh }) }) {
+  const numbers = candidatePulls(await list(), defaultBranch);
+  const results = [];
+  for (const number of numbers) results.push({ number, ...(await runOne(number)) });
+  return results;
+}
+
 async function main() {
-  const { REPO, PR_NUMBER, LANDING_REQUIRED_CHECKS } = process.env;
+  const { REPO, PR_NUMBER, LANDING_REQUIRED_CHECKS, DEFAULT_BRANCH } = process.env;
   const requiredChecks = String(LANDING_REQUIRED_CHECKS ?? '').split(/[\n,]/).map((s) => s.trim()).filter(Boolean);
-  const r = await run({ repo: REPO, number: Number(PR_NUMBER), requiredChecks });
+  const defaultBranch = DEFAULT_BRANCH || 'main';
+  if (!PR_NUMBER) {
+    const all = await runCandidates({ repo: REPO, defaultBranch, requiredChecks });
+    console.log(`the default branch moved: ${all.length} open candidate pull request${all.length === 1 ? '' : 's'} evaluated again`);
+    return;
+  }
+  const r = await run({ repo: REPO, number: Number(PR_NUMBER), requiredChecks, defaultBranch });
+  if (r.skipped) { console.log('not a pull request into a landing branch or a candidate\'s into the default branch: nothing set'); return; }
   console.log(`${r.state}: ${r.description}`);
   // A returned pull request makes the job red, so the pull request's checks show it; the job's own check is excluded from the events that start it (the caller).
   if (!r.admitted) process.exitCode = 1;

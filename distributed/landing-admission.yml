@@ -4,6 +4,9 @@ name: Landing Admission
 # Never edit it in a subscriber: the next copy overwrites it. The check itself is in `landing-admission-check.yml` in NXD-Solutions/.github; the repository sets the checks it
 # requires as the variable LANDING_REQUIRED_CHECKS (check names, one per line or comma separated).
 #
+# It also admits a candidate: a pull request from a `candidate/**` branch into the default branch, on the tested commit's `landing-gate` success. When the default branch moves, every
+# open candidate is evaluated again (a push event), because "main is an ancestor of its head" changes with no event on the pull request.
+#
 # It runs again whenever a condition changes, not only on a push: a pull request event into `landed/**`, a comment that opens `## Review:` (a review note is a comment), and a
 # finished check. A finished check is heard two ways, because an event caused by a workflow's own token starts no workflow (observed on a scratch repository: the `check_run` of an
 # Actions job started nothing): `workflow_run` for checks that are Actions workflows, and `check_run` for checks an app posts. Billing is per job at a one-minute minimum, so the
@@ -13,6 +16,7 @@ on:
   pull_request:
     branches:
       - 'landed/**'
+      - main
     types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, edited]
   issue_comment:
     types: [created, edited]
@@ -21,14 +25,18 @@ on:
     types: [completed]
   check_run:
     types: [completed]
+  push:
+    branches:
+      - main
 
 jobs:
   landing-admission:
     if: >-
-      (github.event_name == 'pull_request' && (github.event.pull_request.draft == false || github.event.action == 'converted_to_draft')) ||
+      (github.event_name == 'pull_request' && (github.event.pull_request.draft == false || github.event.action == 'converted_to_draft') && (startsWith(github.event.pull_request.base.ref, 'landed/') || startsWith(github.head_ref, 'candidate/'))) ||
       (github.event_name == 'issue_comment' && github.event.issue.pull_request && startsWith(github.event.comment.body, '## Review:')) ||
-      (github.event_name == 'workflow_run' && !startsWith(github.event.workflow_run.name, 'Landing Admission') && startsWith(github.event.workflow_run.pull_requests[0].base.ref, 'landed/')) ||
-      (github.event_name == 'check_run' && !startsWith(github.event.check_run.name, 'landing-admission') && startsWith(github.event.check_run.pull_requests[0].base.ref, 'landed/'))
+      (github.event_name == 'workflow_run' && !startsWith(github.event.workflow_run.name, 'Landing Admission') && (startsWith(github.event.workflow_run.pull_requests[0].base.ref, 'landed/') || startsWith(github.event.workflow_run.head_branch, 'candidate/'))) ||
+      (github.event_name == 'check_run' && !startsWith(github.event.check_run.name, 'landing-admission') && (startsWith(github.event.check_run.pull_requests[0].base.ref, 'landed/') || startsWith(github.event.check_run.check_suite.head_branch, 'candidate/'))) ||
+      (github.event_name == 'push')
     # The grants a security reader should look at. statuses: write sets the `landing-admission` status on the head. pull-requests: write is one grant wider than the landing gate's
     # caller (`landing-gate.yml`, whose only write is the status): it is what keeps the job's ONE comment current (create it, then update it in place), and it is used for nothing else.
     # checks: read reads the required checks; contents and issues are read. No other write is granted, and the job runs no pull-request code.
@@ -40,4 +48,4 @@ jobs:
       statuses: write
     uses: NXD-Solutions/.github/.github/workflows/landing-admission-check.yml@main
     with:
-      number: ${{ github.event.pull_request.number || github.event.issue.number || github.event.workflow_run.pull_requests[0].number || github.event.check_run.pull_requests[0].number }}
+      number: ${{ github.event.pull_request.number || github.event.issue.number || github.event.workflow_run.pull_requests[0].number || github.event.check_run.pull_requests[0].number || '' }}
