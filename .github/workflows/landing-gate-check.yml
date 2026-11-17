@@ -49,6 +49,9 @@ jobs:
     name: Start check
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      # The gate job's ceiling, the step limit plus a margin, worked out by the start step (Actions expressions have no arithmetic).
+      job_minutes: ${{ steps.start.outputs.job_minutes }}
     steps:
       - name: Checkout .github (for the scripts)
         uses: actions/checkout@v5
@@ -67,6 +70,7 @@ jobs:
       # Refuses before anything runs: a commit that is neither the branch's head nor an ancestor of it, a branch that is not `landed/**`, or a step limit that is no whole number of minutes.
       # The step reads the API only; it checks out and runs no repository code.
       - name: Refuse a commit that is not on the landing branch
+        id: start
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -80,7 +84,7 @@ jobs:
     needs: start
     runs-on: ubuntu-latest
     # The gate step's limit plus a margin: the job's own ceiling never fires first, so a hung full test ends as a failed step and a red status.
-    timeout-minutes: ${{ fromJSON(inputs.step_minutes) + 5 }}
+    timeout-minutes: ${{ fromJSON(needs.start.outputs.job_minutes) }}
     steps:
       - name: Checkout the tested commit
         uses: actions/checkout@v5

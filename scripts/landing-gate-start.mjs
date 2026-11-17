@@ -2,6 +2,7 @@
 // ancestor of it, so `landing-gate` success can only mark landing content. A refusal names both, runs nothing and sets no status. The decision is a pure function of what the
 // compare says; the gh edge sits at the bottom.
 import { execFileSync } from 'node:child_process';
+import { appendFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 const FULL_SHA = /^[0-9a-f]{40}$/;
@@ -32,8 +33,14 @@ export function run({ env, gh = ghExec }) {
   return checkStart({ branch, sha, comparison, stepMinutes });
 }
 
+// The job's ceiling for the full test: the step limit plus a margin, so the step's own limit always fires first and a hung run ends as a red status. Actions expressions have no
+// arithmetic (found by the run on the scratch repository), so the start step works it out and the gate job reads it.
+export const JOB_MARGIN_MINUTES = 5;
+export const jobMinutes = (stepMinutes) => Number(stepMinutes) + JOB_MARGIN_MINUTES;
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const r = run({ env: process.env });
   console.log(r.reason);
   if (!r.ok) process.exitCode = 1;
+  else if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `job_minutes=${jobMinutes(process.env.STEP_MINUTES)}\n`);
 }

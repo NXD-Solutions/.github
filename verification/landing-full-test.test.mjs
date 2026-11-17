@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { CONTEXT, QUICK_CONTEXT, contextFor, run as runStatus } from '../scripts/landing-gate.mjs';
-import { checkStart, run as runStart } from '../scripts/landing-gate-start.mjs';
+import { checkStart, run as runStart, jobMinutes, JOB_MARGIN_MINUTES } from '../scripts/landing-gate-start.mjs';
 
 // The promise (NXD-Solutions/.github#423), one test per guarantee, written before the build. Fixture reads only: no GitHub call anywhere in this suite. That the workflows do what these
 // say is the run of the workflows on the scratch repository, recorded on the issue.
@@ -164,9 +164,11 @@ test('the commands are separate: LANDING_GATE_COMMAND is the full test\'s, LANDI
 test('a hung full test ends as a red status: the step limit is an input, the gate step\'s limit is that input and the job\'s ceiling is the input plus a margin', () => {
   assert.match(full, /step_minutes:\s*\n(?:\s*#[^\n]*\n)*\s*type: string\s*\n\s*default: '55'/);
   assert.match(full, /id: gate\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: \$\{\{ fromJSON\(inputs\.step_minutes\) \}\}/);
-  assert.match(full, /name: Landing gate\s*\n\s*needs: start\s*\n\s*runs-on: ubuntu-latest\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: \$\{\{ fromJSON\(inputs\.step_minutes\) \+ (\d+) \}\}/);
-  const margin = Number(/fromJSON\(inputs\.step_minutes\) \+ (\d+)/.exec(full)?.[1]);
-  assert.ok(margin >= 1, 'the job outlives the step by a margin');
+  // Actions expressions have no arithmetic (found by the run on the scratch repository): the start step works the ceiling out and the gate job reads it.
+  assert.match(full, /name: Landing gate\s*\n\s*needs: start\s*\n\s*runs-on: ubuntu-latest\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: \$\{\{ fromJSON\(needs\.start\.outputs\.job_minutes\) \}\}/);
+  assert.match(full, /outputs:\s*\n(?:\s*#[^\n]*\n)*\s*job_minutes: \$\{\{ steps\.start\.outputs\.job_minutes \}\}/);
+  assert.ok(!/\$\{\{[^}]*\+[^}]*\}\}/.test(full), 'no expression does arithmetic: Actions has none');
+  assert.ok(JOB_MARGIN_MINUTES >= 1 && jobMinutes('55') === 55 + JOB_MARGIN_MINUTES && jobMinutes('1') > 1, 'the job outlives the step by a margin');
   assert.match(full, /if: \$\{\{ !cancelled\(\) \}\}/, 'the status step reports a step that timed out');
 });
 
