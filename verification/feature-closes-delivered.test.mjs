@@ -63,11 +63,20 @@ test('Mutation: Relates to, a bare mention and a keyword in a code fence or a co
 
 test('a pull request from release/* or automated/*, and one into a branch other than the default, is not checked: nothing is read', async () => {
   const boom = async () => assert.fail('no read for a pull request that is not checked');
-  for (const pr of [{ headRef: 'release/platform-40.4.0' }, { headRef: 'automated/dna-sync' }, { baseRef: 'feature/the-feature' }, { baseRef: 'landed/mvp' }]) {
+  for (const pr of [{ headRef: 'release/platform-40.4.0' }, { headRef: 'automated/dna-sync' }, { headRef: 'candidate/mvp-2026-11-17' }, { baseRef: 'feature/the-feature' }, { baseRef: 'landed/mvp' }]) {
     const r = await check({ ...FEATURE, body: '', ...pr, readMerged: boom, readStates: boom });
     assert.equal(r.status, 'skip', JSON.stringify(pr));
   }
-  assert.deepEqual(EXEMPT_HEAD_PREFIXES, ['release/', 'automated/']);
+  assert.deepEqual(EXEMPT_HEAD_PREFIXES, ['release/', 'automated/', 'candidate/']);
+});
+
+test('a candidate\'s pull request into main is skipped with a message that says why, and never passes having read nothing', () => {
+  const r = decide({ ...FEATURE, headRef: 'candidate/mvp-2026-11-17', body: '', delivered: new Map(), states: new Map() });
+  assert.equal(r.status, 'skip');
+  assert.match(r.message, /candidate/);
+  assert.match(r.message, /landing branch/);
+  assert.match(r.message, /not read here/);
+  assert.doesNotMatch(r.message, /Every open issue/);
 });
 
 test('the read of merged task pull requests is bounded: more pages than the bound fails the check and says so, never a pass on what was read', async () => {
@@ -130,8 +139,8 @@ test('an increment asks for a Closes line for every open merged-task issue excep
   assert.deepEqual(short.missing, [key(102)]);
 });
 
-test('Leaves takes several issues, owner-qualified or bare, and is read only as its own line', () => {
-  const body = `${INCREMENT}\n**Leaves:** ${key(102)}, #103\nCloses #101`;
+test('Leaves takes several owner-qualified issues, and is read only as its own line', () => {
+  const body = `${INCREMENT}\n**Leaves:** ${key(102)}, ${key(103)}\nCloses #101`;
   assert.equal(decide({ ...FEATURE, body, delivered: deliveredBy(merged3, REPO), states: OPEN(101, 102, 103) }).status, 'pass');
   for (const noLine of [`${INCREMENT}\nLeaves ${key(102)}, ${key(103)}\nCloses #101`, `${INCREMENT}\nclosing words **Leaves:** ${key(102)}, ${key(103)}\nCloses #101`, `${INCREMENT}\n\`\`\`\n**Leaves:** ${key(102)}, ${key(103)}\n\`\`\`\nCloses #101`]) {
     assert.equal(decide({ ...FEATURE, body: noLine, delivered: deliveredBy(merged3, REPO), states: OPEN(101, 102, 103) }).status, 'fail', noLine);
@@ -163,4 +172,13 @@ test('a Leaves issue that no merged task pull request delivered or that is alrea
   const closed = new Map([[key(101), 'OPEN'], [key(102), 'OPEN'], [key(103), 'CLOSED']]);
   const r = decide({ ...FEATURE, body: `${INCREMENT}\n**Leaves:** ${key(103)}, ${key(999)}\nCloses #101\nCloses #102`, delivered: deliveredBy(merged3, REPO), states: closed });
   assert.equal(r.status, 'pass');
+});
+
+test('Mutation: a bare #n in the Leaves line is not read: the rule says the owner-qualified form only, so the issue is still asked for', () => {
+  for (const line of [`**Leaves:** #103`, `**Leaves:** ${key(102)}, #103`]) {
+    const r = decide({ ...FEATURE, body: `${INCREMENT}\n${line}\nCloses #101`, delivered: deliveredBy(merged3, REPO), states: OPEN(101, 102, 103) });
+    assert.equal(r.status, 'fail', line);
+    assert.ok(r.missing.includes(key(103)), line);
+    assert.match(r.message, /Manager-Assistant-v2#103/);
+  }
 });

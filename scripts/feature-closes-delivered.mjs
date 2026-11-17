@@ -7,8 +7,9 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { withoutExamples } from './pr-names-issue.mjs';
 
-// Head branches that are not Features: the distribution's own pull request, and a release (`tools/github/github-workflow.md`, Branches).
-export const EXEMPT_HEAD_PREFIXES = ['release/', 'automated/'];
+// Head branches that are not Features: the distribution's own pull request, a release (`tools/github/github-workflow.md`, Branches), and a candidate: its work was delivered into the
+// landing branch it was cut from, not into the candidate branch, so a read of the pull requests merged into the candidate would find none and pass having read nothing.
+export const EXEMPT_HEAD_PREFIXES = ['release/', 'automated/', 'candidate/'];
 
 // The read of the merged task pull requests costs one GraphQL call per PAGE_SIZE of them, so it is bounded: a read that hits the bound is not taken for "no more", the check fails and says so.
 export const PAGE_SIZE = 100;
@@ -43,7 +44,7 @@ export function deliveredBy(prs, repo) {
   return delivered;
 }
 
-// An increment declares itself with an `**Increment:**` line and names the issues it leaves out in a `**Leaves:**` line (the DNA's form, dna#2003): each `owner/repo#n`, or a bare `#n` of this repository.
+// An increment declares itself with an `**Increment:**` line and names the issues it leaves out in a `**Leaves:**` line (the DNA's form, dna#2003): each `owner/repo#n`, qualified, never a bare `#n`.
 // A Leaves line without an Increment line is no increment. Only a line of its own counts.
 export function leavesOf(body, repo) {
   const text = withoutExamples(body);
@@ -51,8 +52,8 @@ export function leavesOf(body, repo) {
   const line = text.match(/^[ \t]*\*\*Leaves:\*\*[ \t]*(.+)$/m);
   if (!line) return [];
   return line[1].split(',').map((s) => s.trim()).filter(Boolean).flatMap((s) => {
-    const m = s.match(new RegExp(`^(?:(${SLUG}))?#(\\d+)$`));
-    return m ? [`${m[1] ?? repo}#${m[2]}`] : [];
+    const m = s.match(new RegExp(`^(${SLUG})#(\\d+)$`));
+    return m ? [`${m[1]}#${m[2]}`] : [];
   });
 }
 
@@ -62,6 +63,7 @@ const list = (keys) => keys.join(', ');
 // `states` maps each delivered issue to OPEN, CLOSED or UNKNOWN (an issue the check's token cannot read).
 export function decide({ headRef, baseRef, defaultBranch, body, repo, delivered = new Map(), states = new Map(), truncated = false }) {
   const exempt = EXEMPT_HEAD_PREFIXES.find((p) => (headRef ?? '').startsWith(p));
+  if (exempt === 'candidate/') return { status: 'skip', message: 'Skipped: a candidate\'s issues were delivered into its landing branch, not into the candidate branch; not read here.', missing: [], mismatched: [] };
   if (exempt) return { status: 'skip', message: `Skipped: a pull request from \`${exempt}*\` is not a Feature.`, missing: [], mismatched: [] };
   if (baseRef !== defaultBranch) return { status: 'skip', message: `Skipped: a pull request into \`${baseRef}\`, not the default branch, is not checked.`, missing: [], mismatched: [] };
   if (truncated) {
