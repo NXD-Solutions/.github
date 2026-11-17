@@ -1,8 +1,8 @@
 name: Set Landed
 
 # Meant for every repo that has a landing branch (`landed/<name>`): copied byte for byte from `distributed/` in NXD-Solutions/.github. It is not a workflow of that repo.
-# Never edit it in a subscriber: the next copy overwrites it. What it does is in `set-landed-check.yml` in NXD-Solutions/.github; the repository sets the tier projects as the
-# variable LANDING_TIER_PROJECTS (a comma list of project numbers), and the token that writes them is the organisation secret the principal places.
+# Never edit it in a subscriber: the next copy overwrites it. What it does is in `set-landed-check.yml` in NXD-Solutions/.github. A repository sets nothing but the token that writes the
+# projects, the organisation secret the principal places.
 on:
   pull_request:
     types: [closed]

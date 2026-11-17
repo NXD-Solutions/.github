@@ -5,7 +5,7 @@ import { closedIssues, qualifies, land, run, ghArgs, STATUS_LANDED } from '../sc
 // The promise (NXD-Solutions/dna#2004), one test per guarantee, written before the script. The tests run against a fake of the projects API that keeps each card's Status, so a
 // second run reads what the first wrote. That the workflow does what these say is the run of the workflow on the scratch repository, recorded on the issue; no GitHub call is made here.
 //
-// Owed: the run of the workflow on a scratch repository with a real token and a project copy; the principal's token decision (PROJECTS_PAT or the existing ADD_TO_PROJECT_PAT, and where it is placed).
+// Owed: the principal's token decision (PROJECTS_PAT or the existing ADD_TO_PROJECT_PAT, and where it is placed).
 
 const REPO = 'NXD-Solutions/Manager-Assistant-v2';
 const OPT = { landed: 'opt-landed', done: 'opt-done', review: 'opt-review' };
@@ -29,9 +29,10 @@ function fakeProjects({ cards, projects = { 12: ['Backlog', 'In review', 'Landed
       const nodes = (state[`${vars.o}/${vars.r}#${vars.n}`] ?? []).map((c) => ({ id: c.id, project: { id: `P${c.project}`, number: c.project }, status: c.status ? { name: c.status } : null }));
       return { data: { repository: { issue: { projectItems: { nodes } } } } };
     }
-    const names = projects[vars.n];
+    const number = Number(String(vars.p).replace(/^P/, ''));
+    const names = projects[number];
     const options = names ? names.map((n) => ({ id: { Landed: OPT.landed, Done: OPT.done, 'In review': OPT.review }[n] ?? `opt-${n}`, name: n })) : [];
-    return { data: { organization: { projectV2: { field: { id: `F${vars.n}`, options } } } } };
+    return { data: { node: { field: { id: `F${number}`, options } } } };
   };
   return { gql, state, writes, calls };
 }
@@ -44,7 +45,7 @@ test('a pull request merged into a branch named landed/<name> moves each issue i
   assert.deepEqual(closedIssues('Closes #3003\nFixes NXD-Solutions/Manager-Assistant-v2#3004 and closes #3003', REPO), [`${REPO}#3003`, `${REPO}#3004`]);
   const f = fakeProjects({ cards: { ...one('In review'), [`${REPO}#3004`]: [{ id: 'c2', project: 12, status: 'In review' }] } });
   const o = quiet();
-  assert.equal(land(closedIssues('Closes #3003\nFixes #3004', REPO), [12], f.gql, (l) => o.log(l), (l) => o.err(l)), 0);
+  assert.equal(land(closedIssues('Closes #3003\nFixes #3004', REPO), f.gql, (l) => o.log(l), (l) => o.err(l)), 0);
   assert.deepEqual(f.state[`${REPO}#3003`].map((c) => c.status), ['Landed']);
   assert.deepEqual(f.state[`${REPO}#3004`].map((c) => c.status), ['Landed']);
 });
@@ -56,25 +57,28 @@ test('Closes, Fixes and Resolves each count, in any case and with a colon; the w
 
 test('it sets the Status field to Landed and writes no other field, and never sets Done', () => {
   const f = fakeProjects({ cards: one('In review') });
-  land(closedIssues('Closes #3003', REPO), [12], f.gql, () => {}, () => {});
+  land(closedIssues('Closes #3003', REPO), f.gql, () => {}, () => {});
   assert.equal(f.writes.length, 1);
   assert.deepEqual(f.writes[0], { itemId: 'c1', projectId: 'P12', fieldId: 'F12', optionId: OPT.landed });
   assert.equal(STATUS_LANDED, 'Landed');
   assert.notEqual(f.writes[0].optionId, OPT.done);
 });
 
-test('a card on a project that is not a tier project is not touched; a card on several tier projects is set on each', () => {
-  const f = fakeProjects({ cards: { [`${REPO}#3003`]: [{ id: 'a', project: 99, status: 'In review' }, { id: 'b', project: 12, status: 'In review' }, { id: 'c', project: 7, status: 'Backlog' }] }, projects: { 12: ['In review', 'Landed'], 7: ['Backlog', 'Landed'] } });
-  land([`${REPO}#3003`], [12, 7], f.gql, () => {}, () => {});
-  assert.deepEqual(f.state[`${REPO}#3003`].map((c) => c.status), ['In review', 'Landed', 'Landed']);
+test('a card on several projects is set to Landed on each project that has a Landed option, and untouched on one without', () => {
+  const f = fakeProjects({ cards: { [`${REPO}#3003`]: [{ id: 'a', project: 99, status: 'In review' }, { id: 'b', project: 12, status: 'In review' }, { id: 'c', project: 6, status: 'In review' }] }, projects: { 99: ['In review', 'Landed'], 12: ['In review', 'Landed'], 6: ['In review', 'Done'] } });
+  const o = quiet();
+  assert.equal(land([`${REPO}#3003`], f.gql, (l) => o.log(l), (l) => o.err(l)), 0);
+  assert.deepEqual(f.state[`${REPO}#3003`].map((c) => c.status), ['Landed', 'Landed', 'In review']);
   assert.equal(f.writes.length, 2);
+  assert.match(o.lines.join('\n'), /project 6 has no Status Landed: left as it is/);
+  assert.deepEqual(o.errs, []);
 });
 
 test('Mutation: a card already Landed or Done is left as it is: nothing is written, and Done is never moved back', () => {
   for (const status of ['Landed', 'Done']) {
     const f = fakeProjects({ cards: one(status) });
     const o = quiet();
-    assert.equal(land([`${REPO}#3003`], [12], f.gql, (l) => o.log(l), (l) => o.err(l)), 0, status);
+    assert.equal(land([`${REPO}#3003`], f.gql, (l) => o.log(l), (l) => o.err(l)), 0, status);
     assert.equal(f.writes.length, 0, status);
     assert.equal(f.state[`${REPO}#3003`][0].status, status);
   }
@@ -84,7 +88,7 @@ test('a pull request closed unmerged, a merge into any other base, and a base th
   for (const [merged, base] of [['false', 'landed/mvp'], ['', 'landed/mvp'], [undefined, 'landed/mvp'], ['true', 'main'], ['true', 'landed'], ['true', 'landed/'], ['true', 'feature/landed/mvp'], ['true', 'Landed/mvp'], ['true', undefined]]) {
     assert.equal(qualifies({ merged, base }), false, `${merged} ${base}`);
     const f = fakeProjects({ cards: one('In review') });
-    const out = run({ env: { PR_MERGED: merged, PR_BASE: base, PR_BODY: 'Closes #3003', PR_REPO: REPO, PROJECTS: '12', GH_TOKEN: 't' }, gql: f.gql, log() {}, err() {} });
+    const out = run({ env: { PR_MERGED: merged, PR_BASE: base, PR_BODY: 'Closes #3003', PR_REPO: REPO, GH_TOKEN: 't' }, gql: f.gql, log() {}, err() {} });
     assert.equal(out, 0);
     assert.equal(f.calls.length, 0, `${merged} ${base}`);
   }
@@ -93,43 +97,45 @@ test('a pull request closed unmerged, a merge into any other base, and a base th
 test('a body that says Relates to, only mentions #n, or names an issue of another repository moves nothing, and no call is made for it', () => {
   for (const body of ['Relates to #3003', 'see #3003', 'Closes NXD-Solutions/dna#1997', '']) {
     const f = fakeProjects({ cards: one('In review') });
-    const out = run({ env: { PR_MERGED: 'true', PR_BASE: 'landed/mvp', PR_BODY: body, PR_REPO: REPO, PROJECTS: '12', GH_TOKEN: 't' }, gql: f.gql, log() {}, err() {} });
+    const out = run({ env: { PR_MERGED: 'true', PR_BASE: 'landed/mvp', PR_BODY: body, PR_REPO: REPO, GH_TOKEN: 't' }, gql: f.gql, log() {}, err() {} });
     assert.equal(out, 0, body);
     assert.equal(f.calls.length, 0, body);
     assert.equal(f.state[`${REPO}#3003`][0].status, 'In review');
   }
 });
 
-test('a project with no Status Landed option fails the run and writes nothing', () => {
-  const f = fakeProjects({ cards: one('In review'), projects: { 12: ['Backlog', 'In review', 'Done'] } });
+test('a card only on a project with no Status Landed option is left as it is, the run says so, and the run is green', () => {
+  const f = fakeProjects({ cards: one('In review', 6), projects: { 6: ['Backlog', 'In review', 'Done'] } });
   const o = quiet();
-  assert.equal(land([`${REPO}#3003`], [12], f.gql, (l) => o.log(l), (l) => o.err(l)), 1);
+  assert.equal(land([`${REPO}#3003`], f.gql, (l) => o.log(l), (l) => o.err(l)), 0);
   assert.equal(f.writes.length, 0);
-  assert.match(o.errs.join('\n'), /project 12 has no Status Landed/);
+  assert.equal(f.state[`${REPO}#3003`][0].status, 'In review');
+  assert.match(o.lines.join('\n'), /project 6 has no Status Landed: left as it is/);
+  assert.deepEqual(o.errs, []);
 });
 
 test('a failed write fails the run, the other issues are still tried, and the failure names the issue', () => {
   const f = fakeProjects({ cards: { ...one('In review', 12, 'bad'), [`${REPO}#3004`]: [{ id: 'good', project: 12, status: 'In review' }] }, failWriteOn: 'bad' });
   const o = quiet();
-  assert.equal(land([`${REPO}#3003`, `${REPO}#3004`], [12], f.gql, (l) => o.log(l), (l) => o.err(l)), 1);
+  assert.equal(land([`${REPO}#3003`, `${REPO}#3004`], f.gql, (l) => o.log(l), (l) => o.err(l)), 1);
   assert.equal(f.state[`${REPO}#3003`][0].status, 'In review');
   assert.equal(f.state[`${REPO}#3004`][0].status, 'Landed');
   assert.match(o.errs.join('\n'), /Manager-Assistant-v2#3003.*GitHub refused the write/);
 });
 
-test('a run with no token, or no tier project named, fails visibly and makes no call, never a quiet pass', () => {
-  for (const env of [{ GH_TOKEN: '', PROJECTS: '12' }, { GH_TOKEN: 't', PROJECTS: '' }, { GH_TOKEN: 't', PROJECTS: 'twelve' }, { GH_TOKEN: 't' }]) {
+test('a run with no token fails visibly and makes no call, never a quiet pass', () => {
+  for (const GH_TOKEN of ['', undefined]) {
     const f = fakeProjects({ cards: one('In review') });
     const o = quiet();
-    assert.equal(run({ env: { PR_MERGED: 'true', PR_BASE: 'landed/mvp', PR_BODY: 'Closes #3003', PR_REPO: REPO, ...env }, gql: f.gql, log: (l) => o.log(l), err: (l) => o.err(l) }), 1, JSON.stringify(env));
-    assert.equal(f.calls.length, 0, JSON.stringify(env));
+    assert.equal(run({ env: { PR_MERGED: 'true', PR_BASE: 'landed/mvp', PR_BODY: 'Closes #3003', PR_REPO: REPO, GH_TOKEN }, gql: f.gql, log: (l) => o.log(l), err: (l) => o.err(l) }), 1, String(GH_TOKEN));
+    assert.equal(f.calls.length, 0);
     assert.ok(o.errs.length > 0);
   }
 });
 
 test('a second run changes nothing: the card the first run set reads Landed and is left as it is', () => {
   const f = fakeProjects({ cards: one('In review') });
-  const env = { PR_MERGED: 'true', PR_BASE: 'landed/mvp', PR_BODY: 'Closes #3003', PR_REPO: REPO, PROJECTS: '12', GH_TOKEN: 't' };
+  const env = { PR_MERGED: 'true', PR_BASE: 'landed/mvp', PR_BODY: 'Closes #3003', PR_REPO: REPO, GH_TOKEN: 't' };
   assert.equal(run({ env, gql: f.gql, log() {}, err() {} }), 0);
   assert.equal(f.writes.length, 1);
   assert.equal(run({ env, gql: f.gql, log() {}, err() {} }), 0);
@@ -137,11 +143,11 @@ test('a second run changes nothing: the card the first run set reads Landed and 
   assert.equal(f.state[`${REPO}#3003`][0].status, 'Landed');
 });
 
-test('an issue with no card on the tier projects is reported and left, not a failure', () => {
+test('an issue with no card on any project is reported and left, not a failure', () => {
   const f = fakeProjects({ cards: {} });
   const o = quiet();
-  assert.equal(land([`${REPO}#3003`], [12], f.gql, (l) => o.log(l), (l) => o.err(l)), 0);
-  assert.match(o.lines.join('\n'), /no card on the tier projects/);
+  assert.equal(land([`${REPO}#3003`], f.gql, (l) => o.log(l), (l) => o.err(l)), 0);
+  assert.match(o.lines.join('\n'), /no card on any project/);
 });
 
 test('an option id or issue number the API returns that looks like a number is sent as the string or number the API expects', () => {
@@ -151,9 +157,9 @@ test('an option id or issue number the API returns that looks like a number is s
     seen.push(v);
     if (q.includes('mutation')) return { data: {} };
     if (q.includes('issue(number')) return { data: { repository: { issue: { projectItems: { nodes: [{ id: '1234', project: { id: '99', number: 12 }, status: { name: 'In review' } }] } } } } };
-    return { data: { organization: { projectV2: { field: { id: '5678', options: [{ id: '98765432', name: 'Landed' }] } } } } };
+    return { data: { node: { field: { id: '5678', options: [{ id: '98765432', name: 'Landed' }] } } } };
   };
-  land([`${REPO}#3003`], [12], gql, () => {}, () => {});
+  land([`${REPO}#3003`], gql, () => {}, () => {});
   const write = seen.at(-1);
   assert.equal(typeof write.o, 'string');
   assert.equal(write.o, '98765432');
