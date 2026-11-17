@@ -194,6 +194,15 @@ test('the machine the full test runs on is an input: a runner label that default
   assert.ok(!quick.includes('runs_on'), 'the quick set stays on GitHub\'s');
 });
 
+test('the gate step names its shell, so a runner whose default is not bash (a Windows machine) runs the same step', () => {
+  assert.match(full, /id: gate\s*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: [^\n]+\n(?:\s*#[^\n]*\n)*\s*shell: bash/);
+});
+
+test('the machine holds its own stack: the workflow says that two runs on one machine, and what the machine holds, are the runner machine\'s', () => {
+  assert.ok(full.includes('is the runner machine\'s, never this workflow\'s'));
+  assert.ok(full.includes('per COMMIT, not per runner'));
+});
+
 test('the caller starts the quick set on a push and the full test only by hand with a branch and a commit, passing the repository\'s step limit, and grants the status write and nothing wider', () => {
   assert.match(caller, /on:\s*\n\s*push:\s*\n\s*branches:\s*\n\s*- 'landed\/\*\*'\s*\n\s*workflow_dispatch:\s*\n\s*inputs:\s*\n\s*branch:[\s\S]*?required: true[\s\S]*?sha:[\s\S]*?required: true/);
   assert.match(caller, /quick:\s*\n\s*if: \$\{\{ github\.event_name == 'push' \}\}/);

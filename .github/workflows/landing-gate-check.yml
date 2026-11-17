@@ -43,7 +43,9 @@ env:
   GH_TELEMETRY: "false"
 
 # One run per tested commit, and it NEVER cancels: a merge into the branch, another start for another commit, or a quick run leaves it going, and the result lands on its own commit.
-# A second start for the same commit waits for the first rather than replacing it.
+# A second start for the same commit waits for the first rather than replacing it. The group is per COMMIT, not per runner: two full tests of two commits may run at once, and on one
+# machine they would share whatever stack it holds. What the machine holds (containers, a database, ports) and keeping two runs apart on it is the runner machine's, never this workflow's:
+# serialise per machine on it (one job at a time) or give each run its own.
 concurrency:
   group: landing-full-${{ github.repository }}-${{ inputs.sha }}
   cancel-in-progress: false
@@ -121,6 +123,8 @@ jobs:
         id: gate
         # A hung full test ends here, as a failed step, and the status step below reports it (a failure with no exit): the job's own limit, this plus a margin, never fires first.
         timeout-minutes: ${{ fromJSON(inputs.step_minutes) }}
+        # The script is bash (`set +e`, `PIPESTATUS`, `tee`): named, so a runner whose default shell is another one (a Windows machine's PowerShell) runs the same step (MADT-1's read).
+        shell: bash
         env:
           GATE_COMMAND: ${{ vars.LANDING_GATE_COMMAND }}
           # The registry read token: the repository's secret NODE_AUTH_TOKEN when it set one, else the workflow's token with `packages: read`. This workflow names no other secret.
