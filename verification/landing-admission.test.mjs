@@ -172,11 +172,13 @@ test('the caller re-evaluates when a condition changes, not only on a push: pull
   assert.match(caller, /pull_request:\s*\n\s*branches:\s*\n\s*- 'landed\/\*\*'\s*\n\s*types: \[[^\]]*opened[^\]]*synchronize[^\]]*ready_for_review[^\]]*\]/);
   assert.match(caller, /issue_comment:\s*\n\s*types: \[created, edited\]/);
   assert.match(caller, /startsWith\(github\.event\.comment\.body, '## Review:'\)/);
-  assert.match(caller, /check_run:\s*\n\s*types: \[completed\]/);
+  assert.match(caller, /workflow_run:\s*\n\s*workflows: \['\*'\]\s*\n\s*types: \[completed\]/, 'a finished Actions check: an event caused by the workflow token starts no check_run workflow, so workflow_run hears it');
+  assert.match(caller, /check_run:\s*\n\s*types: \[completed\]/, 'a check an app posts');
 });
 
 test('the job\'s own check is excluded from "a check finished", so the job never starts itself', () => {
   assert.match(caller, /!startsWith\(github\.event\.check_run\.name, 'landing-admission'\)/);
+  assert.match(caller, /!startsWith\(github\.event\.workflow_run\.name, 'Landing Admission'\)/, 'this workflow\'s own completed runs are excluded from workflow_run');
   assert.match(caller, /landing-admission:\s*\n/, 'the job is named so that its check begins with the excluded prefix');
 });
 
