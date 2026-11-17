@@ -101,6 +101,24 @@ test('the caller runs on a push to a landed/** branch, which is what a merge int
   assert.ok(!/(?:contents|pull-requests|issues|actions|checks|packages):\s*write/.test(caller));
 });
 
+test('a gate that installs @nxd-solutions packages gets the registry token: the repository\'s NODE_AUTH_TOKEN secret, else the workflow\'s token with packages: read, and setup-node writes the registry line it reads', () => {
+  assert.match(reusable, /NODE_AUTH_TOKEN: \$\{\{ secrets\.NODE_AUTH_TOKEN \|\| github\.token \}\}/);
+  assert.match(reusable, /registry-url: 'https:\/\/npm\.pkg\.github\.com'/);
+  assert.match(reusable, /scope: '@nxd-solutions'/);
+  assert.match(reusable, /permissions:\s*\n\s*contents: read\s*\n\s*packages: read\s*\n\s*statuses: write/);
+  assert.match(caller, /packages: read/);
+});
+
+test('the checkout has the whole history, so a gate that compares against origin/main finds it and does not skip its comparison and pass', () => {
+  assert.match(reusable, /uses: actions\/checkout@v5\s*\n\s*with:[\s\S]*?fetch-depth: 0/);
+});
+
+test('a hung gate is a failed step the status step reports, because the gate step\'s own limit is shorter than the job\'s', () => {
+  const step = Number(/id: gate[\s\S]*?timeout-minutes: (\d+)/.exec(reusable)?.[1]);
+  const job = Number(/runs-on: ubuntu-latest\s*\n\s*#[^\n]*\n(?:\s*#[^\n]*\n)*\s*timeout-minutes: (\d+)/.exec(reusable)?.[1]);
+  assert.ok(step > 0 && job > 0 && step < job, `step ${step} job ${job}`);
+});
+
 test('the reusable workflow keeps one run per branch, the latest merge\'s, so the head\'s status is the head\'s own', () => {
   assert.match(reusable, /concurrency:\s*\n\s*group: landing-gate-\$\{\{ github\.repository \}\}-\$\{\{ github\.ref \}\}\s*\n\s*cancel-in-progress: true/);
 });

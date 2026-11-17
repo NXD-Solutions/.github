@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: read
+  packages: read
   statuses: write
 
 # gh sends no usage data (NXD-Solutions/dna:nxd-practices/appendix/technology-admission/gh/gh-2.99.md).
@@ -23,7 +24,8 @@ env:
   GH_TELEMETRY: "false"
 
 # One run per branch, the latest merge's: a merge that lands while an earlier run is going cancels it, so the head's status is the head's own and a commit that is no
-# longer the head gets none.
+# longer the head gets none. By design: the head's run covers the earlier commit's content, so "after each merge" is met by the run of the latest one, and a merge that
+# gets no status was superseded, not missed.
 concurrency:
   group: landing-gate-${{ github.repository }}-${{ github.ref }}
   cancel-in-progress: true
@@ -37,6 +39,10 @@ jobs:
     steps:
       - name: Checkout the branch at the commit that was pushed
         uses: actions/checkout@v5
+        with:
+          # Full history: a gate that compares against its base (`origin/main`) needs it; at depth 1 the base does not resolve and such a gate skips its comparison and passes
+          # (MADT-1's read of .github#420, F2).
+          fetch-depth: 0
 
       - name: Checkout .github (for the status script)
         uses: actions/checkout@v5
@@ -51,11 +57,24 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ vars.LANDING_GATE_NODE || '24' }}
+          # The same registry line the repos' own workflows use, so a gate that installs `@nxd-solutions` packages from their lockfiles reads the token from NODE_AUTH_TOKEN
+          # (MADT-1's read of .github#420, F1). A repo that installs none is unaffected.
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@nxd-solutions'
 
       - name: Run the repository's gate
         id: gate
+        # A hung gate ends here, as a failed step, and the status step below reports it (a failure with no exit): the job's own limit never fires first. Were the job to
+        # time out, the run is cancelled and no status is set (ai-prompting's read of .github#420, note 4).
+        timeout-minutes: 55
+        # GAP: Guarantee: NXD-Solutions/.github#421
+        # (A repository's real gate has not run through this on a runner; it is shown on a scratch repository only. The gate command is the value this concerns.)
         env:
           GATE_COMMAND: ${{ vars.LANDING_GATE_COMMAND }}
+          # The registry read token: the repository's secret NODE_AUTH_TOKEN when it set one (the name Manager-Assistant-v2's pipeline already uses, for packages the workflow's own
+          # token cannot read, from another repository), else the workflow's token with `packages: read`. The gate is the repository's own code on a branch it merged under review,
+          # so it holds this token as the repository's other workflows do. A gate that needs any other secret is out of scope here: this workflow names no other secret.
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || github.token }}
         # The step always succeeds: the gate's exit is an output, so the status step below reports it whatever it was. A missing command is its own output, never a pass.
         run: |
           set +e

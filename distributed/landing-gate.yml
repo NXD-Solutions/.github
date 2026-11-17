@@ -11,10 +11,13 @@ on:
 
 jobs:
   gate:
-    # statuses: write is what sets the `landing-gate` status on the commit; nothing wider is granted.
+    # statuses: write is what sets the `landing-gate` status on the commit, and packages: read what lets the gate install `@nxd-solutions` packages with the workflow's token;
+    # nothing else is granted, and no grant is a write but the status.
     permissions:
       contents: read
+      packages: read
       statuses: write
     uses: NXD-Solutions/.github/.github/workflows/landing-gate-check.yml@main
-    # The repository's gate may need its own secrets (a registry token); `inherit` passes the repository's, and a repo with none passes none.
+    # `inherit` passes the repository's secrets; the workflow reads one only, NODE_AUTH_TOKEN, when the repo set it (a registry read token for packages the workflow's own
+    # token cannot reach). A repo with none passes none.
     secrets: inherit
