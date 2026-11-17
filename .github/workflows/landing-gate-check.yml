@@ -67,8 +67,9 @@ jobs:
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
       - name: Set the landing-gate status on this commit
-        # Runs whatever the gate did, so a failing gate is a red status and never a missing one; the job itself goes red when the status is not a pass.
-        if: always()
+        # Runs whatever the gate did, so a failing gate is a red status and never a missing one; the job itself goes red when the status is not a pass. Not `always()`: that also
+        # runs when a later merge cancels this run (observed on the scratch repository: the superseded commit got a failure status), and a cancel is no failure and that commit no longer the head.
+        if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ github.token }}
           GATE_EXIT_CODE: ${{ steps.gate.outputs.code }}
