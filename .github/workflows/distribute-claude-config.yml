@@ -447,6 +447,7 @@ jobs:
           callers=$(node scripts/caller-workflows.mjs --registry "$RUNNER_TEMP/caller-registry.json" --repo "$REPO")
           # The output holds one path per line, empty when nothing is copied: the two steps below name the files only when they were
           # copied. A pathspec that matches nothing makes git add, and so the PR step, fail for every repo.
+          # GAP: Unplaced: https://github.com/NXD-Solutions/.github/issues/433
           { echo "path<<CALLER_PATHS_EOF"; for f in $callers; do echo ".github/workflows/$f"; done; echo "CALLER_PATHS_EOF"; } >> "$GITHUB_OUTPUT"
           if [ -z "$callers" ]; then
             echo "::notice title=Caller not distributed::no caller is copied to $REPO (distribute-caller-workflows is not true in the registry)."
