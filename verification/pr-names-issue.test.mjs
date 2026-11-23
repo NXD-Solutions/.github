@@ -254,13 +254,14 @@ test('the sync names the caller path only from the copy step: a pathspec that ma
   const workflow = readFileSync(new URL('../.github/workflows/distribute-claude-config.yml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   const stepNames = [...workflow.matchAll(/^ {6}- name: (.+)$/gm)].map((m) => ({ name: m[1], at: m.index }));
   const stepAt = (index) => stepNames.filter((s) => s.at <= index).at(-1)?.name;
-  const mentions = [...workflow.matchAll(/pr-names-issue\.yml/g)].map((m) => stepAt(m.index));
-  // The copy step names the file; no other step may, and the commit and PR steps read the step's output instead.
-  assert.deepEqual([...new Set(mentions)], ['Copy the caller of the PR-names-its-issue check']);
+  // No step names a caller file: scripts/caller-workflows.mjs decides, the copy step reads its answer, and the commit and PR steps read the step's output instead.
+  const mentions = [...workflow.matchAll(/(pr-names-issue|landing-gate)\.yml/g)].map((m) => stepAt(m.index));
+  assert.deepEqual(mentions, []);
+  assert.match(workflow, /node scripts\/caller-workflows\.mjs/);
   assert.match(workflow, /CALLER_PATH: \$\{\{ steps\.caller\.outputs\.path \}\}/);
   assert.match(workflow, /^ +\$\{\{ steps\.caller\.outputs\.path \}\}$/m);
-  // When the flag is off the step must still set an empty path, or the output is undefined.
-  assert.match(workflow, /echo "path=" >> "\$GITHUB_OUTPUT"/);
+  // When nothing is copied the step must still set the output, empty, or it is undefined: the heredoc form writes an empty value for no callers.
+  assert.match(workflow, /echo "path<<CALLER_PATHS_EOF"; for f in \$callers; do echo "\.github\/workflows\/\$f"; done; echo "CALLER_PATHS_EOF"/);
 });
 
 test('the sync lists only repos that accept a push: archived repos never enter the subscriber list (.github#397)', async () => {
