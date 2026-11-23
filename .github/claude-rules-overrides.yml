@@ -27,8 +27,12 @@
 #   NXD-Solutions/some-repo:
 #     standards-exemption: "<reason, who granted it, date>"  # holds code without the dev
 #       # standards, by the principal's grant; without a reason it exempts nothing (dna#1387)
+#   NXD-Solutions/some-repo-with-a-landing-branch:
+#     landing-gate: true      # also copies the landing-gate caller (distributed/landing-gate.yml); set by the repo's own
+#       # pull request once it has a landing branch (landed/<name>). Only while distribute-caller-workflows is true (.github#422)
 
-# Copies the caller of the PR-names-its-issue check (.github#394) into every subscriber. Pushing a workflow file
+# Copies the callers of the checks (.github#394, #422) into subscribers: the PR-names-its-issue caller into every one, the
+# landing-gate caller into those marked `landing-gate: true` above. Pushing a workflow file
 # needs the `workflow` scope on REPOS_PAT; the principal confirms it, then sets this true.
 distribute-caller-workflows: false
 
